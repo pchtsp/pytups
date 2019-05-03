@@ -1,0 +1,365 @@
+# These tests were inspired from the addict package
+# https://github.com/mewwts/addict
+
+import json
+import copy
+import unittest
+import pickle
+import pytups as pt
+
+TEST_VAL = [1, 2, 3]
+TEST_DICT = {'a': {'b': {'c': TEST_VAL}}}
+
+class DictTest(unittest.TestCase):
+    dict_class = pt.SuperDict
+
+    def test_set_one_level_item(self):
+        some_dict = {'a': TEST_VAL}
+        prop = self.dict_class()
+        prop['a'] = TEST_VAL
+        self.assertDictEqual(prop, some_dict)
+
+    def test_set_two_level_items(self):
+        some_dict = {'a': {'b': TEST_VAL}}
+        prop = self.dict_class()
+        prop.set_m('a', 'b', value=TEST_VAL)
+        self.assertDictEqual(prop, some_dict)
+
+    def test_set_three_level_items(self):
+        prop = self.dict_class()
+        prop.set_m('a', 'b', 'c', value=TEST_VAL)
+        self.assertDictEqual(prop, TEST_DICT)
+
+    def test_set_one_level_property(self):
+        prop = self.dict_class()
+        prop['a'] = TEST_VAL
+        self.assertDictEqual(prop, {'a': TEST_VAL})
+
+    def test_set_two_level_properties(self):
+        prop = self.dict_class()
+        prop.set_m('a', 'b', value=TEST_VAL)
+        self.assertDictEqual(prop, {'a': {'b': TEST_VAL}})
+
+    def test_set_three_level_properties(self):
+        prop = self.dict_class()
+        prop.set_m('a', 'b', 'c', value=TEST_VAL)
+        self.assertDictEqual(prop, TEST_DICT)
+
+    def test_init_with_dict(self):
+        self.assertDictEqual(TEST_DICT, self.dict_class(TEST_DICT))
+
+    def test_init_with_kws(self):
+        prop = self.dict_class(a=2, b={'a': 2}, c=[{'a': 2}])
+        self.assertDictEqual(prop, {'a': 2, 'b': {'a': 2}, 'c': [{'a': 2}]})
+
+    def test_init_with_tuples(self):
+        prop = self.dict_class([(0, 1), (1, 2), (2, 3)])
+        self.assertDictEqual(prop, {0: 1, 1: 2, 2: 3})
+
+    def test_init_with_list(self):
+        prop = self.dict_class([(0, 1), (1, 2), (2, 3)])
+        self.assertDictEqual(prop, {0: 1, 1: 2, 2: 3})
+
+    def test_init_with_generator(self):
+        prop = self.dict_class(((i, i + 1) for i in range(3)))
+        self.assertDictEqual(prop, {0: 1, 1: 2, 2: 3})
+
+    # def test_init_with_tuples_and_empty_list(self):
+    #     prop = self.dict_class([(0, 1), [], (2, 3)])
+    #     self.assertDictEqual(prop, {0: 1, 2: 3})
+
+    def test_init_raises(self):
+        def init():
+            self.dict_class(5)
+
+        def init2():
+            self.dict_class('a')
+        self.assertRaises(TypeError, init)
+        self.assertRaises(ValueError, init2)
+
+    def test_init_with_empty_stuff(self):
+        a = self.dict_class({})
+        b = self.dict_class([])
+        self.assertDictEqual(a, {})
+        self.assertDictEqual(b, {})
+
+    # def test_init_with_list_of_dicts(self):
+    #     a = self.dict_class.from_dict({'a': [{'b': 2}]})
+    #     self.assertIsInstance(a['a'][0], self.dict_class)
+    #     self.assertEqual(a['a'][0]['b'], 2)
+
+    def test_init_with_kwargs(self):
+        a = self.dict_class(a='b', c=dict(d='e', f=dict(g='h')))
+        a = self.dict_class.from_dict(a)
+        self.assertEqual(a['a'], 'b')
+        self.assertIsInstance(a['c'], self.dict_class)
+
+        self.assertEqual(a.get_m('c', 'f', 'g'), 'h')
+        self.assertIsInstance(a['c']['f'], self.dict_class)
+
+    def test_getitem(self):
+        prop = self.dict_class(TEST_DICT)
+        self.assertEqual(prop['a']['b']['c'], TEST_VAL)
+
+    def test_empty_getitem(self):
+        prop = self.dict_class()
+        prop.get_m('a', 'b', 'c')
+        self.assertEqual(prop, {})
+
+    def test_getattr(self):
+        prop = self.dict_class(TEST_DICT)
+        self.assertEqual(prop['a']['b']['c'], TEST_VAL)
+
+    def test_isinstance(self):
+        self.assertTrue(isinstance(self.dict_class(), dict))
+
+    def test_str(self):
+        prop = self.dict_class(TEST_DICT)
+        self.assertEqual(str(prop), str(TEST_DICT))
+
+    def test_json(self):
+        some_dict = TEST_DICT
+        some_json = json.dumps(some_dict)
+        prop = self.dict_class()
+        prop.set_m('a', 'b', 'c', value=TEST_VAL)
+        prop_json = json.dumps(prop)
+        self.assertEqual(some_json, prop_json)
+
+    def test_delitem(self):
+        prop = self.dict_class.from_dict({'a': 2})
+        del prop['a']
+        self.assertDictEqual(prop, {})
+
+    def test_delitem_nested(self):
+        prop = self.dict_class.from_dict(TEST_DICT)
+        del prop['a']['b']['c']
+        self.assertDictEqual(prop, {'a': {'b': {}}})
+
+    def test_delattr(self):
+        prop = self.dict_class.from_dict({'a': 2})
+        del prop['a']
+        self.assertDictEqual(prop, {})
+
+    def test_delattr_nested(self):
+        prop = self.dict_class.from_dict(TEST_DICT)
+        del prop['a']['b']['c']
+        self.assertDictEqual(prop, {'a': {'b': {}}})
+
+    def test_delitem_delattr(self):
+        prop = self.dict_class.from_dict(TEST_DICT)
+        del prop['a']['b']
+        self.assertDictEqual(prop, {'a': {}})
+
+    def test_tuple_key(self):
+        prop = self.dict_class()
+        prop[(1, 2)] = 2
+        self.assertDictEqual(prop, {(1, 2): 2})
+        self.assertEqual(prop[(1, 2)], 2)
+
+    def test_dir(self):
+        key = 'a'
+        prop = self.dict_class({key: 1})
+        dir_prop = dir(prop)
+
+        dir_dict = dir(self.dict_class)
+        for d in dir_dict:
+            self.assertTrue(d in dir_prop, d)
+
+        self.assertTrue('__methods__' not in dir_prop)
+        self.assertTrue('__members__' not in dir_prop)
+
+    def test_dir_with_members(self):
+        prop = self.dict_class({'__members__': 1})
+        dir(prop)
+        self.assertTrue('__members__' in prop.keys())
+
+    # def test_to_dict(self):
+    #     nested = {'a': [{'a': 0}, 2], 'b': {}, 'c': 2}
+    #     prop = self.dict_class(nested)
+    #     regular = prop.to_dict()
+    #     self.assertDictEqual(regular, prop)
+    #     self.assertDictEqual(regular, nested)
+    #     self.assertNotIsInstance(regular, self.dict_class)
+    #
+    #     def get_attr():
+    #         regular.a = 2
+    #     self.assertRaises(AttributeError, get_attr)
+    #
+    #     def get_attr_deep():
+    #         regular['a'][0].a = 1
+    #     self.assertRaises(AttributeError, get_attr_deep)
+
+    # def test_to_dict_with_tuple(self):
+    #     nested = {'a': ({'a': 0}, {2: 0})}
+    #     prop = self.dict_class(nested)
+    #     regular = prop.to_dict()
+    #     self.assertDictEqual(regular, prop)
+    #     self.assertDictEqual(regular, nested)
+    #     self.assertIsInstance(regular['a'], tuple)
+    #     self.assertNotIsInstance(regular['a'][0], self.dict_class)
+
+    def test_update(self):
+        old = self.dict_class()
+        old.set_m('child', 'a', value='a')
+        old.set_m('child', 'b', value='b')
+        old['foo'] = 'c'
+
+        new = self.dict_class()
+        new.set_m('child', 'b', value='b2')
+        new.set_m('child', 'c', value='c')
+        new.set_m('foo', 'bar', value=True)
+
+        old.update(new)
+
+        reference = {'foo': {'bar': True},
+                     'child': {'a': 'a', 'c': 'c', 'b': 'b2'}}
+
+        self.assertDictEqual(old, reference)
+
+    def test_update_with_lists(self):
+        org = self.dict_class()
+        org['a'] = [1, 2, {'a': 'superman'}]
+        someother = self.dict_class()
+        someother['b'] = [{'b': 123}]
+        org.update(someother)
+
+        correct = {'a': [1, 2, {'a': 'superman'}],
+                   'b': [{'b': 123}]}
+
+        org.update(someother)
+        self.assertDictEqual(org, correct)
+        self.assertIsInstance(org['b'][0], dict)
+
+    def test_update_with_kws(self):
+        org = self.dict_class(one=1, two=2)
+        someother = self.dict_class(one=3)
+        someother.update(one=1, two=2)
+        self.assertDictEqual(org, someother)
+
+    def test_update_with_args_and_kwargs(self):
+        expected = {'a': 1, 'b': 2}
+        org = self.dict_class()
+        org.update({'a': 3, 'b': 2}, a=1)
+        self.assertDictEqual(org, expected)
+
+    def test_update_with_multiple_args(self):
+        def update():
+            org.update({'a': 2}, {'a': 1})
+        org = self.dict_class()
+        self.assertRaises(TypeError, update)
+
+    def test_hook_in_constructor(self):
+        a_dict = self.dict_class.from_dict(TEST_DICT)
+        self.assertIsInstance(a_dict['a'], self.dict_class)
+
+    def test_copy(self):
+        class MyMutableObject(object):
+
+            def __init__(self):
+                self.attribute = None
+
+        foo = MyMutableObject()
+        foo.attribute = True
+
+        a = self.dict_class()
+        a['child'] = self.dict_class()
+        a['child']['immutable'] = 42
+        a['child']['mutable'] = foo
+
+        b = a.copy()
+
+        # immutable object should not change
+        b['child']['immutable'] = 21
+        self.assertEqual(a['child']['immutable'], 21)
+
+        # mutable object should change
+        b['child']['mutable'].attribute = False
+        self.assertEqual(a['child']['mutable'].attribute, b['child']['mutable'].attribute)
+
+        # changing child of b should not affect a
+        b['child'] = "new stuff"
+        self.assertTrue(isinstance(a['child'], self.dict_class))
+
+    def test_deepcopy(self):
+        class MyMutableObject(object):
+            def __init__(self):
+                self.attribute = None
+
+        foo = MyMutableObject()
+        foo.attribute = True
+
+        a = self.dict_class()
+        a['child'] = self.dict_class()
+        a['child']['immutable'] = 42
+        a['child']['mutable'] = foo
+
+        b = copy.deepcopy(a)
+
+        # immutable object should not change
+        b['child']['immutable'] = 21
+        self.assertEqual(a['child']['immutable'], 42)
+
+        # mutable object should not change
+        b['child']['mutable'].attribute = False
+        self.assertTrue(a['child']['mutable'].attribute)
+
+        # changing child of b should not affect a
+        b.child = "new stuff"
+        self.assertTrue(isinstance(a['child'], self.dict_class))
+
+    def test_pickle(self):
+        a = self.dict_class(TEST_DICT)
+        self.assertEqual(a, pickle.loads(pickle.dumps(a)))
+
+    def test_init_from_zip(self):
+        keys = ['a']
+        values = [42]
+        items = zip(keys, values)
+        d = self.dict_class(items)
+        self.assertEqual(d['a'], 42)
+
+    # def test_setdefault_simple(self):
+    #     d = self.dict_class()
+    #     d.setdefault('a', 2)
+    #     self.assertEqual(d['a'], 2)
+    #     d.setdefault('a', 3)
+    #     self.assertEqual(d['a'], 2)
+    #     d.setdefault('c', []).append(2)
+    #     self.assertEqual(d['c'], [2])
+    #
+    # def test_setdefault_nested(self):
+    #     d = self.dict_class()
+    #     d.one.setdefault('two', [])
+    #     self.assertEqual(d.one.two, [])
+    #     d.one.setdefault('three', []).append(3)
+    #     self.assertEqual(d.one.three, [3])
+
+    def test_parent_key_item(self):
+        a = self.dict_class()
+        try:
+            a.set_m('keys', 'x', value=1)
+        except AttributeError as e:
+            self.fail(e)
+        try:
+            a.set_m(1, 'x', value=3)
+        except Exception as e:
+            self.fail(e)
+        self.assertEquals(a, {'keys': {'x': 1}, 1: {'x': 3}})
+
+    def test_parent_key_prop(self):
+        a = self.dict_class()
+        try:
+            a.set_m('y', 'x', value=1)
+        except AttributeError as e:
+            self.fail(e)
+        self.assertEquals(a, {'y': {'x': 1}})
+
+    def setUp(self):
+        pass
+
+    def tearDown(self):
+        pass
+
+
+if __name__ == "__main__":
+    unittest.main()
