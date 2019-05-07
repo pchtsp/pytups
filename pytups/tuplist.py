@@ -10,10 +10,23 @@ class TupList(list):
         :param indices: a list of positions
         :return: a new TuplList with the modifications
         """
-        if type(indices) is not list:
-            # indices = [indices]
-            return TupList([np.take(tup, indices) for tup in self])
-        return TupList([tuple(np.take(tup, indices)) for tup in self])
+        if not len(self):
+            return self
+        if not isinstance(indices, list):
+            mask = [i==indices for i in range(len(self[0]))]
+        else:
+            mask = [i in indices for i in range(len(self[0]))]
+        arr = np.array(self, dtype=np.object)
+        arr_filt = np.compress(mask, arr, axis=1)
+        if not isinstance(indices, list):
+            return TupList([x[0] for x in arr_filt])
+        return TupList(tuple(x) for x in arr_filt)
+
+        # dim(prop1)
+        # if type(indices) is not list:
+        #     # indices = [indices]
+        #     return TupList([np.take(tup, indices) for tup in self])
+        # return TupList([tuple(np.take(tup, indices)) for tup in self])
 
     def filter_list_f(self, function):
         """
@@ -32,7 +45,7 @@ class TupList(list):
             being the complement of result_col
         :return: a dictionary
         """
-        import package.superdict as sd
+        import pytups.superdict as sd
 
         if type(result_col) is not list:
             result_col = [result_col]
@@ -68,8 +81,9 @@ class TupList(list):
         """
         self.append(tuple(args))
 
-    def unique(self):
-        return TupList(np.unique(self))
+    def unique(self, dtype):
+        arr = np.asarray(self, dtype)
+        return TupList(np.unique(arr, axis=0).tolist())
 
     def unique2(self):
         return TupList(set(self))
@@ -77,7 +91,7 @@ class TupList(list):
     def intersect(self, input_list):
         return TupList(set(self) & set(input_list))
 
-    def tup_to_start_finish(self, compare_tups, pp=1):
+    def to_start_finish(self, compare_tups, pp=1):
         """
         Takes a calendar tuple list of the form: (id, month) and
         returns a tuple list of the form (id, start_month, end_month)

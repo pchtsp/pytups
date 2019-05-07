@@ -8,10 +8,36 @@ import pickle
 import pytups as pt
 
 TEST_VAL = [1, 2, 3]
+TEST_VAL2 = 4
 TEST_DICT = {'a': {'b': {'c': TEST_VAL}}}
+TEST_DICT_2 = {'a': {'b': {'c': TEST_VAL}}, 'b': {('c', 't'): {'d' : TEST_VAL2}}}
 
 class DictTest(unittest.TestCase):
     dict_class = pt.SuperDict
+
+    def test_property(self):
+        prop = self.dict_class.from_dict(TEST_DICT).get_property('b')
+        self.assertDictEqual(prop, {'a': {'c': [1, 2, 3]}})
+
+    def test_dictup(self):
+        prop = self.dict_class.from_dict(TEST_DICT).to_dictup()
+        self.assertDictEqual(prop, {('a', 'b', 'c'): TEST_VAL})
+
+    def test_tuplist(self):
+        prop = self.dict_class.from_dict(TEST_DICT).to_dictup().to_tuplist()
+        self.assertListEqual(prop, [('a', 'b', 'c', TEST_VAL)])
+
+    def test_filter_wrong(self):
+        prop = lambda: self.dict_class.from_dict(TEST_DICT).filter(['b'])
+        self.assertRaises(prop(), KeyError)
+
+    def test_filter_good(self):
+        prop = self.dict_class.from_dict(TEST_DICT_2).filter(['b'])
+        self.assertDictEqual(prop, {'b': {'c': {'d' : TEST_VAL2}}})
+
+    def test_to_dictdict(self):
+        prop = self.dict_class.from_dict({'b': {('c', 't'): {'d' : TEST_VAL2}}}).to_dictdict()
+        self.assertDictEqual(prop, {'b': {('c', 't'): {'d' : TEST_VAL2}}})
 
     def test_set_one_level_item(self):
         some_dict = {'a': TEST_VAL}

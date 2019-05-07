@@ -3,6 +3,9 @@ import numpy as np
 
 class SuperDict(dict):
 
+    # def __init__(self, seq=None, **kwargs):
+    #     super().__init__(seq=seq, **kwargs)
+
     def keys_l(self):
         return list(self.keys())
 
@@ -32,18 +35,18 @@ class SuperDict(dict):
         """
         dictdict = SuperDict()
         for tup, value in self.items():
-            dictdict.tup_to_dicts(tup, value)
+            dictdict.set_m(*tup, value=value)
         return dictdict
 
-    def tup_to_dicts(self, tup, value):
-        elem = tup[0]
+    def set_m(self, *args, value):
+        elem = args[0]
         if elem not in self:
             self[elem] = SuperDict()
-        if len(tup) == 1:
+        if len(args) == 1:
             self[elem] = value
             return self
         else:
-            self[elem].tup_to_dicts(tup[1:], value)
+            self[elem].set_m(*args[1:], value=value)
         return self
 
     def dicts_to_tup(self, keys, content):
@@ -57,7 +60,7 @@ class SuperDict(dict):
     def to_dictup(self):
         """
         Useful when reading a json and wanting to convert it to tuples.
-        Opposite to dicttup_to_dictdict
+        Opposite to to_dictdict
         :param self: a dictionary of dictionaries
         :return: a dictionary with tuples as keys
         """
@@ -83,7 +86,7 @@ class SuperDict(dict):
         :param self: dictionary indexed by tuples
         :return: a list of tuples.
         """
-        import package.tuplist as tl
+        import pytups.tuplist as tl
 
         tup_list = tl.TupList()
         for key, value in self.items():
@@ -152,11 +155,34 @@ class SuperDict(dict):
         """
         return SuperDict({k: func(k, v) for k, v in self.items()})
 
+    def get_m(self, *args):
+        try:
+            d = self
+            for i in args:
+                d = d[i]
+            return d
+        except KeyError:
+            return None
+
+    def update(self, *args, **kwargs):
+        other = {}
+        if args:
+            if len(args) > 1:
+                raise TypeError()
+            other.update(args[0])
+        other.update(kwargs)
+        for k, v in other.items():
+            if ((k not in self) or
+                (not isinstance(self[k], dict)) or
+                (not isinstance(v, dict))):
+                self[k] = v
+            else:
+                self[k].update(v)
     @classmethod
-    def from_dict(cls, dictionary):
-        if type(dictionary) is not dict:
-            return dictionary
-        dictionary = cls(dictionary)
-        for key, value in dictionary.items():
-            dictionary[key] = cls.from_dict(value)
-        return dictionary
+    def from_dict(cls, data):
+        if not isinstance(data, dict):
+            return data
+        data = cls(data)
+        for key, value in data.items():
+            data[key] = cls.from_dict(value)
+        return data
