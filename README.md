@@ -45,9 +45,10 @@ These are just dictionaries with additional methods based on the contents.
 
 ```python
     import pytups as pt
-    some_dict = {'a': 1, }
+    some_dict = {'a': 1}
     some_dict = pl.Superdict(some_dict)
-    some_dict.to_tup()  #  [('a', 1)]
+    some_dict.to_tup()  
+    # [('a', 1)]
     some_dict_plus_one = some_dict.apply(lambda k, v: v+1)  #  {'a': 2}
 ```
 
@@ -56,8 +57,15 @@ These are just dictionaries with additional methods based on the contents.
 Lists of tuples of any size.
 
 ```python
-    import orloge as ol
-    ol.get_info_log_solver(path_to_solver_log, solver_name)
+    _list = [('a', 'b', 'c', 1), ('a', 'b', 'c', 2), ('a', 'b', 'c', 3),
+            ('r', 'b', 'c', 1), ('r', 'b', 'c', 2), ('r', 'b', 'c', 3)]
+    tuplist = pt.TupList(_list)
+    tuplist.filter([0, 2]).unique()
+    # [('a', 'c'), ('r', 'c')]
+    tuplist.to_dict(result_col=3, is_list=True)
+    # {('a', 'b', 'c'): [1, 2, 3], ('r', 'b', 'c'): [1, 2, 3]}
+    tuplist.test_filter_list_f(lambda x: x[0] <= 'a')
+    # [('a', 'b', 'c', 1), ('a', 'b', 'c', 2), ('a', 'b', 'c', 3)]
 ```
 
 This returns a python dictionary with a lot of information from the log (see *Examples* below).
@@ -66,6 +74,6 @@ This returns a python dictionary with a lot of information from the log (see *Ex
 
 This was somewhat copied from other libraries (inspired by `pyomo`). It seems to be a list but in fact is an instance of an ordered dictionary. We have just implemented the most common list operations to use it as a list.
 
-The purpose is mainly to use it as a sequence of things in order to ask for the position, the next element and the previous one.
+The purpose is mainly to use it as a sequence of things in order to ask for the position, the next element and the previous one and X elements from it.
 
 Specially useful for a list of dates, months, etc.
