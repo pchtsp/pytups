@@ -12,10 +12,14 @@ class TupList(list):
         """
         if not len(self):
             return self
+        single = False
         arr = np.array(self, dtype=np.object)
+        if not isinstance(indices, list):
+            indices = [indices]
+            single = True
         arr_filt = np.take(arr, indices, axis=1)
         # arr_filt = np.compress(mask, arr, axis=1)
-        if not isinstance(indices, list):
+        if single:
             return TupList(x[0] for x in arr_filt)
         return TupList(tuple(x) for x in arr_filt)
 

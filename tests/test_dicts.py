@@ -25,15 +25,16 @@ class DictTest(unittest.TestCase):
 
     def test_tuplist(self):
         prop = self.dict_class.from_dict(TEST_DICT).to_dictup().to_tuplist()
-        self.assertListEqual(prop, [('a', 'b', 'c', TEST_VAL)])
+        self.assertListEqual(prop, [('a', 'b', 'c', 1), ('a', 'b', 'c', 2), ('a', 'b', 'c', 3)])
 
     def test_filter_wrong(self):
         prop = lambda: self.dict_class.from_dict(TEST_DICT).filter(['b'])
-        self.assertRaises(prop(), KeyError)
+        with self.assertRaises(KeyError):
+            prop()
 
     def test_filter_good(self):
         prop = self.dict_class.from_dict(TEST_DICT_2).filter(['b'])
-        self.assertDictEqual(prop, {'b': {'c': {'d' : TEST_VAL2}}})
+        self.assertDictEqual(prop, {'b': {('c', 't'): {'d' : TEST_VAL2}}})
 
     def test_to_dictdict(self):
         prop = self.dict_class.from_dict({'b': {('c', 't'): {'d' : TEST_VAL2}}}).to_dictdict()
@@ -370,7 +371,7 @@ class DictTest(unittest.TestCase):
             a.set_m(1, 'x', value=3)
         except Exception as e:
             self.fail(e)
-        self.assertEquals(a, {'keys': {'x': 1}, 1: {'x': 3}})
+        self.assertEqual(a, {'keys': {'x': 1}, 1: {'x': 3}})
 
     def test_parent_key_prop(self):
         a = self.dict_class()
@@ -378,7 +379,7 @@ class DictTest(unittest.TestCase):
             a.set_m('y', 'x', value=1)
         except AttributeError as e:
             self.fail(e)
-        self.assertEquals(a, {'y': {'x': 1}})
+        self.assertEqual(a, {'y': {'x': 1}})
 
     def setUp(self):
         pass

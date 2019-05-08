@@ -1,0 +1,61 @@
+import unittest
+import pytups as pt
+
+TEST_TUP = [('a', 'b', 'c', 1), ('a', 'b', 'c', 2), ('a', 'b', 'c', 3),
+            ('r', 'b', 'c', 1), ('r', 'b', 'c', 2), ('r', 'b', 'c', 3)]
+TEST_DATES = ['2019-0'+str(i) for i in range(1, 10)]
+
+class OrdSetTest(unittest.TestCase):
+    dict_class = pt.OrderSet
+
+    def test_select(self):
+        self.assertEqual(self.prop1[1], ('a', 'b', 'c', 2))
+
+    def test_select_ord(self):
+        self.assertEqual(self.prop1.ord(('r', 'b', 'c', 3)), 5)
+
+    def test_select_range(self):
+        first_two = self.prop1[:2]
+        self.assertListEqual([('a', 'b', 'c', 1), ('a', 'b', 'c', 2)], first_two)
+
+    def test_dates1(self):
+        self.assertEqual(self.dates1[0], '2019-01')
+
+    def test_dates_next(self):
+        self.assertEqual(self.dates1.next('2019-02'), '2019-03')
+
+    def test_dates_prev(self):
+        self.assertEqual(self.dates1.prev('2019-02'), '2019-01')
+
+    def test_dates_next_mult(self):
+        self.assertEqual(self.dates1.next('2019-06', 3), '2019-09')
+
+    def test_edit(self):
+        prev_len = len(self.dates1)
+        new_value = '2019-00'
+        self.dates1[0] = new_value
+        new_len = len(self.dates1)
+        self.assertEqual(self.dates1[0], new_value)
+        self.assertEqual(new_len, prev_len)
+
+    def test_append(self):
+        prev_len = len(self.dates1)
+        new_value = '2019-10'
+        self.dates1.append(new_value)
+        new_len = len(self.dates1)
+        self.assertEqual(self.dates1[-1], new_value)
+        self.assertEqual(prev_len+1, new_len)
+
+    def setUp(self):
+        self.prop1 = self.dict_class(TEST_TUP)
+        self.dates1 = self.dict_class(TEST_DATES)
+        pass
+
+    def tearDown(self):
+        pass
+
+
+if __name__ == "__main__":
+    unittest.main()
+    self = OrdSetTest()
+    self.setUp()
