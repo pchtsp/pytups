@@ -1,59 +1,66 @@
 import collections as col
 
 
-class OrderedList(col.MutableSequence):
+class OrderSet(col.MutableSequence):
 
     def __init__(self, _list):
-        _data = [(key, pos) for pos, key in enumerate(_list)]
-        self.store = col.OrderedDict(_data)
+        # _pos is the real list
+        # _store is the reverse-key mapping
+
+        self._pos = list(_list)
+        _data = [(key, pos) for pos, key in enumerate(self._pos)]
+        self._store = dict(_data)
 
     def __getitem__(self, key):
-        return list(self.store.keys())[key]
+        return self._pos[key]
 
     def __setitem__(self, key, value):
         prev_value = self[key]
-        self.store.pop(prev_value)
-        self.store[value] = key
-        # TODO: the following can be better done by iterating with move_to_end
-        _data = sorted(self.store.items(), key=lambda x: x[1])
-        self.store = col.OrderedDict(_data)
+        self._store.pop(prev_value)
+        self._store[value] = key
+        self._pos[key] = value
 
     def __delitem__(self, key):
-        del self.store[self[key]]
-        rest = list(self.store.keys())[key:]
+        del self._store[self[key]]
+        rest = self._pos[key:]
         for item in rest:
-            self.store[item] -= 1
+            self._store[item] -= 1
+        del self[key]
 
     def __iter__(self):
-        return iter(self.store)
+        return iter(self._pos)
 
     def __len__(self):
-        return len(self.store)
+        return len(self._pos)
+
+    def __repr__(self):
+        return repr(self._pos)
 
     def insert(self, key, value):
-        self.store[value] = len(self)
+        self._store[value] = len(self)
+        self._pos.append(value)
 
     def ord(self, key):
-        return self.store[key]
+        return self._store[key]
 
     def next(self, key, num=1):
-        return self[self.store[key] + num]
+        return self[self._store[key] + num]
 
     def prev(self, key, num=1):
-        return self[self.store[key] - num]
+        return self[self._store[key] - num]
 
 # TODO: forbid list of lists.
 # TODO: add operations.
 
 if __name__ == '__main__':
 
-    ttt = OrderedList(['1', 'll', 'lll'])
-    ttt.store
+    ttt = OrderSet(['1', 'll', 'lll'])
+    ttt._store
     ttt[1] = 'lllll'
     ttt.prev(ttt.prev('1'))
 
 
-    ttt.store
+    ttt._store
 
 
     d = col.OrderedDict()
