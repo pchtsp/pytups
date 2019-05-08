@@ -12,21 +12,12 @@ class TupList(list):
         """
         if not len(self):
             return self
-        if not isinstance(indices, list):
-            mask = [i==indices for i in range(len(self[0]))]
-        else:
-            mask = [i in indices for i in range(len(self[0]))]
         arr = np.array(self, dtype=np.object)
-        arr_filt = np.compress(mask, arr, axis=1)
+        arr_filt = np.take(arr, indices, axis=1)
+        # arr_filt = np.compress(mask, arr, axis=1)
         if not isinstance(indices, list):
-            return TupList([x[0] for x in arr_filt])
+            return TupList(x[0] for x in arr_filt)
         return TupList(tuple(x) for x in arr_filt)
-
-        # dim(prop1)
-        # if type(indices) is not list:
-        #     # indices = [indices]
-        #     return TupList([np.take(tup, indices) for tup in self])
-        # return TupList([tuple(np.take(tup, indices)) for tup in self])
 
     def filter_list_f(self, function):
         """
@@ -45,7 +36,8 @@ class TupList(list):
             being the complement of result_col
         :return: a dictionary
         """
-        import pytups.superdict as sd
+        from . import superdict as sd
+        # import pytups.superdict as sd
 
         if type(result_col) is not list:
             result_col = [result_col]

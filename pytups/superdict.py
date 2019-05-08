@@ -86,7 +86,8 @@ class SuperDict(dict):
         :param self: dictionary indexed by tuples
         :return: a list of tuples.
         """
-        import pytups.tuplist as tl
+        from . import tuplist as tl
+        # import pytups.tuplist as tl
 
         tup_list = tl.TupList()
         for key, value in self.items():
