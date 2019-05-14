@@ -18,7 +18,6 @@ class TupList(list):
             indices = [indices]
             single = True
         arr_filt = np.take(arr, indices, axis=1)
-        # arr_filt = np.compress(mask, arr, axis=1)
         if single:
             return TupList(x[0] for x in arr_filt)
         return TupList(tuple(x) for x in arr_filt)
