@@ -197,7 +197,9 @@ class SuperDict(dict):
         without modifying the input
         :return: Superdict
         """
-        return SuperDict.from_dict({**self, **dict})
+        temp_dict = SuperDict.from_dict(self)
+        temp_dict.update(dict)
+        return temp_dict
 
     # def to_dict(self):
     #     return self._to_dict(self)

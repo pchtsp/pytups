@@ -3,11 +3,11 @@
 
 ## What and why
 
-I grew used to the chained operations `dplyr` in R. Also, although not a great fan myself, `pandas`. The thing is in python I find myself using dictionary and list comprehensions all the time to pass from one data format to the other efficiently. But after doing it for the Nth time, I thought of automaticing it.
+I grew used to the chained operations in R's `tidyverse` packages or, although not a great fan myself, python's `pandas`. I find myself using dictionary and list comprehensions all the time to pass from one data format to the other efficiently. But after doing it for the Nth time, I thought of automaticing it.
 
-In my case, it helps me construct optimisation models with `pulp`. I see other possible uses not related to OR.
+In my case, it helps me construct optimisation models with [PuLP](https://github.com/coin-or/pulp). I see other possible uses not related to OR.
 
-I've just implemented some additional methods to regular dictionaries, lists and ordered dictionaries to come up with interesting methods that somewhat quickly pass from one to the other and help with data wrangling.
+I've implemented some additional methods to regular dictionaries, lists and sets to come up with interesting methods that somewhat quickly pass from one to the other and help with data wrangling.
 
 In order for the operations to make any sense, the assumption that is done is that whatever you are using has the same 'structure'. For example, if you a have a list of tuples: every element of the list is a tuple with the same size and the Nth element of the tuple has the same type, e.g. `[(1, 'red', 'b', '2018-01'), (10, 'ccc', 'ttt', 'ff')]`. Note that both tuples have four elements and the first one is a number, not a string. We do not check that this is consistent.
 
@@ -43,7 +43,7 @@ or, for the development version:
 
 Run the command 
     
-    python -m unittest test
+    python -m unittest discover -s tests
 
  if the output says OK, all tests were passed.
 
@@ -51,7 +51,7 @@ Run the command
 
 ### Superdicts
 
-These are just dictionaries with additional methods based on the contents.
+These are dictionaries with additional methods based on the contents.
 
 Example:
 
@@ -86,10 +86,10 @@ Example:
     # [('a', 'b', 'c', 1), ('a', 'b', 'c', 2), ('a', 'b', 'c', 3)]
 ```
 
-This returns a python dictionary with a lot of information from the log (see *Examples* below).
-
 ### ordered sets
 
-We have just implemented the most common list operations to use it as a list. The purpose is mainly to use it as a sequence of things in order to ask for the position, the next element and the previous one and X elements from it.
+We have implemented the most common list operations to use it as a list. The purpose is mainly to use it as a sequence of things in order to ask for the position, the next element and the previous one and X elements from it.
 
 Specially useful for a list of dates, months, when you want fast lookup speeds.
+
+As a set, it can only take as element hashable objects (lists are not ok: tuples are).
