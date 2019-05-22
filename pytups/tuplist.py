@@ -123,3 +123,6 @@ class TupList(list):
 
     def to_list(self):
         return list(self)
+
+    def apply(self, func):
+        return TupList(map(func, self))
