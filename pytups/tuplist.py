@@ -40,8 +40,9 @@ class TupList(list):
         :return: a dictionary
         """
         from . import superdict as sd
-        # import pytups.superdict as sd
 
+        if result_col is None:
+            return sd.SuperDict({k: k for k in self})
         if type(result_col) is not list:
             result_col = [result_col]
         if len(self) == 0:
