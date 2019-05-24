@@ -58,7 +58,7 @@ Example:
 ```python
     import pytups as pt
     indent_dict = {'a': {'b': {'c': 'A'}}, 'b': {'t': {'d' : 'B'}}}
-    supdict = pl.Superdict.from_dict(indent_dict)
+    supdict = pt.Superdict.from_dict(indent_dict)
     supdict_dictup = supdict.to_dictup()
     # {('a', 'b', 'c'): 'A', ('b', 't', 'd'): 'B'}
     supdict_dictup.to_tup()
