@@ -1,0 +1,159 @@
+
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta charset="utf-8" />
+    <title>Pytups &#8212; pytups 0.1 documentation</title>
+    <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="_static/language_data.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Philisophy" href="idea.html" />
+    <link rel="prev" title="Welcome to pytups’s documentation!" href="index.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  <div class="document">
+    
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="index.html">pytups</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<p class="caption"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Pytups</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#what-and-why">What and why</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#quick-example">Quick example</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#installing">Installing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#testing">Testing</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="idea.html">Philisophy</a></li>
+<li class="toctree-l1"><a class="reference internal" href="examples.html">Some examples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="code.html">Documentation for the Code</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+      <li>Previous: <a href="index.html" title="previous chapter">Welcome to pytups’s documentation!</a></li>
+      <li>Next: <a href="idea.html" title="next chapter">Philisophy</a></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <div class="section" id="pytups">
+<h1>Pytups<a class="headerlink" href="#pytups" title="Permalink to this headline">¶</a></h1>
+<a class="reference external image-reference" href="https://travis-ci.org/pchtsp/pytups"><img alt="https://travis-ci.org/pchtsp/pytups.svg?branch=master" src="https://travis-ci.org/pchtsp/pytups.svg?branch=master" /></a>
+<div class="section" id="what-and-why">
+<h2>What and why<a class="headerlink" href="#what-and-why" title="Permalink to this headline">¶</a></h2>
+<p>I grew used to the chained operations in R’s <a class="reference external" href="https://www.tidyverse.org/">tidyverse</a>  packages or, although not a great fan myself, python’s <a class="reference external" href="https://pandas.pydata.org/">pandas</a> . I find myself using dictionary and list comprehensions all the time to pass from one data format to the other efficiently. But after doing it for the Nth time, I thought of automaticing it.</p>
+<p>In my case, it helps me construct optimisation models with  <a class="reference external" href="https://github.com/coin-or/pulp">PuLP</a>. I see other possible uses not related to OR.</p>
+<p>I’ve implemented some additional methods to regular dictionaries, lists and sets to come up with interesting methods that somewhat quickly pass from one to the other and help with data wrangling.</p>
+<p>In order for the operations to make any sense, the assumption that is done is that whatever you are using has the same ‘structure’. For example, if you a have a list of tuples: every element of the list is a tuple with the same size and the Nth element of the tuple has the same type, e.g. <code class="docutils literal notranslate"><span class="pre">[(1,</span> <span class="pre">'red',</span> <span class="pre">'b',</span> <span class="pre">'2018-01'),</span> <span class="pre">(10,</span> <span class="pre">'ccc',</span> <span class="pre">'ttt',</span> <span class="pre">'ff')]</span></code>. Note that both tuples have four elements and the first one is a number, not a string. We do not check that this is consistent.</p>
+<p>They’re made to always return a new object, so no “in-place” editing, hopefully.</p>
+<p>Right now there are three classes to use: dictionaries, tuple lists and ordered sets.</p>
+</div>
+<div class="section" id="quick-example">
+<h2>Quick example<a class="headerlink" href="#quick-example" title="Permalink to this headline">¶</a></h2>
+<p>We reverse a nested dictionary to take the deepest key outside while keeping the same final values. This chain of operations uses both <cite>superdict</cite> and <cite>tuplist</cite> objects at different points.:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">pytups</span> <span class="kn">as</span> <span class="nn">pt</span>
+<span class="n">some_dict</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;a&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;b&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;c&#39;</span><span class="p">:</span> <span class="s1">&#39;A&#39;</span><span class="p">}},</span> <span class="s1">&#39;b&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;t&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;c&#39;</span> <span class="p">:</span> <span class="s1">&#39;B&#39;</span><span class="p">}}}</span>
+<span class="n">pt</span><span class="o">.</span><span class="n">SuperDict</span><span class="o">.</span><span class="n">from_dict</span><span class="p">(</span><span class="n">some_dict</span><span class="p">)</span><span class="o">.</span>\
+    <span class="n">to_dictup</span><span class="p">()</span><span class="o">.</span>\
+    <span class="n">to_tuplist</span><span class="p">()</span><span class="o">.</span>\
+    <span class="nb">filter</span><span class="p">([</span><span class="mi">2</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">])</span><span class="o">.</span>\
+    <span class="n">to_dict</span><span class="p">(</span><span class="n">result_col</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">is_list</span><span class="o">=</span><span class="bp">False</span><span class="p">)</span><span class="o">.</span>\
+    <span class="n">to_dictdict</span><span class="p">()</span>
+<span class="c1"># {&#39;c&#39;: {&#39;a&#39;: {&#39;b&#39;: &#39;A&#39;}, &#39;b&#39;: {&#39;t&#39;: &#39;B&#39;}}}</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="installing">
+<h2>Installing<a class="headerlink" href="#installing" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">pip</span> <span class="n">install</span> <span class="n">pytups</span>
+</pre></div>
+</div>
+<p>or, for the development version:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">pip</span> <span class="n">install</span> <span class="n">https</span><span class="p">:</span><span class="o">//</span><span class="n">github</span><span class="o">.</span><span class="n">com</span><span class="o">/</span><span class="n">pchtsp</span><span class="o">/</span><span class="n">pytups</span><span class="o">/</span><span class="n">archive</span><span class="o">/</span><span class="n">master</span><span class="o">.</span><span class="n">zip</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="testing">
+<h2>Testing<a class="headerlink" href="#testing" title="Permalink to this headline">¶</a></h2>
+<p>Run the command:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">python</span> <span class="o">-</span><span class="n">m</span> <span class="n">unittest</span> <span class="n">discover</span> <span class="o">-</span><span class="n">s</span> <span class="n">tests</span>
+</pre></div>
+</div>
+<p>if the output says OK, all tests were passed.</p>
+</div>
+</div>
+
+
+          </div>
+          
+        </div>
+      </div>
+    <div class="clearer"></div>
+  </div>
+    <div class="footer">
+      &copy;2019, Franco Peschiera.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 2.0.1</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+      |
+      <a href="_sources/includeme.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

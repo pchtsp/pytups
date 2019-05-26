@@ -15,7 +15,7 @@
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
     <link rel="next" title="Some examples" href="examples.html" />
-    <link rel="prev" title="Welcome to pytups’s documentation!" href="index.html" />
+    <link rel="prev" title="Pytups" href="includeme.html" />
    
   <link rel="stylesheet" href="_static/custom.css" type="text/css" />
   
@@ -39,10 +39,11 @@
 <h3>Navigation</h3>
 <p class="caption"><span class="caption-text">Contents:</span></p>
 <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="includeme.html">Pytups</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Philisophy</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#working-with-1-dimensional-data">Working with 1-dimensional data</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#chaining">Chaining</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#dictionaries-and-lists-of-tuples">Dictionaries and lists of tuples</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#chaining-operations">Chaining operations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#interoperability-of-types">Interoperability of types</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="examples.html">Some examples</a></li>
@@ -53,7 +54,7 @@
 <h3>Related Topics</h3>
 <ul>
   <li><a href="index.html">Documentation overview</a><ul>
-      <li>Previous: <a href="index.html" title="previous chapter">Welcome to pytups’s documentation!</a></li>
+      <li>Previous: <a href="includeme.html" title="previous chapter">Pytups</a></li>
       <li>Next: <a href="examples.html" title="next chapter">Some examples</a></li>
   </ul></li>
 </ul>
@@ -92,13 +93,94 @@
 <p>Sadly, I usually use dictionaries to manipulate my data. And there is not a very good way to work with dictionaries and numpy. And, after using list comprehensions for a long time, I find that they take a lot of space and time to write and I <em>usually</em> have very simple needs for my dictionary operations.</p>
 <p>For cases when multidimensional data is needed, I usually like to think of lists of tuples. This is the closest to a table (dataframe) that one can get without having to use pandas.</p>
 </div>
-<div class="section" id="chaining">
-<h2>Chaining<a class="headerlink" href="#chaining" title="Permalink to this headline">¶</a></h2>
-<p>I really like <cite>dplyr</cite>, <cite>magrittr</cite> and <cite>tidyverse</cite> libraries in R. They provide a light, concise series of steps to show the process in the data manipulation. Pandas can, sometimes, provide this. But pandas sometimes is too heavy for small, fast operations and tables sometimes do not provide the good data format.</p>
+<div class="section" id="chaining-operations">
+<h2>Chaining operations<a class="headerlink" href="#chaining-operations" title="Permalink to this headline">¶</a></h2>
+<p>I really like <cite>dplyr</cite>, <cite>magrittr</cite> and <cite>tidyverse</cite> libraries in R. They provide a light, concise series of steps to show the process in the data manipulation. Pandas can, sometimes, provide this. But pandas sometimes is too heavy for small, fast operations and tables sometimes do not provide the good data format for some situations.</p>
+<p>Most functions available in <cite>pytups</cite> return an object instead of changing it ‘in place’. So, for example if a function is applies to a dictionary:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">pytups</span> <span class="n">pt</span>
+<span class="n">original</span> <span class="o">=</span> <span class="n">pt</span><span class="o">.</span><span class="n">SuperDict</span><span class="p">({</span><span class="s1">&#39;a&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s1">&#39;b&#39;</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span> <span class="s1">&#39;f&#39;</span><span class="p">:</span> <span class="mi">3</span><span class="p">})</span>
+<span class="n">new</span> <span class="o">=</span> <span class="n">original</span><span class="o">.</span><span class="n">vapply</span><span class="p">(</span><span class="k">lambda</span><span class="p">:</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">original</span><span class="p">)</span>
+<span class="c1"># {&#39;a&#39;: 1, &#39;b&#39;: 2, &#39;f&#39;: 3}</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">new</span><span class="p">)</span>
+<span class="c1"># {&#39;a&#39;: 1, &#39;b&#39;: 4, &#39;f&#39;: 9}</span>
+</pre></div>
 </div>
-<div class="section" id="dictionaries-and-lists-of-tuples">
-<h2>Dictionaries and lists of tuples<a class="headerlink" href="#dictionaries-and-lists-of-tuples" title="Permalink to this headline">¶</a></h2>
-<p>There are two main data types.</p>
+<p>This can lead to several chaining operations:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">pytups</span> <span class="n">pt</span>
+<span class="n">pt</span><span class="o">.</span><span class="n">SuperDict</span><span class="p">({</span><span class="s1">&#39;a&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s1">&#39;b&#39;</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span> <span class="s1">&#39;f&#39;</span><span class="p">:</span> <span class="mi">3</span><span class="p">})</span><span class="o">.</span>
+    <span class="n">vapply</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span><span class="o">.</span>\
+    <span class="n">clean</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span>\
+    <span class="n">fill_with_default</span><span class="p">([</span><span class="s1">&#39;a&#39;</span><span class="p">,</span> <span class="s1">&#39;b&#39;</span><span class="p">,</span> <span class="s1">&#39;c&#39;</span><span class="p">,</span> <span class="s1">&#39;d&#39;</span><span class="p">,</span> <span class="s1">&#39;e&#39;</span><span class="p">,</span> <span class="s1">&#39;f&#39;</span><span class="p">])</span><span class="o">.</span>\
+    <span class="n">to_tuplist</span><span class="p">()</span>
+<span class="c1"># [(&#39;a&#39;, 0), (&#39;b&#39;, 4), (&#39;c&#39;, 0), (&#39;d&#39;, 0), (&#39;e&#39;, 0), (&#39;f&#39;, 9)]</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="interoperability-of-types">
+<h2>Interoperability of types<a class="headerlink" href="#interoperability-of-types" title="Permalink to this headline">¶</a></h2>
+<p>There are two main data types that are tightly related via two functions: <a class="reference internal" href="code.html#pytups.superdict.SuperDict.to_tuplist" title="pytups.superdict.SuperDict.to_tuplist"><code class="xref py py-func docutils literal notranslate"><span class="pre">pytups.superdict.SuperDict.to_tuplist()</span></code></a> for <a class="reference internal" href="code.html#pytups.superdict.SuperDict" title="pytups.superdict.SuperDict"><code class="xref py py-class docutils literal notranslate"><span class="pre">pytups.superdict.SuperDict</span></code></a> and <a class="reference internal" href="code.html#pytups.tuplist.TupList.to_dict" title="pytups.tuplist.TupList.to_dict"><code class="xref py py-func docutils literal notranslate"><span class="pre">pytups.tuplist.TupList.to_dict()</span></code></a> for <a class="reference internal" href="code.html#pytups.tuplist.TupList" title="pytups.tuplist.TupList"><code class="xref py py-class docutils literal notranslate"><span class="pre">pytups.tuplist.TupList</span></code></a>.</p>
+<div class="section" id="going-from-dictionaries-to-tuple-lists">
+<h3>Going from dictionaries to tuple lists<a class="headerlink" href="#going-from-dictionaries-to-tuple-lists" title="Permalink to this headline">¶</a></h3>
+<p>If one has a single-level dictionary, one can get a tuple ‘fairly’ easily by ‘just’ appending the value of the dictionary into the keys. It’s almost equivalent to using the <cite>items</cite> function of a dictionary but applies the <cite>TupList</cite> type.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">pytups</span> <span class="n">pt</span>
+<span class="n">pt</span><span class="o">.</span><span class="n">SuperDict</span><span class="p">({</span><span class="s1">&#39;a&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s1">&#39;b&#39;</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span> <span class="s1">&#39;f&#39;</span><span class="p">:</span> <span class="mi">3</span><span class="p">})</span><span class="o">.</span><span class="n">to_tuplist</span><span class="p">()</span>
+<span class="c1"># [(&#39;a&#39;, 1), (&#39;b&#39;, 2), (&#39;f&#39;, 3)]</span>
+<span class="n">pt</span><span class="o">.</span><span class="n">SuperDict</span><span class="p">({</span><span class="s1">&#39;a&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s1">&#39;b&#39;</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span> <span class="s1">&#39;f&#39;</span><span class="p">:</span> <span class="mi">3</span><span class="p">})</span><span class="o">.</span><span class="n">items</span><span class="p">()</span>
+<span class="c1"># dict_items([(&#39;a&#39;, 1), (&#39;b&#39;, 2), (&#39;f&#39;, 3)])</span>
+</pre></div>
+</div>
+<p>In some, cases this function takes some liberties to interpret the content so as to make the TupList flat:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">pytups</span> <span class="n">pt</span>
+<span class="n">pt</span><span class="o">.</span><span class="n">SuperDict</span><span class="p">({</span><span class="s1">&#39;a&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">5</span><span class="p">],</span> <span class="s1">&#39;b&#39;</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span> <span class="s1">&#39;f&#39;</span><span class="p">:</span> <span class="mi">3</span><span class="p">})</span><span class="o">.</span><span class="n">to_tuplist</span><span class="p">()</span>
+<span class="c1"># [(&#39;a&#39;, 1), (&#39;a&#39;, 2), (&#39;a&#39;, 5), (&#39;b&#39;, 2), (&#39;f&#39;, 3)]</span>
+<span class="n">pt</span><span class="o">.</span><span class="n">SuperDict</span><span class="p">({</span><span class="s1">&#39;a&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">5</span><span class="p">],</span> <span class="s1">&#39;b&#39;</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span> <span class="s1">&#39;f&#39;</span><span class="p">:</span> <span class="mi">3</span><span class="p">})</span><span class="o">.</span><span class="n">items</span><span class="p">()</span>
+<span class="n">dict_items</span><span class="p">([(</span><span class="s1">&#39;a&#39;</span><span class="p">,</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">5</span><span class="p">]),</span> <span class="p">(</span><span class="s1">&#39;b&#39;</span><span class="p">,</span> <span class="mi">2</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;f&#39;</span><span class="p">,</span> <span class="mi">3</span><span class="p">)])</span>
+</pre></div>
+</div>
+<p>So, if it finds some list, it iterates over it. Using the regular <cite>items</cite> function would not do that.</p>
+<p>Sometimes, we start with a nested dictionary. If we want to get a tuple from this, we need to first convert it into a flat dictionary and then get a tuple list:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">pytups</span> <span class="k">as</span> <span class="nn">pt</span>
+<span class="n">indent_dict</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;a&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;b&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;c&#39;</span><span class="p">:</span> <span class="s1">&#39;A&#39;</span><span class="p">}},</span> <span class="s1">&#39;b&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;t&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;d&#39;</span> <span class="p">:</span> <span class="s1">&#39;B&#39;</span><span class="p">}}}</span>
+<span class="n">supdict</span> <span class="o">=</span> <span class="n">pt</span><span class="o">.</span><span class="n">SuperDict</span><span class="o">.</span><span class="n">from_dict</span><span class="p">(</span><span class="n">indent_dict</span><span class="p">)</span>
+<span class="n">supdict_dictup</span> <span class="o">=</span> <span class="n">supdict</span><span class="o">.</span><span class="n">to_dictup</span><span class="p">()</span>
+<span class="c1"># {(&#39;a&#39;, &#39;b&#39;, &#39;c&#39;): &#39;A&#39;, (&#39;b&#39;, &#39;t&#39;, &#39;d&#39;): &#39;B&#39;}</span>
+<span class="n">tuplist</span> <span class="o">=</span> <span class="n">supdict_dictup</span><span class="o">.</span><span class="n">to_tuplist</span><span class="p">()</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">tuplist</span><span class="p">)</span>
+<span class="c1"># [(&#39;a&#39;, &#39;b&#39;, &#39;c&#39;, &#39;A&#39;), (&#39;b&#39;, &#39;t&#39;, &#39;d&#39;, &#39;B&#39;)]</span>
+<span class="nb">type</span><span class="p">(</span><span class="n">tuplist</span><span class="p">)</span>
+<span class="c1"># &lt;class &#39;pytups.tuplist.TupList&#39;&gt;</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="going-from-tuple-lists-to-dictionaries">
+<h3>Going from tuple lists to dictionaries<a class="headerlink" href="#going-from-tuple-lists-to-dictionaries" title="Permalink to this headline">¶</a></h3>
+<p>If one has a list of tuples, one can obtain a dictionary indexed in some way over part of the tuple. In a way, is like creating a key in a database table or a <a class="reference external" href="http://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.groupby.html#pandas.DataFrame.groupby" title="(in pandas v0.24.2)"><code class="xref py py-meth docutils literal notranslate"><span class="pre">pandas.DataFrame.groupby()</span></code></a> function in <a class="reference external" href="http://pandas.pydata.org/pandas-docs/stable/index.html#module-pandas" title="(in pandas v0.24.2)"><code class="xref py py-mod docutils literal notranslate"><span class="pre">pandas</span></code></a> with the difference that it creates a new variable with the modifications.</p>
+<p>Starting with the previous example one can reverse the tuplist quite easily:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">pytups</span> <span class="k">as</span> <span class="nn">pt</span>
+<span class="n">tuplist</span> <span class="o">=</span> <span class="n">pt</span><span class="o">.</span><span class="n">TupList</span><span class="p">([(</span><span class="s1">&#39;a&#39;</span><span class="p">,</span> <span class="s1">&#39;b&#39;</span><span class="p">,</span> <span class="s1">&#39;c&#39;</span><span class="p">,</span> <span class="s1">&#39;A&#39;</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;b&#39;</span><span class="p">,</span> <span class="s1">&#39;t&#39;</span><span class="p">,</span> <span class="s1">&#39;d&#39;</span><span class="p">,</span> <span class="s1">&#39;B&#39;</span><span class="p">)])</span>
+<span class="n">tuplist</span><span class="o">.</span><span class="n">to_dict</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="n">is_list</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<span class="c1"># {(&#39;a&#39;, &#39;b&#39;, &#39;c&#39;): &#39;A&#39;, (&#39;b&#39;, &#39;t&#39;, &#39;d&#39;): &#39;B&#39;}</span>
+</pre></div>
+</div>
+<p>This function assumes by default that the result will be a list. One can enforce only the last value by using <cite>is_list=False</cite>. But, now that we are starting with the flatten tuple list, we can choose a different way to index it:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">tuplist</span><span class="o">.</span><span class="n">to_dict</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">is_list</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<span class="c1"># {(&#39;b&#39;, &#39;c&#39;, &#39;A&#39;): &#39;a&#39;, (&#39;t&#39;, &#39;d&#39;, &#39;B&#39;): &#39;b&#39;}</span>
+</pre></div>
+</div>
+<p>We can also give a list as a resulting column, so:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">tuplist</span><span class="o">.</span><span class="n">to_dict</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">3</span><span class="p">],</span> <span class="n">is_list</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<span class="c1"># {(&#39;b&#39;, &#39;c&#39;): (&#39;a&#39;, &#39;A&#39;), (&#39;t&#39;, &#39;d&#39;): (&#39;b&#39;, &#39;B&#39;)}</span>
+</pre></div>
+</div>
+<p>By default, we assume that the index will be the complement of the resulting column. But we can also give an explicit index for the dictionary if we want to drop some of the values or we want to change the order of the key:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">tuplist</span><span class="o">.</span><span class="n">to_dict</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">3</span><span class="p">],</span> <span class="n">is_list</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">indices</span><span class="o">=</span><span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">])</span>
+<span class="c1"># {(&#39;c&#39;, &#39;b&#39;): (&#39;a&#39;, &#39;A&#39;), (&#39;d&#39;, &#39;t&#39;): (&#39;b&#39;, &#39;B&#39;)}</span>
+<span class="n">tuplist</span><span class="o">.</span><span class="n">to_dict</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">3</span><span class="p">],</span> <span class="n">is_list</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">indices</span><span class="o">=</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span>
+<span class="c1"># {&#39;c&#39;: (&#39;a&#39;, &#39;A&#39;), &#39;d&#39;: (&#39;b&#39;, &#39;B&#39;)}</span>
+</pre></div>
+</div>
+</div>
 </div>
 </div>
 

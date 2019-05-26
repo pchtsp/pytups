@@ -5,6 +5,7 @@ Welcome to pytups's documentation!
    :maxdepth: 2
    :caption: Contents:
 
+   includeme
    idea
    examples
    code
