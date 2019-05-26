@@ -1,0 +1,22 @@
+Philisophy
+**************************
+
+Working with 1-dimensional data
+=========================
+
+Just like in R, vectors are just expected everywhere, it would be nice to work with dictionaries and lists just as if they were vectors. In this way, we could just apply functions to them, sum them, etc. without too much thinking on what happens inside. Python has list comprehensions and that is already very good. Also, numpy has fairly good support for vectorized operations.
+
+Sadly, I usually use dictionaries to manipulate my data. And there is not a very good way to work with dictionaries and numpy. And, after using list comprehensions for a long time, I find that they take a lot of space and time to write and I *usually* have very simple needs for my dictionary operations.
+
+For cases when multidimensional data is needed, I usually like to think of lists of tuples. This is the closest to a table (dataframe) that one can get without having to use pandas.
+
+Chaining
+=============================
+
+I really like `dplyr`, `magrittr` and `tidyverse` libraries in R. They provide a light, concise series of steps to show the process in the data manipulation. Pandas can, sometimes, provide this. But pandas sometimes is too heavy for small, fast operations and tables sometimes do not provide the good data format.
+
+
+Dictionaries and lists of tuples
+=============================
+
+There are two main data types.

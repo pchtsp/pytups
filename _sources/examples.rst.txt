@@ -1,0 +1,12 @@
+Some examples
+**************************
+
+Coming from R
+=========================
+
+In R, you have the `lapply` function, that applies a function over some list or vector.
+
+
+
+=============================
+

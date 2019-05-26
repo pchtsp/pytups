@@ -1,0 +1,596 @@
+
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta charset="utf-8" />
+    <title>Documentation for the Code &#8212; pytups 0.1 documentation</title>
+    <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="_static/language_data.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="prev" title="Some examples" href="examples.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  <div class="document">
+    
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="index.html">pytups</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<p class="caption"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="idea.html">Philisophy</a></li>
+<li class="toctree-l1"><a class="reference internal" href="examples.html">Some examples</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Documentation for the Code</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#superdict">SuperDict</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#module-pytups.tuplist">TupList</a></li>
+</ul>
+</li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+      <li>Previous: <a href="examples.html" title="previous chapter">Some examples</a></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <div class="section" id="module-pytups">
+<span id="documentation-for-the-code"></span><h1>Documentation for the Code<a class="headerlink" href="#module-pytups" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="superdict">
+<h2>SuperDict<a class="headerlink" href="#superdict" title="Permalink to this headline">¶</a></h2>
+<p><code class="xref py py-class docutils literal notranslate"><span class="pre">SuperDict</span></code></p>
+<span class="target" id="module-pytups.superdict"></span><dl class="class">
+<dt id="pytups.superdict.SuperDict">
+<em class="property">class </em><code class="descclassname">pytups.superdict.</code><code class="descname">SuperDict</code><a class="headerlink" href="#pytups.superdict.SuperDict" title="Permalink to this definition">¶</a></dt>
+<dd><p>A dictionary with additional methods</p>
+<dl class="method">
+<dt id="pytups.superdict.SuperDict.apply">
+<code class="descname">apply</code><span class="sig-paren">(</span><em>func</em><span class="sig-paren">)</span><a class="headerlink" href="#pytups.superdict.SuperDict.apply" title="Permalink to this definition">¶</a></dt>
+<dd><p>Applies a function to the dictionary and returns the result</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>func</strong> (<em>function</em>) – function with two arguments: one for the key, another for the value</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>new <a class="reference internal" href="#pytups.superdict.SuperDict" title="pytups.superdict.SuperDict"><code class="xref py py-class docutils literal notranslate"><span class="pre">SuperDict</span></code></a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="pytups.superdict.SuperDict.clean">
+<code class="descname">clean</code><span class="sig-paren">(</span><em>default_value=0</em>, <em>func=None</em><span class="sig-paren">)</span><a class="headerlink" href="#pytups.superdict.SuperDict.clean" title="Permalink to this definition">¶</a></dt>
+<dd><p>Filters elements by value</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>default_value</strong> – value of elements to take out</p></li>
+<li><p><strong>func</strong> (<em>function</em>) – function that evaluates to true if we take out the element</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>new <a class="reference internal" href="#pytups.superdict.SuperDict" title="pytups.superdict.SuperDict"><code class="xref py py-class docutils literal notranslate"><span class="pre">SuperDict</span></code></a></p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>int <a class="reference internal" href="#pytups.superdict.SuperDict" title="pytups.superdict.SuperDict"><code class="xref py py-class docutils literal notranslate"><span class="pre">SuperDict</span></code></a></p>
+</dd>
+</dl>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">SuperDict</span><span class="p">({</span><span class="s1">&#39;a&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s1">&#39;b&#39;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="s1">&#39;c&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">})</span><span class="o">.</span><span class="n">clean</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+<span class="go">{&#39;a&#39;: 1, &#39;c&#39;: 1}</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="pytups.superdict.SuperDict.dicts_to_tup">
+<code class="descname">dicts_to_tup</code><span class="sig-paren">(</span><em>keys</em>, <em>content</em><span class="sig-paren">)</span><a class="headerlink" href="#pytups.superdict.SuperDict.dicts_to_tup" title="Permalink to this definition">¶</a></dt>
+<dd><p>compacts nested dictionaries into one single dictionary
+with tuples as keys.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>keys</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.7)"><em>list</em></a>) – list of keys to use as new key</p></li>
+<li><p><strong>content</strong> – </p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>modified <a class="reference internal" href="#pytups.superdict.SuperDict" title="pytups.superdict.SuperDict"><code class="xref py py-class docutils literal notranslate"><span class="pre">SuperDict</span></code></a></p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><a class="reference internal" href="#pytups.superdict.SuperDict" title="pytups.superdict.SuperDict"><code class="xref py py-class docutils literal notranslate"><span class="pre">SuperDict</span></code></a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="pytups.superdict.SuperDict.fill_with_default">
+<code class="descname">fill_with_default</code><span class="sig-paren">(</span><em>keys</em>, <em>default=0</em><span class="sig-paren">)</span><a class="headerlink" href="#pytups.superdict.SuperDict.fill_with_default" title="Permalink to this definition">¶</a></dt>
+<dd><p>guarantees dictionary will have specific keys</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>keys</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.7)"><em>list</em></a>) – dictionary will have at least these keys</p></li>
+<li><p><strong>default</strong> – </p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>new <a class="reference internal" href="#pytups.superdict.SuperDict" title="pytups.superdict.SuperDict"><code class="xref py py-class docutils literal notranslate"><span class="pre">SuperDict</span></code></a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="pytups.superdict.SuperDict.filter">
+<code class="descname">filter</code><span class="sig-paren">(</span><em>indices</em>, <em>check=True</em><span class="sig-paren">)</span><a class="headerlink" href="#pytups.superdict.SuperDict.filter" title="Permalink to this definition">¶</a></dt>
+<dd><p>takes out elements that are not in <cite>indices</cite></p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>indices</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.7)"><em>int</em></a><em> or </em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.7)"><em>list</em></a>) – keys to keep in new dictionary</p></li>
+<li><p><strong>check</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.7)"><em>bool</em></a>) – if True, only return valid ones</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>new <a class="reference internal" href="#pytups.superdict.SuperDict" title="pytups.superdict.SuperDict"><code class="xref py py-class docutils literal notranslate"><span class="pre">SuperDict</span></code></a></p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><a class="reference internal" href="#pytups.superdict.SuperDict" title="pytups.superdict.SuperDict"><code class="xref py py-class docutils literal notranslate"><span class="pre">SuperDict</span></code></a></p>
+</dd>
+</dl>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">SuperDict</span><span class="p">({</span><span class="s1">&#39;a&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s1">&#39;b&#39;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="s1">&#39;c&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">})</span><span class="o">.</span><span class="n">filter</span><span class="p">([</span><span class="s1">&#39;a&#39;</span><span class="p">,</span> <span class="s1">&#39;b&#39;</span><span class="p">])</span>
+<span class="go">{&#39;a&#39;: 1, &#39;b&#39;: 0}</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="classmethod">
+<dt id="pytups.superdict.SuperDict.from_dict">
+<em class="property">classmethod </em><code class="descname">from_dict</code><span class="sig-paren">(</span><em>data</em><span class="sig-paren">)</span><a class="headerlink" href="#pytups.superdict.SuperDict.from_dict" title="Permalink to this definition">¶</a></dt>
+<dd><p>Main initialization. Deals with nested dictionaries.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>data</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a>) – a (possibly nested) dictionary</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>new <a class="reference internal" href="#pytups.superdict.SuperDict" title="pytups.superdict.SuperDict"><code class="xref py py-class docutils literal notranslate"><span class="pre">SuperDict</span></code></a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="pytups.superdict.SuperDict.get_m">
+<code class="descname">get_m</code><span class="sig-paren">(</span><em>*args</em><span class="sig-paren">)</span><a class="headerlink" href="#pytups.superdict.SuperDict.get_m" title="Permalink to this definition">¶</a></dt>
+<dd><p>Safe way to search for something in a nested dictionary</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>args</strong> – keys in nested dictionary</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>content after traversing the nested dictionary. None if doesn’t exit</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="pytups.superdict.SuperDict.keys_l">
+<code class="descname">keys_l</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pytups.superdict.SuperDict.keys_l" title="Permalink to this definition">¶</a></dt>
+<dd><p>Shortcut to:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="nb">list</span><span class="p">(</span><span class="n">SuperDict</span><span class="p">()</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
+</pre></div>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>list with keys</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.7)">list</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="pytups.superdict.SuperDict.len">
+<code class="descname">len</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pytups.superdict.SuperDict.len" title="Permalink to this definition">¶</a></dt>
+<dd><p>Shortcut to:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="nb">len</span><span class="p">(</span><span class="n">SuperDict</span><span class="p">())</span>
+</pre></div>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>length of dictionary</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.7)">int</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="pytups.superdict.SuperDict.list_reverse">
+<code class="descname">list_reverse</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pytups.superdict.SuperDict.list_reverse" title="Permalink to this definition">¶</a></dt>
+<dd><p>transforms dictionary of lists to another dictionary of lists only indexed by the values.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>new <a class="reference internal" href="#pytups.superdict.SuperDict" title="pytups.superdict.SuperDict"><code class="xref py py-class docutils literal notranslate"><span class="pre">SuperDict</span></code></a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="pytups.superdict.SuperDict.set_m">
+<code class="descname">set_m</code><span class="sig-paren">(</span><em>*args</em>, <em>value</em><span class="sig-paren">)</span><a class="headerlink" href="#pytups.superdict.SuperDict.set_m" title="Permalink to this definition">¶</a></dt>
+<dd><p>uses <cite>args</cite> as nested keys and then assigns <cite>value</cite></p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>args</strong> – keys to nest</p></li>
+<li><p><strong>value</strong> – value to assign to last dictionary</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>modified <a class="reference internal" href="#pytups.superdict.SuperDict" title="pytups.superdict.SuperDict"><code class="xref py py-class docutils literal notranslate"><span class="pre">SuperDict</span></code></a></p>
+</dd>
+</dl>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">SuperDict</span><span class="p">({(</span><span class="s1">&#39;a&#39;</span><span class="p">,</span> <span class="s1">&#39;b&#39;</span><span class="p">):</span> <span class="mi">1</span><span class="p">,</span> <span class="p">(</span><span class="s1">&#39;b&#39;</span><span class="p">,</span> <span class="s1">&#39;c&#39;</span><span class="p">):</span> <span class="mi">0</span><span class="p">,</span> <span class="s1">&#39;c&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">})</span><span class="o">.</span><span class="n">set_m</span><span class="p">(</span><span class="s1">&#39;c&#39;</span><span class="p">,</span> <span class="s1">&#39;d&#39;</span><span class="p">,</span> <span class="s1">&#39;a&#39;</span><span class="p">,</span> <span class="n">value</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="go">{&#39;a&#39;: {&#39;b&#39;: 1}, &#39;b&#39;: {&#39;c&#39;: 0}, &#39;c&#39;: 1}</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="pytups.superdict.SuperDict.sorted">
+<code class="descname">sorted</code><span class="sig-paren">(</span><em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#pytups.superdict.SuperDict.sorted" title="Permalink to this definition">¶</a></dt>
+<dd><p>Applies sorted function to dictionary keys</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>kwargs</strong> – arguments for sorted</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="pytups.superdict.SuperDict.to_dictdict">
+<code class="descname">to_dictdict</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pytups.superdict.SuperDict.to_dictdict" title="Permalink to this definition">¶</a></dt>
+<dd><p>Expands tuple keys to nested dictionaries
+Useful to get json-compatible objects from the solution</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>new (nested) <a class="reference internal" href="#pytups.superdict.SuperDict" title="pytups.superdict.SuperDict"><code class="xref py py-class docutils literal notranslate"><span class="pre">SuperDict</span></code></a></p>
+</dd>
+</dl>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">SuperDict</span><span class="p">({(</span><span class="s1">&#39;a&#39;</span><span class="p">,</span> <span class="s1">&#39;b&#39;</span><span class="p">):</span> <span class="mi">1</span><span class="p">,</span> <span class="p">(</span><span class="s1">&#39;b&#39;</span><span class="p">,</span> <span class="s1">&#39;c&#39;</span><span class="p">):</span> <span class="mi">0</span><span class="p">,</span> <span class="s1">&#39;c&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">})</span><span class="o">.</span><span class="n">to_dictdict</span><span class="p">()</span>
+<span class="go">{&#39;a&#39;: {&#39;b&#39;: 1}, &#39;b&#39;: {&#39;c&#39;: 0}, &#39;c&#39;: 1}</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="pytups.superdict.SuperDict.to_dictup">
+<code class="descname">to_dictup</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pytups.superdict.SuperDict.to_dictup" title="Permalink to this definition">¶</a></dt>
+<dd><p>Useful when reading a json and wanting to convert it to tuples.
+Opposite to to_dictdict</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>new (flat) <a class="reference internal" href="#pytups.superdict.SuperDict" title="pytups.superdict.SuperDict"><code class="xref py py-class docutils literal notranslate"><span class="pre">SuperDict</span></code></a></p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p><a class="reference internal" href="#pytups.superdict.SuperDict" title="pytups.superdict.SuperDict"><code class="xref py py-class docutils literal notranslate"><span class="pre">SuperDict</span></code></a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="pytups.superdict.SuperDict.to_lendict">
+<code class="descname">to_lendict</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pytups.superdict.SuperDict.to_lendict" title="Permalink to this definition">¶</a></dt>
+<dd><p>get length of values in dictionary</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>new <a class="reference internal" href="#pytups.superdict.SuperDict" title="pytups.superdict.SuperDict"><code class="xref py py-class docutils literal notranslate"><span class="pre">SuperDict</span></code></a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="pytups.superdict.SuperDict.to_tuplist">
+<code class="descname">to_tuplist</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pytups.superdict.SuperDict.to_tuplist" title="Permalink to this definition">¶</a></dt>
+<dd><p>The last element of the returned tuple was the dict’s value.
+We try really hard to expand the tuples so it’s a flat tuple list.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>new <a class="reference internal" href="#pytups.tuplist.TupList" title="pytups.tuplist.TupList"><code class="xref py py-class docutils literal notranslate"><span class="pre">pytups.tuplist.TupList</span></code></a></p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p><a class="reference internal" href="#pytups.tuplist.TupList" title="pytups.tuplist.TupList"><code class="xref py py-class docutils literal notranslate"><span class="pre">pytups.tuplist.TupList</span></code></a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="pytups.superdict.SuperDict.update">
+<code class="descname">update</code><span class="sig-paren">(</span><em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#pytups.superdict.SuperDict.update" title="Permalink to this definition">¶</a></dt>
+<dd><p>updates a nested dictionary.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>args</strong> – dictionary to update with</p></li>
+<li><p><strong>kwargs</strong> – specific keys and values to update</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="pytups.superdict.SuperDict.values_l">
+<code class="descname">values_l</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pytups.superdict.SuperDict.values_l" title="Permalink to this definition">¶</a></dt>
+<dd><p>Shortcut to:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="nb">list</span><span class="p">(</span><span class="n">SuperDict</span><span class="p">()</span><span class="o">.</span><span class="n">values</span><span class="p">())</span>
+</pre></div>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>list with values</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.7)">list</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="pytups.superdict.SuperDict.vapply">
+<code class="descname">vapply</code><span class="sig-paren">(</span><em>func</em><span class="sig-paren">)</span><a class="headerlink" href="#pytups.superdict.SuperDict.vapply" title="Permalink to this definition">¶</a></dt>
+<dd><p>Same as apply but only on values</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>func</strong> (<em>function</em>) – function to apply.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>new <a class="reference internal" href="#pytups.superdict.SuperDict" title="pytups.superdict.SuperDict"><code class="xref py py-class docutils literal notranslate"><span class="pre">SuperDict</span></code></a></p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-pytups.tuplist">
+<span id="tuplist"></span><h2>TupList<a class="headerlink" href="#module-pytups.tuplist" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="pytups.tuplist.TupList">
+<em class="property">class </em><code class="descclassname">pytups.tuplist.</code><code class="descname">TupList</code><a class="headerlink" href="#pytups.tuplist.TupList" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="method">
+<dt id="pytups.tuplist.TupList.add">
+<code class="descname">add</code><span class="sig-paren">(</span><em>*args</em><span class="sig-paren">)</span><a class="headerlink" href="#pytups.tuplist.TupList.add" title="Permalink to this definition">¶</a></dt>
+<dd><p>this is just a shortcut for doing</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">TupList</span><span class="p">()</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">))</span>
+</pre></div>
+</div>
+<p>by doing:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">TupList</span><span class="p">()</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>which is a little more friendly and short</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>args</strong> – any number of elements to append</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>modified <a class="reference internal" href="#pytups.tuplist.TupList" title="pytups.tuplist.TupList"><code class="xref py py-class docutils literal notranslate"><span class="pre">TupList</span></code></a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="pytups.tuplist.TupList.apply">
+<code class="descname">apply</code><span class="sig-paren">(</span><em>func</em><span class="sig-paren">)</span><a class="headerlink" href="#pytups.tuplist.TupList.apply" title="Permalink to this definition">¶</a></dt>
+<dd><p>maps function into each element of TupList</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>func</strong> (<em>function</em>) – function to apply</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>new <a class="reference internal" href="#pytups.tuplist.TupList" title="pytups.tuplist.TupList"><code class="xref py py-class docutils literal notranslate"><span class="pre">TupList</span></code></a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="pytups.tuplist.TupList.filter">
+<code class="descname">filter</code><span class="sig-paren">(</span><em>indices</em><span class="sig-paren">)</span><a class="headerlink" href="#pytups.tuplist.TupList.filter" title="Permalink to this definition">¶</a></dt>
+<dd><p>filters the tuple of each element of the list according to a list of positions</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>indices</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.7)"><em>list</em></a>) – a list of positions</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>a new <a class="reference internal" href="#pytups.tuplist.TupList" title="pytups.tuplist.TupList"><code class="xref py py-class docutils literal notranslate"><span class="pre">TupList</span></code></a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="pytups.tuplist.TupList.filter_list_f">
+<code class="descname">filter_list_f</code><span class="sig-paren">(</span><em>function</em><span class="sig-paren">)</span><a class="headerlink" href="#pytups.tuplist.TupList.filter_list_f" title="Permalink to this definition">¶</a></dt>
+<dd><p>returns new list with only tuples for which <cite>function</cite> returns True</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>function</strong> (<em>function</em>) – function to apply to each element</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>new <a class="reference internal" href="#pytups.tuplist.TupList" title="pytups.tuplist.TupList"><code class="xref py py-class docutils literal notranslate"><span class="pre">TupList</span></code></a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="pytups.tuplist.TupList.intersect">
+<code class="descname">intersect</code><span class="sig-paren">(</span><em>input_list</em><span class="sig-paren">)</span><a class="headerlink" href="#pytups.tuplist.TupList.intersect" title="Permalink to this definition">¶</a></dt>
+<dd><p>Converts list and argument into sets and then intersects them.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>input_list</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.7)"><em>list</em></a>) – list to intersect</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>new <a class="reference internal" href="#pytups.tuplist.TupList" title="pytups.tuplist.TupList"><code class="xref py py-class docutils literal notranslate"><span class="pre">TupList</span></code></a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="pytups.tuplist.TupList.to_dict">
+<code class="descname">to_dict</code><span class="sig-paren">(</span><em>result_col=0</em>, <em>is_list=True</em>, <em>indices=None</em><span class="sig-paren">)</span><a class="headerlink" href="#pytups.tuplist.TupList.to_dict" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="simple">
+<dt>This magic function converts a tuple list into a dictionary</dt><dd><p>by taking one or several of the columns as the result.</p>
+</dd>
+</dl>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>result_col</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.7)"><em>int</em></a><em> or </em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.7)"><em>list</em></a><em> or </em><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.7)"><em>None</em></a>) – a list of positions of the tuple for the result</p></li>
+<li><p><strong>is_list</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.7)"><em>bool</em></a>) – the value of the dictionary will be a list?</p></li>
+<li><p><strong>indices</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.7)"><em>list</em></a>) – optional way of determining the indeces instead of
+being the complement of result_col</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>new <a class="reference internal" href="#pytups.superdict.SuperDict" title="pytups.superdict.SuperDict"><code class="xref py py-class docutils literal notranslate"><span class="pre">pytups.superdict.SuperDict</span></code></a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="pytups.tuplist.TupList.to_list">
+<code class="descname">to_list</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pytups.tuplist.TupList.to_list" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>list</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="pytups.tuplist.TupList.to_start_finish">
+<code class="descname">to_start_finish</code><span class="sig-paren">(</span><em>compare_tups</em>, <em>pp=1</em><span class="sig-paren">)</span><a class="headerlink" href="#pytups.tuplist.TupList.to_start_finish" title="Permalink to this definition">¶</a></dt>
+<dd><p>Takes a calendar tuple list of the form: (id, month) and
+returns a tuple list of the form (id, start_month, end_month)
+it works with a bigger tuple too.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>compare_tups</strong> (<em>function</em>) – function to decide two tups are not consecutive. Takes 3 arguments</p></li>
+<li><p><strong>pp</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.7)"><em>int</em></a>) – the position in the tuple where the period is</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>new <a class="reference internal" href="#pytups.tuplist.TupList" title="pytups.tuplist.TupList"><code class="xref py py-class docutils literal notranslate"><span class="pre">TupList</span></code></a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="pytups.tuplist.TupList.unique">
+<code class="descname">unique</code><span class="sig-paren">(</span><em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#pytups.tuplist.TupList.unique" title="Permalink to this definition">¶</a></dt>
+<dd><p>Applies <a class="reference external" href="https://docs.scipy.org/doc/numpy/reference/generated/numpy.unique.html#numpy.unique" title="(in NumPy v1.16)"><code class="xref py py-func docutils literal notranslate"><span class="pre">numpy.unique()</span></code></a>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>dtype</strong> – arguments to <a class="reference external" href="https://docs.scipy.org/doc/numpy/reference/generated/numpy.asarray.html#numpy.asarray" title="(in NumPy v1.16)"><code class="xref py py-func docutils literal notranslate"><span class="pre">numpy.asarray()</span></code></a></p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>new <a class="reference internal" href="#pytups.tuplist.TupList" title="pytups.tuplist.TupList"><code class="xref py py-class docutils literal notranslate"><span class="pre">TupList</span></code></a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="pytups.tuplist.TupList.unique2">
+<code class="descname">unique2</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pytups.tuplist.TupList.unique2" title="Permalink to this definition">¶</a></dt>
+<dd><p>Converts to set and then back to TupList.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>new <a class="reference internal" href="#pytups.tuplist.TupList" title="pytups.tuplist.TupList"><code class="xref py py-class docutils literal notranslate"><span class="pre">TupList</span></code></a></p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+</div>
+
+
+          </div>
+          
+        </div>
+      </div>
+    <div class="clearer"></div>
+  </div>
+    <div class="footer">
+      &copy;2019, Franco Peschiera.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 2.0.1</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+      |
+      <a href="_sources/code.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>
