@@ -7,13 +7,23 @@ class SuperDict(dict):
     """
     def keys_l(self):
         """
-        :return: dictionary keys in list format
+        Shortcut to:
+
+        >>> list(SuperDict().keys())
+
+        :return: list with keys
+        :rtype: list
         """
         return list(self.keys())
 
     def values_l(self):
         """
-        :return: dictionary values in list format
+        Shortcut to:
+
+        >>> list(SuperDict().values())
+
+        :return: list with values
+        :rtype: list
         """
         return list(self.values())
 
@@ -22,8 +32,9 @@ class SuperDict(dict):
         Filters elements by value
 
         :param default_value: value of elements to take out
-        :param func: function that evaluates to true if we take out the element
+        :param function func: function that evaluates to true if we take out the element
         :return: new :py:class:`SuperDict`
+        :rtype: int :py:class:`SuperDict`
 
         >>> SuperDict({'a': 1, 'b': 0, 'c': 1}).clean(0)
         {'a': 1, 'c': 1}
@@ -34,8 +45,12 @@ class SuperDict(dict):
 
     def len(self):
         """
+        Shortcut to:
+
+        >>> len(SuperDict())
 
         :return: length of dictionary
+        :rtype: int
         """
         return len(self)
 
@@ -44,8 +59,10 @@ class SuperDict(dict):
         takes out elements that are not in `indices`
 
         :param indices: keys to keep in new dictionary
+        :type indices: int or list
         :param bool check: if True, only return valid ones
         :return: new :py:class:`SuperDict`
+        :rtype: :py:class:`SuperDict`
 
         >>> SuperDict({'a': 1, 'b': 0, 'c': 1}).filter(['a', 'b'])
         {'a': 1, 'b': 0}
@@ -107,6 +124,7 @@ class SuperDict(dict):
         :param list keys: list of keys to use as new key
         :param content:
         :return: modified :py:class:`SuperDict`
+        :rtype: :py:class:`SuperDict`
         """
         if not isinstance(content, dict):
             self[tuple(keys)] = content
@@ -121,6 +139,7 @@ class SuperDict(dict):
         Opposite to to_dictdict
 
         :return: new (flat) :py:class:`SuperDict`
+        :rtype: :py:class:`SuperDict`
         """
         return SuperDict().dicts_to_tup([], self)
 
@@ -142,11 +161,10 @@ class SuperDict(dict):
         The last element of the returned tuple was the dict's value.
         We try really hard to expand the tuples so it's a flat tuple list.
 
-        :param self: dictionary indexed by tuples
-        :return: new :py:class:`pytups.TupList`
+        :return: new :py:class:`pytups.tuplist.TupList`
+        :rtype: :py:class:`pytups.tuplist.TupList`
         """
         from . import tuplist as tl
-        # import pytups.tuplist as tl
 
         tup_list = tl.TupList()
         for key, value in self.items():
@@ -219,13 +237,13 @@ class SuperDict(dict):
             return result.values_l()
         return result
 
-    def apply(self, func):
+    def apply(self, func, *args, **kwargs):
         """Applies a function to the dictionary and returns the result
 
-        :param func: function with two arguments: one for the key, another for the value
+        :param function func: function with two arguments: one for the key, another for the value
         :return: new :py:class:`SuperDict`
         """
-        return SuperDict({k: func(k, v) for k, v in self.items()})
+        return SuperDict({k: func(k, v, *args, **kwargs) for k, v in self.items()})
 
     def get_m(self, *args):
         """
@@ -242,14 +260,14 @@ class SuperDict(dict):
         except KeyError:
             return None
 
-    def vapply(self, func):
+    def vapply(self, func, *args, **kwargs):
         """
         Same as apply but only on values
 
-        :param func:
+        :param function func: function to apply.
         :return: new :py:class:`SuperDict`
         """
-        return SuperDict({k: func(v) for k, v in self.items()})
+        return SuperDict({k: func(v, *args, **kwargs) for k, v in self.items()})
 
     def update(self, *args, **kwargs):
         """
@@ -308,7 +326,7 @@ class SuperDict(dict):
         """
         Main initialization. Deals with nested dictionaries.
 
-        :param data: a dictionary (possibly nested)
+        :param dict data: a (possibly nested) dictionary
         :return: new :py:class:`SuperDict`
         """
         if not isinstance(data, dict):

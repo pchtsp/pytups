@@ -5,10 +5,10 @@ class TupList(list):
 
     def filter(self, indices):
         """
-        filters the tuple of each element of the list according
-        to a list of positions
-        :param indices: a list of positions
-        :return: a new TuplList with the modifications
+        filters the tuple of each element of the list according to a list of positions
+
+        :param list indices: a list of positions
+        :return: a new :py:class:`TupList`
         """
         if not len(self):
             return self
@@ -24,20 +24,24 @@ class TupList(list):
 
     def filter_list_f(self, function):
         """
-        :param function: function to apply to tuple
-        :return: filtered list of tuple
+        returns new list with only tuples for which `function` returns True
+
+        :param function function: function to apply to each element
+        :return: new :py:class:`TupList`
         """
         return TupList([i for i in self if function(i)])
 
     def to_dict(self, result_col=0, is_list=True, indices=None):
         """
         This magic function converts a tuple list into a dictionary
-        by taking one or several of the columns as the result.
+            by taking one or several of the columns as the result.
+
         :param result_col: a list of positions of the tuple for the result
-        :param is_list: the value of the dictionary will be a list?
-        :param indices: optional way of determining the indeces instead of
+        :type result_col: int or list or None
+        :param bool is_list: the value of the dictionary will be a list?
+        :param list indices: optional way of determining the indeces instead of
             being the complement of result_col
-        :return: a dictionary
+        :return: new :py:class:`pytups.superdict.SuperDict`
         """
         from . import superdict as sd
 
@@ -68,23 +72,45 @@ class TupList(list):
     def add(self, *args):
         """
         this is just a shortcut for doing
-            list.append((arg1, arg2, arg3))
-        by doing:
-            list.add(arg1, arg2, arg3)
-        which is a little more friendly and short
-        :param args: any number of elements to append
-        :return: nothing.
-        """
-        self.append(tuple(args))
 
-    def unique(self, dtype):
-        arr = np.asarray(self, dtype)
+        >>> TupList().append((0, 1, 2))
+
+        by doing:
+
+        >>> TupList().add(0, 1, 2)
+
+        which is a little more friendly and short
+
+        :param args: any number of elements to append
+        :return: modified :py:class:`TupList`
+        """
+        return self.append(tuple(args))
+
+    def unique(self, **kwargs):
+        """
+        Applies :py:func:`numpy.unique`.
+
+        :param dtype: arguments to :py:func:`numpy.asarray`
+        :return: new :py:class:`TupList`
+        """
+        arr = np.asarray(self, **kwargs)
         return TupList(np.unique(arr, axis=0).tolist())
 
     def unique2(self):
+        """
+        Converts to set and then back to TupList.
+
+        :return: new :py:class:`TupList`
+        """
         return TupList(set(self))
 
     def intersect(self, input_list):
+        """
+        Converts list and argument into sets and then intersects them.
+
+        :param list input_list: list to intersect
+        :return: new :py:class:`TupList`
+        """
         return TupList(set(self) & set(input_list))
 
     def to_start_finish(self, compare_tups, pp=1):
@@ -92,9 +118,10 @@ class TupList(list):
         Takes a calendar tuple list of the form: (id, month) and
         returns a tuple list of the form (id, start_month, end_month)
         it works with a bigger tuple too.
-        :param self: [(id, month), (id, month)]
-        :param pp: the position in the tuple where the period is
-        :return:
+
+        :param function compare_tups: function to decide two tups are not consecutive. Takes 3 arguments
+        :param int pp: the position in the tuple where the period is
+        :return: new :py:class:`TupList`
         """
         self.sort(key=lambda x: (x[0], x[pp]))
         res_start_finish = []
@@ -123,7 +150,18 @@ class TupList(list):
         return TupList(res_start_finish)
 
     def to_list(self):
+        """
+
+        :return: list
+        """
         return list(self)
 
-    def apply(self, func):
-        return TupList(map(func, self))
+    def apply(self, func, *args, **kwargs):
+        """
+        maps function into each element of TupList
+
+        :param function func: function to apply
+        :return: new :py:class:`TupList`
+        """
+        return TupList(func(v, *args, **kwargs) for v in self)
+        # return TupList(map(func, self))

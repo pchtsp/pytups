@@ -41,12 +41,12 @@ class TupTest(unittest.TestCase):
     def test_unique(self):
         prop = self.prop1.filter([0, 1])
         result = [('a', 'b'), ('r', 'b')]
-        self.assertSetEqual(set(result), set(prop.unique('U7,U7')))
+        self.assertSetEqual(set(result), set(prop.unique(dtype='U7,U7')))
 
     def test_unique_int(self):
         prop = self.prop1.filter(3)
         result = [1, 2, 3]
-        self.assertSetEqual(set(result), set(prop.unique('i')))
+        self.assertSetEqual(set(result), set(prop.unique(dtype='i')))
 
     def test_unique2(self):
         prop = self.prop1.filter([0, 1])
