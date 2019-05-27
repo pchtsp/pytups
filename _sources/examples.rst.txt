@@ -67,6 +67,35 @@ Example::
     tuplist.filter_list_f(lambda x: x[0] <= 'a')
     # [('a', 'b', 'c', 1), ('a', 'b', 'c', 2), ('a', 'b', 'c', 3)]
 
+Compress using start-stop
+----------------------------
+
+A specific use case of tuplists is reducing combinations of possibilities to start-stop combinations.
+
+In the following example we have tuples and we use the first column as index and the second as the position. We get that index `a` has values from `1` to `3`. Index `r`, on the other hand, has consecutive elements `3` to `4`, but has one element without consecutive `1`. So, we pass from having six tuples to only three that retain the same information. In this example `compare_tups` is just a function that asks whether the key is the same or the positions are consecutive::
+
+    import pytups as pt
+    _list = [('a', 1), ('a', 2), ('a', 3), ('r', 1), ('r', 3), ('r', 4)]
+
+    compare_tups = lambda x, y, p: x[0] != y[0] or x[p] -1 != y[p]
+    pt.TupList(_list).to_start_finish(compare_tups, pp=1)
+    # [('a', 1, 3), ('r', 1, 1), ('r', 3, 4)]
+
+A somewhat similar but more complex example follows. Instead of using values to retain the position, we use dates. So, in order to compare dates we have to define some auxiliary function to be able to tell if two dates are consecutive or not. The result is similar.::
+
+    import pytups as pt
+    import datetime as dt
+    _list = [('a', '2019-01-01'), ('a', '2019-01-02'), ('a', '2019-01-03'),
+                ('r', '2019-01-01'), ('r', '2019-01-03'), ('r', '2019-01-04')]
+
+    def prev_date(date):
+        return (dt.datetime.strptime(date, '%Y-%m-%d') - dt.timedelta(days=1)).strftime('%Y-%m-%d')
+
+    compare_tups = lambda x, y, p: x[0] != y[0] or prev_date(x[p]) != y[p]
+    pt.TupList(_list).to_start_finish(compare_tups, pp=1)
+    # [('a', '2019-01-01', '2019-01-03'), ('r', '2019-01-01', '2019-01-01'), ('r', '2019-01-03', '2019-01-04')]
+
+
 Ordered sets
 =============================
 

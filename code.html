@@ -93,7 +93,7 @@
 <dd><p>A dictionary with additional methods</p>
 <dl class="method">
 <dt id="pytups.superdict.SuperDict.apply">
-<code class="descname">apply</code><span class="sig-paren">(</span><em>func</em><span class="sig-paren">)</span><a class="headerlink" href="#pytups.superdict.SuperDict.apply" title="Permalink to this definition">¶</a></dt>
+<code class="descname">apply</code><span class="sig-paren">(</span><em>func</em>, <em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#pytups.superdict.SuperDict.apply" title="Permalink to this definition">¶</a></dt>
 <dd><p>Applies a function to the dictionary and returns the result</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -280,7 +280,7 @@ with tuples as keys.</p>
 </dd>
 </dl>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">SuperDict</span><span class="p">({(</span><span class="s1">&#39;a&#39;</span><span class="p">,</span> <span class="s1">&#39;b&#39;</span><span class="p">):</span> <span class="mi">1</span><span class="p">,</span> <span class="p">(</span><span class="s1">&#39;b&#39;</span><span class="p">,</span> <span class="s1">&#39;c&#39;</span><span class="p">):</span> <span class="mi">0</span><span class="p">,</span> <span class="s1">&#39;c&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">})</span><span class="o">.</span><span class="n">set_m</span><span class="p">(</span><span class="s1">&#39;c&#39;</span><span class="p">,</span> <span class="s1">&#39;d&#39;</span><span class="p">,</span> <span class="s1">&#39;a&#39;</span><span class="p">,</span> <span class="n">value</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
-<span class="go">{&#39;a&#39;: {&#39;b&#39;: 1}, &#39;b&#39;: {&#39;c&#39;: 0}, &#39;c&#39;: 1}</span>
+<span class="go">{&#39;a&#39;: {&#39;b&#39;: 1}, &#39;b&#39;: {&#39;c&#39;: 0}, &#39;c&#39;: {&#39;d&#39;: {&#39;a&#39;: 1}}}</span>
 </pre></div>
 </div>
 </dd></dl>
@@ -392,7 +392,7 @@ We try really hard to expand the tuples so it’s a flat tuple list.</p>
 
 <dl class="method">
 <dt id="pytups.superdict.SuperDict.vapply">
-<code class="descname">vapply</code><span class="sig-paren">(</span><em>func</em><span class="sig-paren">)</span><a class="headerlink" href="#pytups.superdict.SuperDict.vapply" title="Permalink to this definition">¶</a></dt>
+<code class="descname">vapply</code><span class="sig-paren">(</span><em>func</em>, <em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#pytups.superdict.SuperDict.vapply" title="Permalink to this definition">¶</a></dt>
 <dd><p>Same as apply but only on values</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -436,7 +436,7 @@ We try really hard to expand the tuples so it’s a flat tuple list.</p>
 
 <dl class="method">
 <dt id="pytups.tuplist.TupList.apply">
-<code class="descname">apply</code><span class="sig-paren">(</span><em>func</em><span class="sig-paren">)</span><a class="headerlink" href="#pytups.tuplist.TupList.apply" title="Permalink to this definition">¶</a></dt>
+<code class="descname">apply</code><span class="sig-paren">(</span><em>func</em>, <em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#pytups.tuplist.TupList.apply" title="Permalink to this definition">¶</a></dt>
 <dd><p>maps function into each element of TupList</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
