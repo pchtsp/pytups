@@ -1,4 +1,4 @@
-# These tests were inspired from the addict package
+# Some of these tests were inspired from the addict package
 # https://github.com/mewwts/addict
 
 import json
@@ -66,6 +66,11 @@ class DictTest(unittest.TestCase):
         prop = self.dict_class()
         prop.set_m('a', 'b', value=TEST_VAL)
         self.assertDictEqual(prop, {'a': {'b': TEST_VAL}})
+
+    def test_set_existing_key(self):
+        prop = self.dict_class()
+        prop.set_m('a', 'b', 'c', 'd', value=1)
+        self.assertDictEqual(prop, {'a': {'b': {'c': {'d': 1}}}})
 
     def test_set_three_level_properties(self):
         prop = self.dict_class()
@@ -390,3 +395,5 @@ class DictTest(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
+    # pt.SuperDict({('a', 'b'): 1, ('b', 'c'): 0, 'c': 1}).set_m('c', 'd', value=1)

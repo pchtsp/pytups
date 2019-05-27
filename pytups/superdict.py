@@ -102,18 +102,18 @@ class SuperDict(dict):
         :return: modified :py:class:`SuperDict`
 
         >>> SuperDict({('a', 'b'): 1, ('b', 'c'): 0, 'c': 1}).set_m('c', 'd', 'a', value=1)
-        {'a': {'b': 1}, 'b': {'c': 0}, 'c': 1}
+        {'a': {'b': 1}, 'b': {'c': 0}, 'c': {'d': {'a': 1}}}
 
         """
         # TODO: maybe copy dictionary instead of editing?
         elem = args[0]
-        if elem not in self:
-            self[elem] = SuperDict()
         if len(args) == 1:
             self[elem] = value
             return self
-        else:
-            self[elem].set_m(*args[1:], value=value)
+        # we reach here, we still need to go deeper:
+        if elem not in self or not isinstance(self[elem], SuperDict):
+            self[elem] = SuperDict()
+        self[elem].set_m(*args[1:], value=value)
         return self
 
     def dicts_to_tup(self, keys, content):
