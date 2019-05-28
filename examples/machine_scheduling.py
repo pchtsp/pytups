@@ -6,6 +6,8 @@ duration = {1: 8, 2: 12, 3: 6, 4: 13, 5: 2, 6: 12, 7: 15, 8: 20, 9: 16, 10: 16, 
 priority = {1: 4, 2: 5, 3: 6, 4: 8, 5: 4, 6: 2, 7: 5, 8: 6, 9: 1, 10: 8, 11: 8, 12: 4, 13: 4, 14: 8, 15: 9, 16: 11, 17: 6, 18: 10, 19: 6, 20: 9}
 duedate = {1: 52, 2: 80, 3: 133, 4: 150, 5: 53, 6: 133, 7: 113, 8: 107, 9: 75, 10: 133, 11: 77, 12: 126, 13: 117, 14: 72, 15: 111, 16: 111, 17: 117, 18: 69, 19: 115, 20: 68}
 
+
+
 # Get intermediate paramters, sets.
 C_max = sum(duration.values())
 periods = range(C_max)
@@ -18,7 +20,7 @@ jk_all = pt.TupList((t, p) for t in tasks for p in periods)
 JK = jk_all.filter_list_f(lambda x: x[1] + duration[x[0]] <= C_max)
 
 # we create a set of tasks that can start at time period k
-J_k = JK.to_dict(result_col=1)
+K_j = JK.to_dict(result_col=1)
 
 # all combinations (t, p, p2) such that I start a task j 
 # in time period k and is active in period k2
@@ -35,6 +37,8 @@ K2_jk = jkk2.to_dict(result_col=2)
 t_jk = {(j, k): max(duration[j] + k -1 - duedate[j], 0) * 
 				priority[j] for j, k in JK}
 
+
+
 # model construction with PuLP
 model = pl.LpProblem("Scheduling", pl.LpMinimize)
 X = pl.LpVariable.dicts(name='start', indexs=JK,
@@ -45,16 +49,18 @@ model += pl.lpSum(X[j, k] * t_jk[j, k] for j, k in JK)
 
 # one and only one start per task
 for j in tasks:
-    model += pl.lpSum(X[j, k] for k in J_k[j]) == 1
+    model += pl.lpSum(X[j, k] for k in K_j[j]) == 1
 
 # only one task is active at any moment:
-for k in periods:
-    model += pl.lpSum(X[j, k] for j, k in JK_k2[k]) == 1
+for k2 in periods:
+    model += pl.lpSum(X[j, k] for j, k in JK_k2[k2]) == 1
 
 # solve model:
 solver = pl.PULP_CBC_CMD(msg=True)
 # solver = pl.CPLEX_CMD(msg=True)
 model.solve(solver)
+
+
 
 # get tasks starts
 starts_out = pt.SuperDict(X).vapply(pl.value).clean().keys_l()
@@ -65,6 +71,8 @@ for j, k in starts_out:
         solution[p2] = j
 
 print('solution is \n{}'.format(solution))
+
+
 
 # verify that all periods are filled:
 # counting if there is any with a minus -1

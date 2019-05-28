@@ -1,6 +1,6 @@
 import numpy as np
 
-
+# TODO: when accesed via [], it is converted into a list.
 class TupList(list):
 
     def filter(self, indices):

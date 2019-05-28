@@ -3,28 +3,27 @@ Using it with PuLP
 
 .. highlight:: python
 
+Copied from :py:mod:`pulp`:
+
+   PuLP is a free open source software written in Python. It is used to describe optimisation problems as mathematical models. PuLP can then call any of numerous external LP solvers (CBC, GLPK, CPLEX, Gurobi etc) to solve this model and then use python commands to manipulate and display the solution.
+
+
 Nomenclature
 =========================
 
 .. glossary::
 
    Variable declaration
-      A variable declaration is the creation of a group of decision variables that share the same naming and significance. In `PuLP` they are all created within a single call to :py:meth:`pulp.LpVariable.dicts` and they are all accessed by slicing the same `python` variable created. An optimization problem can have one variable declaration but thousands of variables.
+      A group of decision variables that share the same naming and significance. In `PuLP` they are all created within a single call to :py:meth:`pulp.LpVariable.dicts` and they are all accessed by slicing the created `python` variable as a dictionary. An optimization problem can have one variable declaration but thousands of variables.
 
    Variable domain
-   	  The complete space over which variables are created. The length of the domain
-   	  is the number of variables. Each variable declaration has its own domain
-   	  and is indicated with the argument `index` when calling the function :py:meth:`pulp.LpVariable.dicts`. It usually consists of some kind of iterator where all its elements should be unique.
+   	The complete space over which variables in a single variable declaration are created. The length of the domain is the number of variables in the declaration. Each variable declaration has its own domain and is indicated with the argument `index` when calling the function :py:meth:`pulp.LpVariable.dicts`. It usually consists of some kind of iterator where all its elements should be unique.
 
-.. source directory
-..   The directory which, including its subdirectories, contains all
-..   source files for one Sphinx project.
+When using :py:mod:`pulp`, I use the following guidelines:
 
-When using :py:mod:`pulp`, I use the following guidelines for variable declaration:
-
-1. Use :py:meth:`pulp.LpVariable.dicts`, unless there is a very good reason not to.
-2. Use python lists for variable domains.
-3. Use `pytups` to index parts of the domain for constraint generation.
+1. Use :py:meth:`pulp.LpVariable.dicts` for variable declaration, unless there is a very good reason not to.
+2. Use a list of tuples to declare the variable domain.
+3. Use `pytups` to index parts of the domain for clean, pretty and fast constraint generation.
 
 
 Example: Scheduling problem
@@ -60,43 +59,45 @@ The objective is to schedule all the jobs without overlapping them and minimizin
 Mathematical formulation
 ===================================
 
+The following is just one of many possible formulations to solve this problem.
+
 SETS
       					
 ======================================  ====================================
 :math:`j \in J`		                     jobs
-:math:`k \in K = \{1, ..., C_{max}\}`   	time periods
+:math:`k \in K = \{1, ..., C_{max}\}`   	periods
 ======================================  ====================================
 
 DATA [UNITS]
      					
 ================ ====================================================
-:math:`p_j`			processing time of job j [time periods]
-:math:`d_j`  		due date of job j [time period]
+:math:`p_j`			processing time of job j [periods]
+:math:`d_j`  		due date of job j [period]
 :math:`w_j`			weight or priority of job j [dimensionless]
 ================ ====================================================
 
 
 DERIVED DATA
    					
-=================	===================================================================================================
-:math:`C_{max}`		Size of planning horizon.
-:math:`JK`  		Al possible starting periods (j, k) for job :math:`j \in J` in time periods :math:`k \in K`.
-:math:`K_j`  		Al possible starting periods k for job :math:`j \in J`.
-:math:`t_{jk}` 		Penalty for starting job :math:`j \in J` in time period :math:`k \in K`.
-:math:`K2_{jk}`		All affected time periods :math:`k2 \in K2` when starting a job :math:`j` in time period :math:`k \in K`.
-:math:`JK_{k2}` 	All possible starts of jobs :math:`(j, k) \in JK` that affect the availability of time period :math:`k2 \in K`.
-=================	===================================================================================================
+=================    =======================================================================================================
+:math:`C_{max}`      Size of planning horizon.
+:math:`JK`           Al possible starting combinations (j, k) such that job :math:`j \in J` can start in period :math:`k \in K`.
+:math:`K_j`          Al possible starting periods for job :math:`j \in J`.
+:math:`t_{jk}`       Penalty for starting job :math:`j \in J` in period :math:`k \in K`.
+:math:`K2_{jk}`      Periods that become unavailable by starting job :math:`j` in period :math:`k \in K`.
+:math:`JK_{k2}`      All possible starts of jobs :math:`(j, k) \in JK` that make period :math:`k2 \in K` unavailable.
+=================    =======================================================================================================
 
 .. math::
    :nowrap:
 
    \begin{eqnarray}
       &C_{max} 	&= &\sum_{j \in J} p_j \\
-      &JK 		&= &\{(j \in J, k \in K) \mid k + p_j \leq C_{max} \} \\
-      &K_j 		&= &\{k \in K \mid (j, k) \in JK \} & j \in J \\
+      &JK 		   &= &\{(j \in J, k \in K) \mid k + p_j \leq C_{max} \} \\
+      &K_j 		   &= &\{k \in K \mid (j, k) \in JK \} & j \in J \\
       &K2_{jk} 	&= &\{k \in K \mid k \leq k2 \leq k + p_j \} & (j, k) \in JK \\
       &JK_{k2} 	&= &\{(j, k) \in JK \mid k_2 \in K2_{jk} \} & k_2 \in K \\
-      &t_{jk} 	&= &\max\{k + p_j -1 - d_j, 0\} \times w_j & (j, k) \in JK \\
+      &t_{jk} 	   &= &\max\{k + p_j -1 - d_j, 0\} \times w_j & (j, k) \in JK \\
    \end{eqnarray}
 
 DECISION VARIABLES
@@ -117,6 +118,8 @@ Subject to:
 .. math::
    :nowrap:
 
+   The first set of constraints enforces that each job is scheduled only once. The second set of constraints guarantees that each period of time is used by only one job.
+
    \begin{eqnarray}
       & \sum_{k \in K_j} X_{jk} = 1 & j \in J \\
       & \sum_{(j, k) \in JK_{k2}} X_{jk} = 1 & k2 \in K \\
@@ -131,25 +134,25 @@ We import libraries and get input data.
 .. literalinclude:: ./../../examples/machine_scheduling.py
    :lines: 1-8
 
-We then calculate intermediate sets and parameters. Note the use of pytups functions to filter and convert from tuple lists to dictionaries.
+We then calculate intermediate sets and parameters. Note the use of `pytups` functions to filter and convert from tuple lists to dictionaries.
 
 .. literalinclude:: ./../../examples/machine_scheduling.py
-   :lines: 9-35
+   :lines: 11-39
 
 We now create the PuLP model and solve it.
 
 .. literalinclude:: ./../../examples/machine_scheduling.py
-   :lines: 36-56
+   :lines: 42-62
 
-We get the solution from the variable contents. Not how we also use pytups to extract the content from the variable.
-
-.. literalinclude:: ./../../examples/machine_scheduling.py
-   :lines: 58-66
-
-Finally, we do some tests on the solution using pytups to guarantee the solution is feasible:
+We get the solution from the variable contents. Not how we also use `pytups` to extract the content from the variable.
 
 .. literalinclude:: ./../../examples/machine_scheduling.py
-   :lines: 67-77
+   :lines: 65-73
+
+Finally, we do some tests on the solution using `pytups` to guarantee the solution is feasible:
+
+.. literalinclude:: ./../../examples/machine_scheduling.py
+   :lines: 77-85
 
 The whole code is shown below:
 
