@@ -56,15 +56,16 @@ If we are given a set of weights, :math:`w_j` , which indicate a relative import
 
 The objective is to schedule all the jobs without overlapping them and minimizing the total weighted tardiness :math:`TWT`.
 
-Example: formulation
+
+Mathematical formulation
 ===================================
 
 SETS
       					
-==================================== ====================================
-:math:`j \in J`		job
-:math:`k \in K = \{1, ..., C_{max\}`  	time periods
-==================================== ====================================
+======================================  ====================================
+:math:`j \in J`		                     jobs
+:math:`k \in K = \{1, ..., C_{max}\}`   	time periods
+======================================  ====================================
 
 DATA [UNITS]
      					
@@ -95,7 +96,7 @@ DERIVED DATA
       &K_j 		&= &\{k \in K \mid (j, k) \in JK \} & j \in J \\
       &K2_{jk} 	&= &\{k \in K \mid k \leq k2 \leq k + p_j \} & (j, k) \in JK \\
       &JK_{k2} 	&= &\{(j, k) \in JK \mid k_2 \in K2_{jk} \} & k_2 \in K \\
-      &t_{jk} 	&= &\max\{k + p_j - d_j, 0\} \times w_j & (j, k) \in JK \\
+      &t_{jk} 	&= &\max\{k + p_j -1 - d_j, 0\} \times w_j & (j, k) \in JK \\
    \end{eqnarray}
 
 DECISION VARIABLES
@@ -122,7 +123,7 @@ Subject to:
    \end{eqnarray}
 
 
-Example: implementation
+Implementation using pulp and pytups
 ========================================
 
 We import libraries and get input data.
@@ -133,22 +134,22 @@ We import libraries and get input data.
 We then calculate intermediate sets and parameters. Note the use of pytups functions to filter and convert from tuple lists to dictionaries.
 
 .. literalinclude:: ./../../examples/machine_scheduling.py
-   :lines: 9-38
+   :lines: 9-35
 
 We now create the PuLP model and solve it.
 
 .. literalinclude:: ./../../examples/machine_scheduling.py
-   :lines: 39-58
+   :lines: 36-56
 
 We get the solution from the variable contents. Not how we also use pytups to extract the content from the variable.
 
 .. literalinclude:: ./../../examples/machine_scheduling.py
-   :lines: 60-68
+   :lines: 58-66
 
 Finally, we do some tests on the solution using pytups to guarantee the solution is feasible:
 
 .. literalinclude:: ./../../examples/machine_scheduling.py
-   :lines: 69-80
+   :lines: 67-77
 
 The whole code is shown below:
 

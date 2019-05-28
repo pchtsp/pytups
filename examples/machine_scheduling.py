@@ -20,9 +20,10 @@ JK = jk_all.filter_list_f(lambda x: x[1] + duration[x[0]] <= C_max)
 # we create a set of tasks that can start at time period k
 J_k = JK.to_dict(result_col=1)
 
-# all combinations (t, p, p2) such that I start a task j in time period k and
-# is active in period k2
-jkk2 = pt.TupList((j, k, k2) for j, k in JK for k2 in range(k, k + duration[j]))
+# all combinations (t, p, p2) such that I start a task j 
+# in time period k and is active in period k2
+jkk2 = pt.TupList((j, k, k2) for j, k in JK 
+				  for k2 in range(k, k + duration[j]))
 
 # given a period k2, what starts affect make it unavailable:
 JK_k2 = jkk2.to_dict(result_col=[0, 1])
@@ -30,11 +31,9 @@ JK_k2 = jkk2.to_dict(result_col=[0, 1])
 # given a start (j, k), what periods k2 are made unavailable:
 K2_jk = jkk2.to_dict(result_col=2)
 
-# the last period of assignment if I start task t in period p
-tp_last = jkk2.to_dict(result_col=2).vapply(lambda v: v[-1])
-
 # for each possible start: how late will the task be
-t_jk = {(j, k): max(tp_last[j, k] - duedate[j], 0) * priority[j] for j, k in JK}
+t_jk = {(j, k): max(duration[j] + k -1 - duedate[j], 0) * 
+				priority[j] for j, k in JK}
 
 # model construction with PuLP
 model = pl.LpProblem("Scheduling", pl.LpMinimize)
