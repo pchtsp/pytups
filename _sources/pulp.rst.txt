@@ -134,22 +134,22 @@ We import libraries and get input data.
 We then calculate intermediate sets and parameters. Note the use of pytups functions to filter and convert from tuple lists to dictionaries.
 
 .. literalinclude:: ./../../examples/machine_scheduling.py
-   :lines: 9-35
+   :lines: 11-39
 
 We now create the PuLP model and solve it.
 
 .. literalinclude:: ./../../examples/machine_scheduling.py
-   :lines: 36-56
+   :lines: 42-62
 
 We get the solution from the variable contents. Not how we also use pytups to extract the content from the variable.
 
 .. literalinclude:: ./../../examples/machine_scheduling.py
-   :lines: 58-66
+   :lines: 65-73
 
 Finally, we do some tests on the solution using pytups to guarantee the solution is feasible:
 
 .. literalinclude:: ./../../examples/machine_scheduling.py
-   :lines: 67-77
+   :lines: 77-85
 
 The whole code is shown below:
 
