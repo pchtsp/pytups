@@ -88,21 +88,23 @@
             
   <div class="section" id="using-it-with-pulp">
 <h1>Using it with PuLP<a class="headerlink" href="#using-it-with-pulp" title="Permalink to this headline">¶</a></h1>
+<p>Coping from <a class="reference external" href="https://pythonhosted.org/PuLP/pulp.html#module-pulp" title="(in PuLP v1.6)"><code class="xref py py-mod docutils literal notranslate"><span class="pre">pulp</span></code></a>:</p>
+<blockquote>
+<div><p>PuLP is a free open source software written in Python. It is used to describe optimisation problems as mathematical models. PuLP can then call any of numerous external LP solvers (CBC, GLPK, CPLEX, Gurobi etc) to solve this model and then use python commands to manipulate and display the solution.</p>
+</div></blockquote>
 <div class="section" id="nomenclature">
 <h2>Nomenclature<a class="headerlink" href="#nomenclature" title="Permalink to this headline">¶</a></h2>
 <dl class="glossary simple">
 <dt id="term-variable-declaration">Variable declaration</dt><dd><p>A variable declaration is the creation of a group of decision variables that share the same naming and significance. In <cite>PuLP</cite> they are all created within a single call to <a class="reference external" href="https://pythonhosted.org/PuLP/pulp.html#pulp.LpVariable.dicts" title="(in PuLP v1.6)"><code class="xref py py-meth docutils literal notranslate"><span class="pre">pulp.LpVariable.dicts()</span></code></a> and they are all accessed by slicing the same <cite>python</cite> variable created. An optimization problem can have one variable declaration but thousands of variables.</p>
 </dd>
-<dt id="term-variable-domain">Variable domain</dt><dd><p>The complete space over which variables are created. The length of the domain
-is the number of variables. Each variable declaration has its own domain
-and is indicated with the argument <cite>index</cite> when calling the function <a class="reference external" href="https://pythonhosted.org/PuLP/pulp.html#pulp.LpVariable.dicts" title="(in PuLP v1.6)"><code class="xref py py-meth docutils literal notranslate"><span class="pre">pulp.LpVariable.dicts()</span></code></a>. It usually consists of some kind of iterator where all its elements should be unique.</p>
+<dt id="term-variable-domain">Variable domain</dt><dd><p>The complete space over which variables in a single variable declaration are created. The length of the domain is the number of variables in the declaration. Each variable declaration has its own domain and is indicated with the argument <cite>index</cite> when calling the function <a class="reference external" href="https://pythonhosted.org/PuLP/pulp.html#pulp.LpVariable.dicts" title="(in PuLP v1.6)"><code class="xref py py-meth docutils literal notranslate"><span class="pre">pulp.LpVariable.dicts()</span></code></a>. It usually consists of some kind of iterator where all its elements should be unique.</p>
 </dd>
 </dl>
 <p>When using <a class="reference external" href="https://pythonhosted.org/PuLP/pulp.html#module-pulp" title="(in PuLP v1.6)"><code class="xref py py-mod docutils literal notranslate"><span class="pre">pulp</span></code></a>, I use the following guidelines for variable declaration:</p>
 <ol class="arabic simple">
 <li><p>Use <a class="reference external" href="https://pythonhosted.org/PuLP/pulp.html#pulp.LpVariable.dicts" title="(in PuLP v1.6)"><code class="xref py py-meth docutils literal notranslate"><span class="pre">pulp.LpVariable.dicts()</span></code></a>, unless there is a very good reason not to.</p></li>
 <li><p>Use python lists for variable domains.</p></li>
-<li><p>Use <cite>pytups</cite> to index parts of the domain for constraint generation.</p></li>
+<li><p>Use <cite>pytups</cite> to index parts of the domain for clean, pretty and fast constraint generation.</p></li>
 </ol>
 </div>
 <div class="section" id="example-scheduling-problem">
@@ -123,6 +125,7 @@ and is indicated with the argument <cite>index</cite> when calling the function 
 </div>
 <div class="section" id="mathematical-formulation">
 <h2>Mathematical formulation<a class="headerlink" href="#mathematical-formulation" title="Permalink to this headline">¶</a></h2>
+<p>The following is just one of many possible formulations to solve this problem.</p>
 <p>SETS</p>
 <table class="docutils align-center">
 <colgroup>
@@ -134,7 +137,7 @@ and is indicated with the argument <cite>index</cite> when calling the function 
 <td><p>jobs</p></td>
 </tr>
 <tr class="row-even"><td><p><span class="math notranslate nohighlight">\(k \in K = \{1, ..., C_{max}\}\)</span></p></td>
-<td><p>time periods</p></td>
+<td><p>periods</p></td>
 </tr>
 </tbody>
 </table>
@@ -146,10 +149,10 @@ and is indicated with the argument <cite>index</cite> when calling the function 
 </colgroup>
 <tbody>
 <tr class="row-odd"><td><p><span class="math notranslate nohighlight">\(p_j\)</span></p></td>
-<td><p>processing time of job j [time periods]</p></td>
+<td><p>processing time of job j [periods]</p></td>
 </tr>
 <tr class="row-even"><td><p><span class="math notranslate nohighlight">\(d_j\)</span></p></td>
-<td><p>due date of job j [time period]</p></td>
+<td><p>due date of job j [period]</p></td>
 </tr>
 <tr class="row-odd"><td><p><span class="math notranslate nohighlight">\(w_j\)</span></p></td>
 <td><p>weight or priority of job j [dimensionless]</p></td>
@@ -159,38 +162,38 @@ and is indicated with the argument <cite>index</cite> when calling the function 
 <p>DERIVED DATA</p>
 <table class="docutils align-center">
 <colgroup>
-<col style="width: 13%" />
-<col style="width: 87%" />
+<col style="width: 14%" />
+<col style="width: 86%" />
 </colgroup>
 <tbody>
 <tr class="row-odd"><td><p><span class="math notranslate nohighlight">\(C_{max}\)</span></p></td>
 <td><p>Size of planning horizon.</p></td>
 </tr>
 <tr class="row-even"><td><p><span class="math notranslate nohighlight">\(JK\)</span></p></td>
-<td><p>Al possible starting periods (j, k) for job <span class="math notranslate nohighlight">\(j \in J\)</span> in time periods <span class="math notranslate nohighlight">\(k \in K\)</span>.</p></td>
+<td><p>Al possible starting periods (j, k) for job <span class="math notranslate nohighlight">\(j \in J\)</span> in periods <span class="math notranslate nohighlight">\(k \in K\)</span>.</p></td>
 </tr>
 <tr class="row-odd"><td><p><span class="math notranslate nohighlight">\(K_j\)</span></p></td>
 <td><p>Al possible starting periods k for job <span class="math notranslate nohighlight">\(j \in J\)</span>.</p></td>
 </tr>
 <tr class="row-even"><td><p><span class="math notranslate nohighlight">\(t_{jk}\)</span></p></td>
-<td><p>Penalty for starting job <span class="math notranslate nohighlight">\(j \in J\)</span> in time period <span class="math notranslate nohighlight">\(k \in K\)</span>.</p></td>
+<td><p>Penalty for starting job <span class="math notranslate nohighlight">\(j \in J\)</span> in period <span class="math notranslate nohighlight">\(k \in K\)</span>.</p></td>
 </tr>
 <tr class="row-odd"><td><p><span class="math notranslate nohighlight">\(K2_{jk}\)</span></p></td>
-<td><p>All affected time periods <span class="math notranslate nohighlight">\(k2 \in K2\)</span> when starting a job <span class="math notranslate nohighlight">\(j\)</span> in time period <span class="math notranslate nohighlight">\(k \in K\)</span>.</p></td>
+<td><p>All unavailable periods <span class="math notranslate nohighlight">\(k2 \in K2\)</span> caused by starting job <span class="math notranslate nohighlight">\(j\)</span> in period <span class="math notranslate nohighlight">\(k \in K\)</span>.</p></td>
 </tr>
 <tr class="row-even"><td><p><span class="math notranslate nohighlight">\(JK_{k2}\)</span></p></td>
-<td><p>All possible starts of jobs <span class="math notranslate nohighlight">\((j, k) \in JK\)</span> that affect the availability of time period <span class="math notranslate nohighlight">\(k2 \in K\)</span>.</p></td>
+<td><p>All possible starts of jobs <span class="math notranslate nohighlight">\((j, k) \in JK\)</span> make period <span class="math notranslate nohighlight">\(k2 \in K\)</span> unavailable.</p></td>
 </tr>
 </tbody>
 </table>
 <div class="math notranslate nohighlight">
 \begin{eqnarray}
    &amp;C_{max}  &amp;= &amp;\sum_{j \in J} p_j \\
-   &amp;JK               &amp;= &amp;\{(j \in J, k \in K) \mid k + p_j \leq C_{max} \} \\
-   &amp;K_j              &amp;= &amp;\{k \in K \mid (j, k) \in JK \} &amp; j \in J \\
+   &amp;JK                  &amp;= &amp;\{(j \in J, k \in K) \mid k + p_j \leq C_{max} \} \\
+   &amp;K_j                 &amp;= &amp;\{k \in K \mid (j, k) \in JK \} &amp; j \in J \\
    &amp;K2_{jk}  &amp;= &amp;\{k \in K \mid k \leq k2 \leq k + p_j \} &amp; (j, k) \in JK \\
    &amp;JK_{k2}  &amp;= &amp;\{(j, k) \in JK \mid k_2 \in K2_{jk} \} &amp; k_2 \in K \\
-   &amp;t_{jk}   &amp;= &amp;\max\{k + p_j -1 - d_j, 0\} \times w_j &amp; (j, k) \in JK \\
+   &amp;t_{jk}      &amp;= &amp;\max\{k + p_j -1 - d_j, 0\} \times w_j &amp; (j, k) \in JK \\
 \end{eqnarray}</div><p>DECISION VARIABLES</p>
 <p><span class="math notranslate nohighlight">\(X_{jk}\)</span>. Binary. 1 if job <span class="math notranslate nohighlight">\(j\)</span> starts at time slot <span class="math notranslate nohighlight">\(k\)</span>, 0 otherwise. <span class="math notranslate nohighlight">\((j, k) \in JK\)</span></p>
 <p>FORMULATION</p>
@@ -199,6 +202,8 @@ and is indicated with the argument <cite>index</cite> when calling the function 
    \min \sum_{(j, k) \in JK} t_{jk} X_{jk} \\
 \end{eqnarray}</div><p>Subject to:</p>
 <div class="math notranslate nohighlight">
+The first set of constraints enforces that each job is scheduled only once. The second set of constraints guarantees that each period of time is used by only one job.
+
 \begin{eqnarray}
    &amp; \sum_{k \in K_j} X_{jk} = 1 &amp; j \in J \\
    &amp; \sum_{(j, k) \in JK_{k2}} X_{jk} = 1 &amp; k2 \in K \\
@@ -229,7 +234,7 @@ and is indicated with the argument <cite>index</cite> when calling the function 
 <span class="n">JK</span> <span class="o">=</span> <span class="n">jk_all</span><span class="o">.</span><span class="n">filter_list_f</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="n">duration</span><span class="p">[</span><span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">]]</span> <span class="o">&lt;=</span> <span class="n">C_max</span><span class="p">)</span>
 
 <span class="c1"># we create a set of tasks that can start at time period k</span>
-<span class="n">J_k</span> <span class="o">=</span> <span class="n">JK</span><span class="o">.</span><span class="n">to_dict</span><span class="p">(</span><span class="n">result_col</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">K_j</span> <span class="o">=</span> <span class="n">JK</span><span class="o">.</span><span class="n">to_dict</span><span class="p">(</span><span class="n">result_col</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
 
 <span class="c1"># all combinations (t, p, p2) such that I start a task j </span>
 <span class="c1"># in time period k and is active in period k2</span>
@@ -259,11 +264,11 @@ and is indicated with the argument <cite>index</cite> when calling the function 
 
 <span class="c1"># one and only one start per task</span>
 <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="n">tasks</span><span class="p">:</span>
-    <span class="n">model</span> <span class="o">+=</span> <span class="n">pl</span><span class="o">.</span><span class="n">lpSum</span><span class="p">(</span><span class="n">X</span><span class="p">[</span><span class="n">j</span><span class="p">,</span> <span class="n">k</span><span class="p">]</span> <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">J_k</span><span class="p">[</span><span class="n">j</span><span class="p">])</span> <span class="o">==</span> <span class="mi">1</span>
+    <span class="n">model</span> <span class="o">+=</span> <span class="n">pl</span><span class="o">.</span><span class="n">lpSum</span><span class="p">(</span><span class="n">X</span><span class="p">[</span><span class="n">j</span><span class="p">,</span> <span class="n">k</span><span class="p">]</span> <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">K_j</span><span class="p">[</span><span class="n">j</span><span class="p">])</span> <span class="o">==</span> <span class="mi">1</span>
 
 <span class="c1"># only one task is active at any moment:</span>
-<span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">periods</span><span class="p">:</span>
-    <span class="n">model</span> <span class="o">+=</span> <span class="n">pl</span><span class="o">.</span><span class="n">lpSum</span><span class="p">(</span><span class="n">X</span><span class="p">[</span><span class="n">j</span><span class="p">,</span> <span class="n">k</span><span class="p">]</span> <span class="k">for</span> <span class="n">j</span><span class="p">,</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">JK_k2</span><span class="p">[</span><span class="n">k</span><span class="p">])</span> <span class="o">==</span> <span class="mi">1</span>
+<span class="k">for</span> <span class="n">k2</span> <span class="ow">in</span> <span class="n">periods</span><span class="p">:</span>
+    <span class="n">model</span> <span class="o">+=</span> <span class="n">pl</span><span class="o">.</span><span class="n">lpSum</span><span class="p">(</span><span class="n">X</span><span class="p">[</span><span class="n">j</span><span class="p">,</span> <span class="n">k</span><span class="p">]</span> <span class="k">for</span> <span class="n">j</span><span class="p">,</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">JK_k2</span><span class="p">[</span><span class="n">k2</span><span class="p">])</span> <span class="o">==</span> <span class="mi">1</span>
 
 <span class="c1"># solve model:</span>
 <span class="n">solver</span> <span class="o">=</span> <span class="n">pl</span><span class="o">.</span><span class="n">PULP_CBC_CMD</span><span class="p">(</span><span class="n">msg</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
@@ -285,15 +290,15 @@ and is indicated with the argument <cite>index</cite> when calling the function 
 </pre></div>
 </div>
 <p>Finally, we do some tests on the solution using pytups to guarantee the solution is feasible:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">pt</span><span class="o">.</span><span class="n">TupList</span><span class="p">(</span><span class="n">solution</span><span class="p">)</span><span class="o">.</span><span class="n">filter_list_f</span><span class="p">(</span><span class="k">lambda</span> <span class="n">v</span><span class="p">:</span> <span class="n">v</span> <span class="o">==</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># verify that all periods are filled:</span>
+<span class="c1"># counting if there is any with a minus -1</span>
+<span class="n">pt</span><span class="o">.</span><span class="n">TupList</span><span class="p">(</span><span class="n">solution</span><span class="p">)</span><span class="o">.</span><span class="n">filter_list_f</span><span class="p">(</span><span class="k">lambda</span> <span class="n">v</span><span class="p">:</span> <span class="n">v</span> <span class="o">==</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span>
 
 <span class="c1"># verify that each task t appears exactly duration[t] times</span>
 <span class="n">task_count</span> <span class="o">=</span> <span class="n">pt</span><span class="o">.</span><span class="n">SuperDict</span><span class="p">()</span><span class="o">.</span><span class="n">fill_with_default</span><span class="p">(</span><span class="n">keys</span><span class="o">=</span><span class="n">duration</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
 <span class="k">for</span> <span class="n">period</span><span class="p">,</span> <span class="n">task</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">solution</span><span class="p">):</span>
     <span class="n">task_count</span><span class="p">[</span><span class="n">task</span><span class="p">]</span> <span class="o">+=</span> <span class="mi">1</span>
 <span class="n">task_count</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="k">lambda</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span><span class="p">:</span> <span class="n">duration</span><span class="p">[</span><span class="n">k</span><span class="p">]</span> <span class="o">-</span> <span class="n">v</span><span class="p">)</span><span class="o">.</span><span class="n">clean</span><span class="p">()</span>
-
-
 </pre></div>
 </div>
 <p>The whole code is shown below:</p>
@@ -319,7 +324,7 @@ and is indicated with the argument <cite>index</cite> when calling the function 
 <span class="n">JK</span> <span class="o">=</span> <span class="n">jk_all</span><span class="o">.</span><span class="n">filter_list_f</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="n">duration</span><span class="p">[</span><span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">]]</span> <span class="o">&lt;=</span> <span class="n">C_max</span><span class="p">)</span>
 
 <span class="c1"># we create a set of tasks that can start at time period k</span>
-<span class="n">J_k</span> <span class="o">=</span> <span class="n">JK</span><span class="o">.</span><span class="n">to_dict</span><span class="p">(</span><span class="n">result_col</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">K_j</span> <span class="o">=</span> <span class="n">JK</span><span class="o">.</span><span class="n">to_dict</span><span class="p">(</span><span class="n">result_col</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
 
 <span class="c1"># all combinations (t, p, p2) such that I start a task j </span>
 <span class="c1"># in time period k and is active in period k2</span>
@@ -348,11 +353,11 @@ and is indicated with the argument <cite>index</cite> when calling the function 
 
 <span class="c1"># one and only one start per task</span>
 <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="n">tasks</span><span class="p">:</span>
-    <span class="n">model</span> <span class="o">+=</span> <span class="n">pl</span><span class="o">.</span><span class="n">lpSum</span><span class="p">(</span><span class="n">X</span><span class="p">[</span><span class="n">j</span><span class="p">,</span> <span class="n">k</span><span class="p">]</span> <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">J_k</span><span class="p">[</span><span class="n">j</span><span class="p">])</span> <span class="o">==</span> <span class="mi">1</span>
+    <span class="n">model</span> <span class="o">+=</span> <span class="n">pl</span><span class="o">.</span><span class="n">lpSum</span><span class="p">(</span><span class="n">X</span><span class="p">[</span><span class="n">j</span><span class="p">,</span> <span class="n">k</span><span class="p">]</span> <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">K_j</span><span class="p">[</span><span class="n">j</span><span class="p">])</span> <span class="o">==</span> <span class="mi">1</span>
 
 <span class="c1"># only one task is active at any moment:</span>
-<span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">periods</span><span class="p">:</span>
-    <span class="n">model</span> <span class="o">+=</span> <span class="n">pl</span><span class="o">.</span><span class="n">lpSum</span><span class="p">(</span><span class="n">X</span><span class="p">[</span><span class="n">j</span><span class="p">,</span> <span class="n">k</span><span class="p">]</span> <span class="k">for</span> <span class="n">j</span><span class="p">,</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">JK_k2</span><span class="p">[</span><span class="n">k</span><span class="p">])</span> <span class="o">==</span> <span class="mi">1</span>
+<span class="k">for</span> <span class="n">k2</span> <span class="ow">in</span> <span class="n">periods</span><span class="p">:</span>
+    <span class="n">model</span> <span class="o">+=</span> <span class="n">pl</span><span class="o">.</span><span class="n">lpSum</span><span class="p">(</span><span class="n">X</span><span class="p">[</span><span class="n">j</span><span class="p">,</span> <span class="n">k</span><span class="p">]</span> <span class="k">for</span> <span class="n">j</span><span class="p">,</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">JK_k2</span><span class="p">[</span><span class="n">k2</span><span class="p">])</span> <span class="o">==</span> <span class="mi">1</span>
 
 <span class="c1"># solve model:</span>
 <span class="n">solver</span> <span class="o">=</span> <span class="n">pl</span><span class="o">.</span><span class="n">PULP_CBC_CMD</span><span class="p">(</span><span class="n">msg</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
@@ -370,6 +375,8 @@ and is indicated with the argument <cite>index</cite> when calling the function 
         <span class="n">solution</span><span class="p">[</span><span class="n">p2</span><span class="p">]</span> <span class="o">=</span> <span class="n">j</span>
 
 <span class="k">print</span><span class="p">(</span><span class="s1">&#39;solution is </span><span class="se">\n</span><span class="s1">{}&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">solution</span><span class="p">))</span>
+
+
 
 <span class="c1"># verify that all periods are filled:</span>
 <span class="c1"># counting if there is any with a minus -1</span>
