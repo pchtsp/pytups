@@ -46,8 +46,8 @@
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Using it with PuLP</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#nomenclature">Nomenclature</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#example-scheduling-problem">Example: Scheduling problem</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#example-formulation">Example: formulation</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#example-implementation">Example: implementation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#mathematical-formulation">Mathematical formulation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#implementation-using-pulp-and-pytups">Implementation using pulp and pytups</a></li>
 </ul>
 </li>
 </ul>
@@ -121,8 +121,8 @@ and is indicated with the argument <cite>index</cite> when calling the function 
    TWT    &amp; = &amp; \sum_{j \in N} w_j (Y_j + p_j - d_j)^+
 \end{eqnarray}</div><p>The objective is to schedule all the jobs without overlapping them and minimizing the total weighted tardiness <span class="math notranslate nohighlight">\(TWT\)</span>.</p>
 </div>
-<div class="section" id="example-formulation">
-<h2>Example: formulation<a class="headerlink" href="#example-formulation" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="mathematical-formulation">
+<h2>Mathematical formulation<a class="headerlink" href="#mathematical-formulation" title="Permalink to this headline">¶</a></h2>
 <p>SETS</p>
 <table class="docutils align-center">
 <colgroup>
@@ -190,7 +190,7 @@ and is indicated with the argument <cite>index</cite> when calling the function 
    &amp;K_j              &amp;= &amp;\{k \in K \mid (j, k) \in JK \} &amp; j \in J \\
    &amp;K2_{jk}  &amp;= &amp;\{k \in K \mid k \leq k2 \leq k + p_j \} &amp; (j, k) \in JK \\
    &amp;JK_{k2}  &amp;= &amp;\{(j, k) \in JK \mid k_2 \in K2_{jk} \} &amp; k_2 \in K \\
-   &amp;t_{jk}   &amp;= &amp;\max\{k + p_j - d_j, 0\} \times w_j &amp; (j, k) \in JK \\
+   &amp;t_{jk}   &amp;= &amp;\max\{k + p_j -1 - d_j, 0\} \times w_j &amp; (j, k) \in JK \\
 \end{eqnarray}</div><p>DECISION VARIABLES</p>
 <p><span class="math notranslate nohighlight">\(X_{jk}\)</span>. Binary. 1 if job <span class="math notranslate nohighlight">\(j\)</span> starts at time slot <span class="math notranslate nohighlight">\(k\)</span>, 0 otherwise. <span class="math notranslate nohighlight">\((j, k) \in JK\)</span></p>
 <p>FORMULATION</p>
@@ -203,8 +203,8 @@ and is indicated with the argument <cite>index</cite> when calling the function 
    &amp; \sum_{k \in K_j} X_{jk} = 1 &amp; j \in J \\
    &amp; \sum_{(j, k) \in JK_{k2}} X_{jk} = 1 &amp; k2 \in K \\
 \end{eqnarray}</div></div>
-<div class="section" id="example-implementation">
-<h2>Example: implementation<a class="headerlink" href="#example-implementation" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="implementation-using-pulp-and-pytups">
+<h2>Implementation using pulp and pytups<a class="headerlink" href="#implementation-using-pulp-and-pytups" title="Permalink to this headline">¶</a></h2>
 <p>We import libraries and get input data.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">pulp</span> <span class="kn">as</span> <span class="nn">pl</span>
 <span class="kn">import</span> <span class="nn">pytups</span> <span class="kn">as</span> <span class="nn">pt</span>
@@ -231,9 +231,10 @@ and is indicated with the argument <cite>index</cite> when calling the function 
 <span class="c1"># we create a set of tasks that can start at time period k</span>
 <span class="n">J_k</span> <span class="o">=</span> <span class="n">JK</span><span class="o">.</span><span class="n">to_dict</span><span class="p">(</span><span class="n">result_col</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
 
-<span class="c1"># all combinations (t, p, p2) such that I start a task j in time period k and</span>
-<span class="c1"># is active in period k2</span>
-<span class="n">jkk2</span> <span class="o">=</span> <span class="n">pt</span><span class="o">.</span><span class="n">TupList</span><span class="p">((</span><span class="n">j</span><span class="p">,</span> <span class="n">k</span><span class="p">,</span> <span class="n">k2</span><span class="p">)</span> <span class="k">for</span> <span class="n">j</span><span class="p">,</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">JK</span> <span class="k">for</span> <span class="n">k2</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">k</span><span class="p">,</span> <span class="n">k</span> <span class="o">+</span> <span class="n">duration</span><span class="p">[</span><span class="n">j</span><span class="p">]))</span>
+<span class="c1"># all combinations (t, p, p2) such that I start a task j </span>
+<span class="c1"># in time period k and is active in period k2</span>
+<span class="n">jkk2</span> <span class="o">=</span> <span class="n">pt</span><span class="o">.</span><span class="n">TupList</span><span class="p">((</span><span class="n">j</span><span class="p">,</span> <span class="n">k</span><span class="p">,</span> <span class="n">k2</span><span class="p">)</span> <span class="k">for</span> <span class="n">j</span><span class="p">,</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">JK</span> 
+				  <span class="k">for</span> <span class="n">k2</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">k</span><span class="p">,</span> <span class="n">k</span> <span class="o">+</span> <span class="n">duration</span><span class="p">[</span><span class="n">j</span><span class="p">]))</span>
 
 <span class="c1"># given a period k2, what starts affect make it unavailable:</span>
 <span class="n">JK_k2</span> <span class="o">=</span> <span class="n">jkk2</span><span class="o">.</span><span class="n">to_dict</span><span class="p">(</span><span class="n">result_col</span><span class="o">=</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">])</span>
@@ -241,16 +242,14 @@ and is indicated with the argument <cite>index</cite> when calling the function 
 <span class="c1"># given a start (j, k), what periods k2 are made unavailable:</span>
 <span class="n">K2_jk</span> <span class="o">=</span> <span class="n">jkk2</span><span class="o">.</span><span class="n">to_dict</span><span class="p">(</span><span class="n">result_col</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
 
-<span class="c1"># the last period of assignment if I start task t in period p</span>
-<span class="n">tp_last</span> <span class="o">=</span> <span class="n">jkk2</span><span class="o">.</span><span class="n">to_dict</span><span class="p">(</span><span class="n">result_col</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span><span class="o">.</span><span class="n">vapply</span><span class="p">(</span><span class="k">lambda</span> <span class="n">v</span><span class="p">:</span> <span class="n">v</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
-
 <span class="c1"># for each possible start: how late will the task be</span>
-<span class="n">t_jk</span> <span class="o">=</span> <span class="p">{(</span><span class="n">j</span><span class="p">,</span> <span class="n">k</span><span class="p">):</span> <span class="nb">max</span><span class="p">(</span><span class="n">tp_last</span><span class="p">[</span><span class="n">j</span><span class="p">,</span> <span class="n">k</span><span class="p">]</span> <span class="o">-</span> <span class="n">duedate</span><span class="p">[</span><span class="n">j</span><span class="p">],</span> <span class="mi">0</span><span class="p">)</span> <span class="o">*</span> <span class="n">priority</span><span class="p">[</span><span class="n">j</span><span class="p">]</span> <span class="k">for</span> <span class="n">j</span><span class="p">,</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">JK</span><span class="p">}</span>
-
+<span class="n">t_jk</span> <span class="o">=</span> <span class="p">{(</span><span class="n">j</span><span class="p">,</span> <span class="n">k</span><span class="p">):</span> <span class="nb">max</span><span class="p">(</span><span class="n">duration</span><span class="p">[</span><span class="n">j</span><span class="p">]</span> <span class="o">+</span> <span class="n">k</span> <span class="o">-</span><span class="mi">1</span> <span class="o">-</span> <span class="n">duedate</span><span class="p">[</span><span class="n">j</span><span class="p">],</span> <span class="mi">0</span><span class="p">)</span> <span class="o">*</span> 
 </pre></div>
 </div>
 <p>We now create the PuLP model and solve it.</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># model construction with PuLP</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span>				<span class="n">priority</span><span class="p">[</span><span class="n">j</span><span class="p">]</span> <span class="k">for</span> <span class="n">j</span><span class="p">,</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">JK</span><span class="p">}</span>
+
+<span class="c1"># model construction with PuLP</span>
 <span class="n">model</span> <span class="o">=</span> <span class="n">pl</span><span class="o">.</span><span class="n">LpProblem</span><span class="p">(</span><span class="s2">&quot;Scheduling&quot;</span><span class="p">,</span> <span class="n">pl</span><span class="o">.</span><span class="n">LpMinimize</span><span class="p">)</span>
 <span class="n">X</span> <span class="o">=</span> <span class="n">pl</span><span class="o">.</span><span class="n">LpVariable</span><span class="o">.</span><span class="n">dicts</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s1">&#39;start&#39;</span><span class="p">,</span> <span class="n">indexs</span><span class="o">=</span><span class="n">JK</span><span class="p">,</span>
                             <span class="n">lowBound</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">upBound</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">cat</span><span class="o">=</span><span class="n">pl</span><span class="o">.</span><span class="n">LpInteger</span><span class="p">)</span>
@@ -269,11 +268,11 @@ and is indicated with the argument <cite>index</cite> when calling the function 
 <span class="c1"># solve model:</span>
 <span class="n">solver</span> <span class="o">=</span> <span class="n">pl</span><span class="o">.</span><span class="n">PULP_CBC_CMD</span><span class="p">(</span><span class="n">msg</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
 <span class="c1"># solver = pl.CPLEX_CMD(msg=True)</span>
-<span class="n">model</span><span class="o">.</span><span class="n">solve</span><span class="p">(</span><span class="n">solver</span><span class="p">)</span>
 </pre></div>
 </div>
 <p>We get the solution from the variable contents. Not how we also use pytups to extract the content from the variable.</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># get tasks starts</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span>
+<span class="c1"># get tasks starts</span>
 <span class="n">starts_out</span> <span class="o">=</span> <span class="n">pt</span><span class="o">.</span><span class="n">SuperDict</span><span class="p">(</span><span class="n">X</span><span class="p">)</span><span class="o">.</span><span class="n">vapply</span><span class="p">(</span><span class="n">pl</span><span class="o">.</span><span class="n">value</span><span class="p">)</span><span class="o">.</span><span class="n">clean</span><span class="p">()</span><span class="o">.</span><span class="n">keys_l</span><span class="p">()</span>
 
 <span class="n">solution</span> <span class="o">=</span> <span class="p">[</span><span class="o">-</span><span class="mi">1</span> <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">periods</span><span class="p">]</span>
@@ -281,11 +280,11 @@ and is indicated with the argument <cite>index</cite> when calling the function 
     <span class="k">for</span> <span class="n">p2</span> <span class="ow">in</span> <span class="n">K2_jk</span><span class="p">[</span><span class="n">j</span><span class="p">,</span> <span class="n">k</span><span class="p">]:</span>
         <span class="n">solution</span><span class="p">[</span><span class="n">p2</span><span class="p">]</span> <span class="o">=</span> <span class="n">j</span>
 
-<span class="k">print</span><span class="p">(</span><span class="s1">&#39;solution is </span><span class="se">\n</span><span class="s1">{}&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">solution</span><span class="p">))</span>
 </pre></div>
 </div>
 <p>Finally, we do some tests on the solution using pytups to guarantee the solution is feasible:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">print</span><span class="p">(</span><span class="s1">&#39;solution is </span><span class="se">\n</span><span class="s1">{}&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">solution</span><span class="p">))</span>
+
 <span class="c1"># verify that all periods are filled:</span>
 <span class="c1"># counting if there is any with a minus -1</span>
 <span class="n">pt</span><span class="o">.</span><span class="n">TupList</span><span class="p">(</span><span class="n">solution</span><span class="p">)</span><span class="o">.</span><span class="n">filter_list_f</span><span class="p">(</span><span class="k">lambda</span> <span class="n">v</span><span class="p">:</span> <span class="n">v</span> <span class="o">==</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span>
@@ -295,8 +294,6 @@ and is indicated with the argument <cite>index</cite> when calling the function 
 <span class="k">for</span> <span class="n">period</span><span class="p">,</span> <span class="n">task</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">solution</span><span class="p">):</span>
     <span class="n">task_count</span><span class="p">[</span><span class="n">task</span><span class="p">]</span> <span class="o">+=</span> <span class="mi">1</span>
 <span class="n">task_count</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="k">lambda</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span><span class="p">:</span> <span class="n">duration</span><span class="p">[</span><span class="n">k</span><span class="p">]</span> <span class="o">-</span> <span class="n">v</span><span class="p">)</span><span class="o">.</span><span class="n">clean</span><span class="p">()</span>
-
-
 </pre></div>
 </div>
 <p>The whole code is shown below:</p>
@@ -322,9 +319,10 @@ and is indicated with the argument <cite>index</cite> when calling the function 
 <span class="c1"># we create a set of tasks that can start at time period k</span>
 <span class="n">J_k</span> <span class="o">=</span> <span class="n">JK</span><span class="o">.</span><span class="n">to_dict</span><span class="p">(</span><span class="n">result_col</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
 
-<span class="c1"># all combinations (t, p, p2) such that I start a task j in time period k and</span>
-<span class="c1"># is active in period k2</span>
-<span class="n">jkk2</span> <span class="o">=</span> <span class="n">pt</span><span class="o">.</span><span class="n">TupList</span><span class="p">((</span><span class="n">j</span><span class="p">,</span> <span class="n">k</span><span class="p">,</span> <span class="n">k2</span><span class="p">)</span> <span class="k">for</span> <span class="n">j</span><span class="p">,</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">JK</span> <span class="k">for</span> <span class="n">k2</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">k</span><span class="p">,</span> <span class="n">k</span> <span class="o">+</span> <span class="n">duration</span><span class="p">[</span><span class="n">j</span><span class="p">]))</span>
+<span class="c1"># all combinations (t, p, p2) such that I start a task j </span>
+<span class="c1"># in time period k and is active in period k2</span>
+<span class="n">jkk2</span> <span class="o">=</span> <span class="n">pt</span><span class="o">.</span><span class="n">TupList</span><span class="p">((</span><span class="n">j</span><span class="p">,</span> <span class="n">k</span><span class="p">,</span> <span class="n">k2</span><span class="p">)</span> <span class="k">for</span> <span class="n">j</span><span class="p">,</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">JK</span> 
+				  <span class="k">for</span> <span class="n">k2</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">k</span><span class="p">,</span> <span class="n">k</span> <span class="o">+</span> <span class="n">duration</span><span class="p">[</span><span class="n">j</span><span class="p">]))</span>
 
 <span class="c1"># given a period k2, what starts affect make it unavailable:</span>
 <span class="n">JK_k2</span> <span class="o">=</span> <span class="n">jkk2</span><span class="o">.</span><span class="n">to_dict</span><span class="p">(</span><span class="n">result_col</span><span class="o">=</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">])</span>
@@ -332,11 +330,9 @@ and is indicated with the argument <cite>index</cite> when calling the function 
 <span class="c1"># given a start (j, k), what periods k2 are made unavailable:</span>
 <span class="n">K2_jk</span> <span class="o">=</span> <span class="n">jkk2</span><span class="o">.</span><span class="n">to_dict</span><span class="p">(</span><span class="n">result_col</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
 
-<span class="c1"># the last period of assignment if I start task t in period p</span>
-<span class="n">tp_last</span> <span class="o">=</span> <span class="n">jkk2</span><span class="o">.</span><span class="n">to_dict</span><span class="p">(</span><span class="n">result_col</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span><span class="o">.</span><span class="n">vapply</span><span class="p">(</span><span class="k">lambda</span> <span class="n">v</span><span class="p">:</span> <span class="n">v</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
-
 <span class="c1"># for each possible start: how late will the task be</span>
-<span class="n">t_jk</span> <span class="o">=</span> <span class="p">{(</span><span class="n">j</span><span class="p">,</span> <span class="n">k</span><span class="p">):</span> <span class="nb">max</span><span class="p">(</span><span class="n">tp_last</span><span class="p">[</span><span class="n">j</span><span class="p">,</span> <span class="n">k</span><span class="p">]</span> <span class="o">-</span> <span class="n">duedate</span><span class="p">[</span><span class="n">j</span><span class="p">],</span> <span class="mi">0</span><span class="p">)</span> <span class="o">*</span> <span class="n">priority</span><span class="p">[</span><span class="n">j</span><span class="p">]</span> <span class="k">for</span> <span class="n">j</span><span class="p">,</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">JK</span><span class="p">}</span>
+<span class="n">t_jk</span> <span class="o">=</span> <span class="p">{(</span><span class="n">j</span><span class="p">,</span> <span class="n">k</span><span class="p">):</span> <span class="nb">max</span><span class="p">(</span><span class="n">duration</span><span class="p">[</span><span class="n">j</span><span class="p">]</span> <span class="o">+</span> <span class="n">k</span> <span class="o">-</span><span class="mi">1</span> <span class="o">-</span> <span class="n">duedate</span><span class="p">[</span><span class="n">j</span><span class="p">],</span> <span class="mi">0</span><span class="p">)</span> <span class="o">*</span> 
+				<span class="n">priority</span><span class="p">[</span><span class="n">j</span><span class="p">]</span> <span class="k">for</span> <span class="n">j</span><span class="p">,</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">JK</span><span class="p">}</span>
 
 <span class="c1"># model construction with PuLP</span>
 <span class="n">model</span> <span class="o">=</span> <span class="n">pl</span><span class="o">.</span><span class="n">LpProblem</span><span class="p">(</span><span class="s2">&quot;Scheduling&quot;</span><span class="p">,</span> <span class="n">pl</span><span class="o">.</span><span class="n">LpMinimize</span><span class="p">)</span>
