@@ -49,6 +49,7 @@
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="code.html">Documentation for the Code</a></li>
+<li class="toctree-l1"><a class="reference internal" href="pulp.html">Using it with PuLP</a></li>
 </ul>
 
 <div class="relations">
@@ -97,19 +98,28 @@
 <span class="c1"># &quot;1&quot;  &quot;2&quot;  &quot;5&quot;  &quot;7&quot;  &quot;11&quot;</span>
 </pre></div>
 </div>
-<p>Or, using the chaining magic:</p>
+<p>Or, using the chaining magic and without actually using the <cite>sapply</cite> given that R works vectorized by default:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">library</span><span class="p">(</span><span class="n">magrittr</span><span class="p">)</span>
 <span class="n">c</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">7</span><span class="p">,</span> <span class="mi">11</span><span class="p">)</span> <span class="o">%&gt;%</span> <span class="k">as</span><span class="o">.</span><span class="n">character</span>
-</pre></div>
-</div>
-<p>In fact, R already assumes vectorized functions, so one could use:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">c</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">7</span><span class="p">,</span> <span class="mi">11</span><span class="p">)</span> <span class="o">%&gt;%</span> <span class="k">as</span><span class="o">.</span><span class="n">character</span>
+<span class="c1"># &quot;1&quot;  &quot;2&quot;  &quot;5&quot;  &quot;7&quot;  &quot;11&quot;</span>
 </pre></div>
 </div>
 <p>With pytups one would do:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">pytups</span> <span class="kn">as</span> <span class="nn">pt</span>
 <span class="n">pt</span><span class="o">.</span><span class="n">TupList</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">7</span><span class="p">,</span> <span class="mi">11</span><span class="p">])</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="nb">str</span><span class="p">)</span>
 <span class="c1"># [&#39;1&#39;, &#39;2&#39;, &#39;5&#39;, &#39;7&#39;, &#39;11&#39;]</span>
+</pre></div>
+</div>
+<p>A better example could be replacing <cite>sapply</cite> in the following R situatio:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">lll</span> <span class="o">&lt;-</span> <span class="nb">list</span><span class="p">(</span><span class="n">c</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">7</span><span class="p">,</span> <span class="mi">5</span><span class="p">),</span> <span class="n">c</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">7</span><span class="p">))</span>
+<span class="n">sapply</span><span class="p">(</span><span class="n">lll</span><span class="p">,</span> <span class="n">length</span><span class="p">)</span>
+<span class="c1"># 5 3</span>
+</pre></div>
+</div>
+<p>We would do the following in pytups:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">pytups</span> <span class="kn">as</span> <span class="nn">pt</span>
+<span class="n">pt</span><span class="o">.</span><span class="n">TupList</span><span class="p">([(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">7</span><span class="p">,</span> <span class="mi">5</span><span class="p">),</span> <span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">7</span><span class="p">)])</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="nb">len</span><span class="p">)</span>
+<span class="c1"># [5, 3]</span>
 </pre></div>
 </div>
 </div>
@@ -129,6 +139,10 @@
 <span class="n">supdict_dictup</span><span class="o">.</span><span class="n">to_dictdict</span><span class="p">()</span>
 <span class="c1"># {&#39;a&#39;: {&#39;b&#39;: {&#39;c&#39;: &#39;A&#39;}}, &#39;b&#39;: {&#39;t&#39;: {&#39;d&#39; : &#39;B&#39;}}}</span>
 </pre></div>
+</div>
+<div class="section" id="setting-and-getting-in-nested-dictionaries">
+<h3>Setting and getting in nested dictionaries<a class="headerlink" href="#setting-and-getting-in-nested-dictionaries" title="Permalink to this headline">¶</a></h3>
+<p>TODO: this part.</p>
 </div>
 </div>
 <div class="section" id="tuplists">

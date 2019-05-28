@@ -9,6 +9,7 @@ Welcome to pytups's documentation!
    idea
    examples
    code
+   pulp
 
 Indices and tables
 ==================
