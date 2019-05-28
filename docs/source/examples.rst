@@ -15,20 +15,29 @@ In R one can do the following::
     sapply(c(1, 2, 5, 7, 11), as.character)
     # "1"  "2"  "5"  "7"  "11"
 
-Or, using the chaining magic::
+Or, using the chaining magic and without actually using the `sapply` given that R works vectorized by default::
 
     library(magrittr)
     c(1, 2, 5, 7, 11) %>% as.character
-
-In fact, R already assumes vectorized functions, so one could use::
-
-    c(1, 2, 5, 7, 11) %>% as.character
+    # "1"  "2"  "5"  "7"  "11"
 
 With pytups one would do::
 
     import pytups as pt
     pt.TupList([1, 2, 5, 7, 11]).apply(str)
     # ['1', '2', '5', '7', '11']
+
+A better example could be replacing `sapply` in the following R situatio::
+    
+    lll <- list(c(1, 2, 5, 7, 5), c(5, 6, 7))
+    sapply(lll, length)
+    # 5 3
+
+We would do the following in pytups::
+    
+    import pytups as pt
+    pt.TupList([(1, 2, 5, 7, 5), (5, 6, 7)]).apply(len)
+    # [5, 3]
 
 SuperDict
 =============================
@@ -48,6 +57,13 @@ Example::
     # {('a', 'b', 'c'): 'A_1', ('b', 't', 'd'): 'B_1'}
     supdict_dictup.to_dictdict()
     # {'a': {'b': {'c': 'A'}}, 'b': {'t': {'d' : 'B'}}}
+
+
+Setting and getting in nested dictionaries
+-------------------------------------------------------
+
+TODO: this part.
+
 
 TupLists
 =============================
