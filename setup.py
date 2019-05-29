@@ -16,7 +16,7 @@ for r in requirementslist:
 
 kwargs = {
     "name": "pytups",
-    "version": 0.2,
+    "version": 0.3,
     "packages": packages,
     "description": "data wrangling for lists of tuples and dictionaries",
     "long_description": long_description,
