@@ -88,22 +88,22 @@
             
   <div class="section" id="using-it-with-pulp">
 <h1>Using it with PuLP<a class="headerlink" href="#using-it-with-pulp" title="Permalink to this headline">¶</a></h1>
-<p>Coping from <a class="reference external" href="https://pythonhosted.org/PuLP/pulp.html#module-pulp" title="(in PuLP v1.6)"><code class="xref py py-mod docutils literal notranslate"><span class="pre">pulp</span></code></a>:</p>
+<p>Copied from <a class="reference external" href="https://pythonhosted.org/PuLP/pulp.html#module-pulp" title="(in PuLP v1.6)"><code class="xref py py-mod docutils literal notranslate"><span class="pre">pulp</span></code></a>:</p>
 <blockquote>
 <div><p>PuLP is a free open source software written in Python. It is used to describe optimisation problems as mathematical models. PuLP can then call any of numerous external LP solvers (CBC, GLPK, CPLEX, Gurobi etc) to solve this model and then use python commands to manipulate and display the solution.</p>
 </div></blockquote>
 <div class="section" id="nomenclature">
 <h2>Nomenclature<a class="headerlink" href="#nomenclature" title="Permalink to this headline">¶</a></h2>
 <dl class="glossary simple">
-<dt id="term-variable-declaration">Variable declaration</dt><dd><p>A variable declaration is the creation of a group of decision variables that share the same naming and significance. In <cite>PuLP</cite> they are all created within a single call to <a class="reference external" href="https://pythonhosted.org/PuLP/pulp.html#pulp.LpVariable.dicts" title="(in PuLP v1.6)"><code class="xref py py-meth docutils literal notranslate"><span class="pre">pulp.LpVariable.dicts()</span></code></a> and they are all accessed by slicing the same <cite>python</cite> variable created. An optimization problem can have one variable declaration but thousands of variables.</p>
+<dt id="term-variable-declaration">Variable declaration</dt><dd><p>A group of decision variables that share the same naming and significance. In <cite>PuLP</cite> they are all created within a single call to <a class="reference external" href="https://pythonhosted.org/PuLP/pulp.html#pulp.LpVariable.dicts" title="(in PuLP v1.6)"><code class="xref py py-meth docutils literal notranslate"><span class="pre">pulp.LpVariable.dicts()</span></code></a> and they are all accessed by slicing the created <cite>python</cite> variable as a dictionary. An optimization problem can have one variable declaration but thousands of variables.</p>
 </dd>
 <dt id="term-variable-domain">Variable domain</dt><dd><p>The complete space over which variables in a single variable declaration are created. The length of the domain is the number of variables in the declaration. Each variable declaration has its own domain and is indicated with the argument <cite>index</cite> when calling the function <a class="reference external" href="https://pythonhosted.org/PuLP/pulp.html#pulp.LpVariable.dicts" title="(in PuLP v1.6)"><code class="xref py py-meth docutils literal notranslate"><span class="pre">pulp.LpVariable.dicts()</span></code></a>. It usually consists of some kind of iterator where all its elements should be unique.</p>
 </dd>
 </dl>
-<p>When using <a class="reference external" href="https://pythonhosted.org/PuLP/pulp.html#module-pulp" title="(in PuLP v1.6)"><code class="xref py py-mod docutils literal notranslate"><span class="pre">pulp</span></code></a>, I use the following guidelines for variable declaration:</p>
+<p>When using <a class="reference external" href="https://pythonhosted.org/PuLP/pulp.html#module-pulp" title="(in PuLP v1.6)"><code class="xref py py-mod docutils literal notranslate"><span class="pre">pulp</span></code></a>, I use the following guidelines:</p>
 <ol class="arabic simple">
-<li><p>Use <a class="reference external" href="https://pythonhosted.org/PuLP/pulp.html#pulp.LpVariable.dicts" title="(in PuLP v1.6)"><code class="xref py py-meth docutils literal notranslate"><span class="pre">pulp.LpVariable.dicts()</span></code></a>, unless there is a very good reason not to.</p></li>
-<li><p>Use python lists for variable domains.</p></li>
+<li><p>Use <a class="reference external" href="https://pythonhosted.org/PuLP/pulp.html#pulp.LpVariable.dicts" title="(in PuLP v1.6)"><code class="xref py py-meth docutils literal notranslate"><span class="pre">pulp.LpVariable.dicts()</span></code></a> for variable declaration, unless there is a very good reason not to.</p></li>
+<li><p>Use a list of tuples to declare the variable domain.</p></li>
 <li><p>Use <cite>pytups</cite> to index parts of the domain for clean, pretty and fast constraint generation.</p></li>
 </ol>
 </div>
@@ -170,19 +170,19 @@
 <td><p>Size of planning horizon.</p></td>
 </tr>
 <tr class="row-even"><td><p><span class="math notranslate nohighlight">\(JK\)</span></p></td>
-<td><p>Al possible starting periods (j, k) for job <span class="math notranslate nohighlight">\(j \in J\)</span> in periods <span class="math notranslate nohighlight">\(k \in K\)</span>.</p></td>
+<td><p>Al possible starting combinations (j, k) such that job <span class="math notranslate nohighlight">\(j \in J\)</span> can start in period <span class="math notranslate nohighlight">\(k \in K\)</span>.</p></td>
 </tr>
 <tr class="row-odd"><td><p><span class="math notranslate nohighlight">\(K_j\)</span></p></td>
-<td><p>Al possible starting periods k for job <span class="math notranslate nohighlight">\(j \in J\)</span>.</p></td>
+<td><p>Al possible starting periods for job <span class="math notranslate nohighlight">\(j \in J\)</span>.</p></td>
 </tr>
 <tr class="row-even"><td><p><span class="math notranslate nohighlight">\(t_{jk}\)</span></p></td>
 <td><p>Penalty for starting job <span class="math notranslate nohighlight">\(j \in J\)</span> in period <span class="math notranslate nohighlight">\(k \in K\)</span>.</p></td>
 </tr>
 <tr class="row-odd"><td><p><span class="math notranslate nohighlight">\(K2_{jk}\)</span></p></td>
-<td><p>All unavailable periods <span class="math notranslate nohighlight">\(k2 \in K2\)</span> caused by starting job <span class="math notranslate nohighlight">\(j\)</span> in period <span class="math notranslate nohighlight">\(k \in K\)</span>.</p></td>
+<td><p>Periods that become unavailable by starting job <span class="math notranslate nohighlight">\(j\)</span> in period <span class="math notranslate nohighlight">\(k \in K\)</span>.</p></td>
 </tr>
 <tr class="row-even"><td><p><span class="math notranslate nohighlight">\(JK_{k2}\)</span></p></td>
-<td><p>All possible starts of jobs <span class="math notranslate nohighlight">\((j, k) \in JK\)</span> make period <span class="math notranslate nohighlight">\(k2 \in K\)</span> unavailable.</p></td>
+<td><p>All possible starts of jobs <span class="math notranslate nohighlight">\((j, k) \in JK\)</span> that make period <span class="math notranslate nohighlight">\(k2 \in K\)</span> unavailable.</p></td>
 </tr>
 </tbody>
 </table>
@@ -221,7 +221,7 @@ The first set of constraints enforces that each job is scheduled only once. The 
 
 </pre></div>
 </div>
-<p>We then calculate intermediate sets and parameters. Note the use of pytups functions to filter and convert from tuple lists to dictionaries.</p>
+<p>We then calculate intermediate sets and parameters. Note the use of <cite>pytups</cite> functions to filter and convert from tuple lists to dictionaries.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Get intermediate paramters, sets.</span>
 <span class="n">C_max</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">(</span><span class="n">duration</span><span class="o">.</span><span class="n">values</span><span class="p">())</span>
 <span class="n">periods</span> <span class="o">=</span> <span class="nb">range</span><span class="p">(</span><span class="n">C_max</span><span class="p">)</span>
@@ -277,7 +277,7 @@ The first set of constraints enforces that each job is scheduled only once. The 
 
 </pre></div>
 </div>
-<p>We get the solution from the variable contents. Not how we also use pytups to extract the content from the variable.</p>
+<p>We get the solution from the variable contents. Not how we also use <cite>pytups</cite> to extract the content from the variable.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># get tasks starts</span>
 <span class="n">starts_out</span> <span class="o">=</span> <span class="n">pt</span><span class="o">.</span><span class="n">SuperDict</span><span class="p">(</span><span class="n">X</span><span class="p">)</span><span class="o">.</span><span class="n">vapply</span><span class="p">(</span><span class="n">pl</span><span class="o">.</span><span class="n">value</span><span class="p">)</span><span class="o">.</span><span class="n">clean</span><span class="p">()</span><span class="o">.</span><span class="n">keys_l</span><span class="p">()</span>
 
@@ -289,7 +289,7 @@ The first set of constraints enforces that each job is scheduled only once. The 
 <span class="k">print</span><span class="p">(</span><span class="s1">&#39;solution is </span><span class="se">\n</span><span class="s1">{}&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">solution</span><span class="p">))</span>
 </pre></div>
 </div>
-<p>Finally, we do some tests on the solution using pytups to guarantee the solution is feasible:</p>
+<p>Finally, we do some tests on the solution using <cite>pytups</cite> to guarantee the solution is feasible:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># verify that all periods are filled:</span>
 <span class="c1"># counting if there is any with a minus -1</span>
 <span class="n">pt</span><span class="o">.</span><span class="n">TupList</span><span class="p">(</span><span class="n">solution</span><span class="p">)</span><span class="o">.</span><span class="n">filter_list_f</span><span class="p">(</span><span class="k">lambda</span> <span class="n">v</span><span class="p">:</span> <span class="n">v</span> <span class="o">==</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span>
