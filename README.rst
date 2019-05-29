@@ -1,5 +1,11 @@
 Pytups
 **************************
+.. image:: https://img.shields.io/pypi/v/pytups.svg
+    :target: https://pypi.org/project/pytups/
+.. image:: https://img.shields.io/pypi/l/pytups.svg
+    :target: https://pypi.org/project/pytups/
+.. image:: https://img.shields.io/pypi/pyversions/pytups.svg
+    :target: https://pypi.org/project/pytups/
 .. image:: https://travis-ci.org/pchtsp/pytups.svg?branch=master
     :target: https://travis-ci.org/pchtsp/pytups
 

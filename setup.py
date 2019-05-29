@@ -16,7 +16,7 @@ for r in requirementslist:
 
 kwargs = {
     "name": "pytups",
-    "version": 0.1,
+    "version": 0.2,
     "packages": packages,
     "description": "data wrangling for lists of tuples and dictionaries",
     "long_description": long_description,
@@ -30,10 +30,9 @@ kwargs = {
     "download_url": "https://github.com/pchtsp/pytups/archive/master.zip",
     "keywords": "super dict dictionary tuple list math pulp",
     "classifiers": [
-        "Programming Language :: Python",
-        "Topic :: Software Development",
-        "Topic :: Software Development :: Libraries",
-        "Topic :: Software Development :: Libraries :: Python Modules",
+        "Programming Language :: Python :: 3",
+        "License :: OSI Approved :: MIT License",
+        "Operating System :: OS Independent",
     ]
 }
 

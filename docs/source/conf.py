@@ -23,7 +23,7 @@ copyright = '2019, Franco Peschiera'
 author = 'Franco Peschiera'
 
 # The full version, including alpha/beta/rc tags
-release = '0.1'
+release = '0.3'
 
 
 # -- General configuration ---------------------------------------------------
@@ -53,7 +53,12 @@ html_theme = 'alabaster'
 # further.  For a list of options available for each theme, see the
 # documentation.
 #
-html_theme_options = {'fixed_sidebar': True}
+html_theme_options = {
+    'fixed_sidebar': True, 
+    'github_banner': True,
+    'show_powered_by': False,
+    'github_user': 'pchtsp',
+    'github_repo': 'pytups'}
 
 # Add any paths that contain custom static files (such as style sheets) here,
 # relative to this directory. They are copied after the builtin static files,
