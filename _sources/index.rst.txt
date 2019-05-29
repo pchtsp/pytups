@@ -1,4 +1,4 @@
-Welcome to pytups's documentation!
+pytups: cleaner data wrangling
 ==================================
 
 .. toctree::
