@@ -7,7 +7,8 @@ class TupList(list):
         """
         filters the tuple of each element of the list according to a list of positions
 
-        :param list indices: a list of positions
+        :param indices: a list of positions
+        :type indices: int or list
         :return: a new :py:class:`TupList`
         """
         if not len(self):
@@ -155,6 +156,13 @@ class TupList(list):
         :return: list
         """
         return list(self)
+
+    def to_set(self):
+        """
+
+        :return: set
+        """
+        return set(self)
 
     def apply(self, func, *args, **kwargs):
         """

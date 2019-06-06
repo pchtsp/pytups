@@ -27,21 +27,35 @@ class SuperDict(dict):
         """
         return list(self.values())
 
-    def clean(self, default_value=0, func=None):
+    def values_tl(self):
+        """
+        Shortcut to:
+
+        >>> t.TupList(SuperDict().values())
+
+        :return: tuple list with values
+        :rtype: :py:class:`pytups.tuplist.TupList`
+        """
+        from . import tuplist as tl
+
+        return tl.TupList(self.values())
+
+    def clean(self, default_value=0, func=None, **kwargs):
         """
         Filters elements by value
 
         :param default_value: value of elements to take out
         :param function func: function that evaluates to true if we take out the element
+        :param **kwags: optional arguments for func
         :return: new :py:class:`SuperDict`
-        :rtype: int :py:class:`SuperDict`
+        :rtype: :py:class:`SuperDict`
 
         >>> SuperDict({'a': 1, 'b': 0, 'c': 1}).clean(0)
         {'a': 1, 'c': 1}
         """
         if func is None:
             func = lambda x: x != default_value
-        return SuperDict({key: value for key, value in self.items() if func(value)})
+        return SuperDict({key: value for key, value in self.items() if func(value, **kwargs)})
 
     def len(self):
         """
@@ -245,6 +259,24 @@ class SuperDict(dict):
         """
         return SuperDict({k: func(k, v, *args, **kwargs) for k, v in self.items()})
 
+    def vapply(self, func, *args, **kwargs):
+        """
+        Same as apply but only on values
+
+        :param function func: function to apply.
+        :return: new :py:class:`SuperDict`
+        """
+        return SuperDict({k: func(v, *args, **kwargs) for k, v in self.items()})
+
+    def kapply(self, func, *args, **kwargs):
+        """
+        Same as apply but only on keys
+
+        :param function func: function to apply.
+        :return: new :py:class:`SuperDict`
+        """
+        return SuperDict({k: func(k, *args, **kwargs) for k in self})
+
     def get_m(self, *args):
         """
         Safe way to search for something in a nested dictionary
@@ -259,15 +291,6 @@ class SuperDict(dict):
             return d
         except KeyError:
             return None
-
-    def vapply(self, func, *args, **kwargs):
-        """
-        Same as apply but only on values
-
-        :param function func: function to apply.
-        :return: new :py:class:`SuperDict`
-        """
-        return SuperDict({k: func(v, *args, **kwargs) for k, v in self.items()})
 
     def update(self, *args, **kwargs):
         """
