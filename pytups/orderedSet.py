@@ -22,10 +22,11 @@ class OrderSet(col.MutableSequence):
 
     def __delitem__(self, key):
         del self._store[self[key]]
-        rest = self._pos[key:]
-        for item in rest:
-            self._store[item] -= 1
-        del self[key]
+        if key!=-1:
+            rest = self._pos[key+1:]
+            for item in rest:
+                self._store[item] -= 1
+        del self._pos[key]
 
     def __iter__(self):
         return iter(self._pos)

@@ -11,6 +11,7 @@ TEST_VAL = [1, 2, 3]
 TEST_VAL2 = 4
 TEST_DICT = {'a': {'b': {'c': TEST_VAL}}}
 TEST_DICT_2 = {'a': {'b': {'c': TEST_VAL}}, 'b': {('c', 't'): {'d' : TEST_VAL2}}}
+TEST_DICT_3 = {'ABC': {('a', 'b', 'c'): TEST_VAL2}}
 
 class DictTest(unittest.TestCase):
     dict_class = pt.SuperDict
@@ -38,7 +39,11 @@ class DictTest(unittest.TestCase):
 
     def test_to_dictdict(self):
         prop = self.dict_class.from_dict({'b': {('c', 't'): {'d' : TEST_VAL2}}}).to_dictdict()
-        self.assertDictEqual(prop, {'b': {('c', 't'): {'d' : TEST_VAL2}}})
+        self.assertDictEqual(prop, {'b': {'c': {'t': {'d' : TEST_VAL2}}}})
+
+    def test_to_dictdict2(self):
+        prop = self.dict_class.from_dict(TEST_DICT_3).to_dictdict()
+        self.assertDictEqual(prop, {'ABC': {'a': {'b': {'c': TEST_VAL2}}}})
 
     def test_set_one_level_item(self):
         some_dict = {'a': TEST_VAL}

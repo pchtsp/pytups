@@ -103,8 +103,16 @@ class SuperDict(dict):
 
         """
         dictdict = SuperDict()
-        for tup, value in self.items():
-            dictdict.set_m(*tup, value=value)
+        for key in self:
+            if isinstance(self[key], dict):
+                # if it's a nested dictionary, we traverse it first:
+                self[key] = self[key].to_dictdict()
+            value = self[key]
+            if not isinstance(key, tuple):
+                # in some cases, the key is just one value that's a string
+                # we need to be careful not to expand the string
+                key = key,
+            dictdict.set_m(*key, value=value)
         return dictdict
 
     def set_m(self, *args, value):

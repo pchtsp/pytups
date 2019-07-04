@@ -38,7 +38,7 @@ class OrdSetTest(unittest.TestCase):
         self.assertEqual(self.dates1[0], new_value)
         self.assertEqual(new_len, prev_len)
         self.refDates1[0] = new_value
-        self.assertListEqual(self.refDates1, self.dates1)
+        self.assertListEqual(self.refDates1, self.dates1._pos)
 
     def test_append(self):
         prev_len = len(self.dates1)
@@ -48,17 +48,17 @@ class OrdSetTest(unittest.TestCase):
         self.assertEqual(self.dates1[-1], new_value)
         self.assertEqual(prev_len+1, new_len)
         self.refDates1.append(new_value)
-        self.assertListEqual(self.refDates1, self.dates1)
+        self.assertListEqual(self.refDates1, self.dates1._pos)
 
     def test_pop(self):
         self.refDates1.pop()
         self.dates1.pop()
-        self.assertListEqual(self.refDates1, self.dates1)
+        self.assertListEqual(self.refDates1, self.dates1._pos)
 
     def test_del(self):
         del self.refDates1[3]
         del self.dates1[3]
-        self.assertListEqual(self.refDates1, self.dates1)
+        self.assertListEqual(self.refDates1, self.dates1._pos)
 
     def setUp(self):
         self.prop1 = self.dict_class(TEST_TUP)

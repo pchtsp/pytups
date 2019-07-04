@@ -164,6 +164,7 @@ class TupList(list):
         """
         return set(self)
 
+
     def apply(self, func, *args, **kwargs):
         """
         maps function into each element of TupList
@@ -172,4 +173,12 @@ class TupList(list):
         :return: new :py:class:`TupList`
         """
         return TupList(func(v, *args, **kwargs) for v in self)
-        # return TupList(map(func, self))
+
+    def kapply(self, func, *args, **kwargs):
+        """
+        maps function into each element of TupList
+
+        :param function func: function to apply
+        :return: new :py:class:`TupList`
+        """
+        return TupList(func(k, v, *args, **kwargs) for k, v in enumerate(self))
