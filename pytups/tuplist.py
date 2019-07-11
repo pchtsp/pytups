@@ -1,4 +1,5 @@
 import numpy as np
+import pandas as pd
 
 # TODO: when accesed via [], it is converted into a list.
 class TupList(list):
@@ -182,3 +183,7 @@ class TupList(list):
         :return: new :py:class:`TupList`
         """
         return TupList(func(k, v, *args, **kwargs) for k, v in enumerate(self))
+
+
+    def to_df(self, **kwargs):
+        return pd.DataFrame(self.to_list(), **kwargs)

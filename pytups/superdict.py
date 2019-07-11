@@ -1,4 +1,5 @@
 import numpy as np
+import pandas as pd
 
 
 class SuperDict(dict):
@@ -351,6 +352,9 @@ class SuperDict(dict):
         :return:
         """
         return sorted(self, **kwargs)
+
+    def to_df(self, **kwargs):
+        return pd.DataFrame.from_dict(self, **kwargs)
 
     @classmethod
     def from_dict(cls, data):
