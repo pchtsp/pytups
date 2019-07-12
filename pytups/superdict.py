@@ -356,6 +356,9 @@ class SuperDict(dict):
     def to_df(self, **kwargs):
         return pd.DataFrame.from_dict(self, **kwargs)
 
+    def reverse(self):
+        return SuperDict({v: k for k, v in self.items()})
+
     @classmethod
     def from_dict(cls, data):
         """
