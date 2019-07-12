@@ -1,5 +1,4 @@
 import numpy as np
-import pandas as pd
 
 # TODO: when accesed via [], it is converted into a list.
 class TupList(list):
@@ -186,4 +185,9 @@ class TupList(list):
 
 
     def to_df(self, **kwargs):
-        return pd.DataFrame(self.to_list(), **kwargs)
+        try:
+            import pandas as pd
+            return pd.DataFrame(self.to_list(), **kwargs)
+        except ImportError:
+            raise ImportError('Pandas is not present in your system. Try: pip install pandas')
+

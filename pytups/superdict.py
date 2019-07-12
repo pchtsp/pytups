@@ -1,5 +1,4 @@
 import numpy as np
-import pandas as pd
 
 
 class SuperDict(dict):
@@ -354,7 +353,11 @@ class SuperDict(dict):
         return sorted(self, **kwargs)
 
     def to_df(self, **kwargs):
-        return pd.DataFrame.from_dict(self, **kwargs)
+        try:
+            import pandas as pd
+            return pd.DataFrame.from_dict(self, **kwargs)
+        except ImportError:
+            raise ImportError('Pandas is not present in your system Try: pip install pandas')
 
     def reverse(self):
         return SuperDict({v: k for k, v in self.items()})
