@@ -114,7 +114,7 @@ class TupList(list):
         """
         return TupList(set(self) & set(input_list))
 
-    def to_start_finish(self, compare_tups, pp=1):
+    def to_start_finish(self, compare_tups, pp=1, sort=True):
         """
         Takes a calendar tuple list of the form: (id, month) and
         returns a tuple list of the form (id, start_month, end_month)
@@ -124,7 +124,8 @@ class TupList(list):
         :param int pp: the position in the tuple where the period is
         :return: new :py:class:`TupList`
         """
-        self.sort(key=lambda x: (x[0], x[pp]))
+        if sort:
+            self.sort(key=lambda x: (x[0], x[pp]))
         res_start_finish = []
         last_tup = ()
         all_periods = []
@@ -191,3 +192,12 @@ class TupList(list):
         except ImportError:
             raise ImportError('Pandas is not present in your system. Try: pip install pandas')
 
+
+    def sorted(self, **kwargs):
+        """
+        Applies sorted function to elements and returns a TupList
+
+        :param kwargs: arguments for sorted function
+        :return: new :py:class:`TupList`
+        """
+        return TupList(sorted(self, **kwargs))

@@ -31,7 +31,7 @@ class SuperDict(dict):
         """
         Shortcut to:
 
-        >>> t.TupList(SuperDict().values())
+        >>> tl.TupList(SuperDict().values())
 
         :return: tuple list with values
         :rtype: :py:class:`pytups.tuplist.TupList`
