@@ -127,15 +127,14 @@ class SuperDict(dict):
         {'a': {'b': 1}, 'b': {'c': 0}, 'c': {'d': {'a': 1}}}
 
         """
-        # TODO: maybe copy dictionary instead of editing?
-        elem = args[0]
-        if len(args) == 1:
+        elem, *args = args
+        if not args:
             self[elem] = value
             return self
         # we reach here, we still need to go deeper:
         if elem not in self or not isinstance(self[elem], SuperDict):
             self[elem] = SuperDict()
-        self[elem].set_m(*args[1:], value=value)
+        self[elem].set_m(*args, value=value)
         return self
 
     def dicts_to_tup(self, keys, content):
@@ -306,7 +305,7 @@ class SuperDict(dict):
 
         :param args: dictionary to update with
         :param kwargs: specific keys and values to update
-        :return:
+        :return: the edited dictionary
         """
         other = {}
         if args:
@@ -321,6 +320,7 @@ class SuperDict(dict):
                 self[k] = v
             else:
                 self[k].update(v)
+        return self
 
     def _update(self, dict):
         """
