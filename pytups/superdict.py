@@ -285,7 +285,7 @@ class SuperDict(dict):
         """
         return SuperDict({k: func(k, *args, **kwargs) for k in self})
 
-    def get_m(self, *args):
+    def get_m(self, *args, default=None):
         """
         Safe way to search for something in a nested dictionary
 
@@ -298,7 +298,7 @@ class SuperDict(dict):
                 d = d[i]
             return d
         except KeyError:
-            return None
+            return default
 
     def update(self, *args, **kwargs):
         """
