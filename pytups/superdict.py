@@ -82,11 +82,13 @@ class SuperDict(dict):
         {'a': 1, 'b': 0}
 
         """
-        if not isinstance(indices, list):
+        try:
+            iter(indices)
+        except TypeError:
             indices = [indices]
         if not check:
             return SuperDict({k: self[k] for k in indices if k in self})
-        bad_elem = np.setdiff1d(indices, list(self.keys()))
+        bad_elem = set(indices) - self.keys()
         if len(bad_elem) > 0:
             raise KeyError("following elements not in keys: {}".format(bad_elem))
         return SuperDict({k: self[k] for k in indices})
