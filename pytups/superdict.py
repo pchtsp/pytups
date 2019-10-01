@@ -1,5 +1,5 @@
 import numpy as np
-
+from . import tools
 
 class SuperDict(dict):
     """
@@ -82,9 +82,7 @@ class SuperDict(dict):
         {'a': 1, 'b': 0}
 
         """
-        try:
-            iter(indices)
-        except TypeError:
+        if not tools.is_really_iterable(indices):
             indices = [indices]
         if not check:
             return SuperDict({k: self[k] for k in indices if k in self})
