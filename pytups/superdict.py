@@ -215,7 +215,8 @@ class SuperDict(dict):
         :param default:
         :return: new :py:class:`SuperDict`
         """
-        _dict = {k: default for k in keys}
+        rem_keys = self.keys() - set(keys)
+        _dict = {k: default for k in rem_keys}
         _dict.update(self)
         return SuperDict(_dict)
 
@@ -263,7 +264,7 @@ class SuperDict(dict):
     def apply(self, func, *args, **kwargs):
         """Applies a function to the dictionary and returns the result
 
-        :param function func: function with two arguments: one for the key, another for the value
+        :param callable func: function with two arguments: one for the key, another for the value
         :return: new :py:class:`SuperDict`
         """
         return SuperDict({k: func(k, v, *args, **kwargs) for k, v in self.items()})
@@ -272,7 +273,7 @@ class SuperDict(dict):
         """
         Same as apply but only on values
 
-        :param function func: function to apply.
+        :param callable func: function to apply.
         :return: new :py:class:`SuperDict`
         """
         return SuperDict({k: func(v, *args, **kwargs) for k, v in self.items()})
@@ -281,7 +282,7 @@ class SuperDict(dict):
         """
         Same as apply but only on keys
 
-        :param function func: function to apply.
+        :param callable func: function to apply.
         :return: new :py:class:`SuperDict`
         """
         return SuperDict({k: func(k, *args, **kwargs) for k in self})
@@ -359,7 +360,7 @@ class SuperDict(dict):
             import pandas as pd
             return pd.DataFrame.from_dict(self, **kwargs)
         except ImportError:
-            raise ImportError('Pandas is not present in your system Try: pip install pandas')
+            raise ImportError('Pandas is not present in your system.\nTry: pip install pandas')
 
     def reverse(self):
         return SuperDict({v: k for k, v in self.items()})
