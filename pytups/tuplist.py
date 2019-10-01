@@ -1,7 +1,12 @@
 import numpy as np
 
-# TODO: when accesed via [], it is converted into a list.
 class TupList(list):
+
+    # TODO: test following method:
+    def __getitem__(self, key):
+        if isinstance(key, slice):
+            return TupList(self[i] for i in range(key.start, key.stop, key.step))
+        return list.__getitem__(self, key)
 
     def filter(self, indices):
         """
