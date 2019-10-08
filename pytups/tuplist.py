@@ -2,10 +2,16 @@ import numpy as np
 
 class TupList(list):
 
-    # TODO: test following method:
     def __getitem__(self, key):
         if isinstance(key, slice):
-            return TupList(self[i] for i in range(key.start, key.stop, key.step))
+            start, stop, step = key.start, key.stop, key.step
+            if start is None:
+                start = 0
+            if stop is None:
+                stop = len(self)
+            if step is None:
+                step = 1
+            return TupList(self[i] for i in range(start, stop, step))
         return list.__getitem__(self, key)
 
     def filter(self, indices):
@@ -119,19 +125,19 @@ class TupList(list):
         """
         return TupList(set(self) & set(input_list))
 
-    def to_start_finish(self, compare_tups, pp=1, sort=True):
+    def to_start_finish(self, compare_tups, pp=1, sort=True, join_func=None):
         """
         Takes a calendar tuple list of the form: (id, month) and
         returns a tuple list of the form (id, start_month, end_month)
         it works with a bigger tuple too.
 
-        :param function compare_tups: function to decide two tups are not consecutive. Takes 3 arguments
+        :param function compare_tups: returns True if tups are not consecutive. Takes 3 arguments
         :param int pp: the position in the tuple where the period is
+        :param function join_func: returns joined tuple from list of consecutive tuples. Takes 1 argument.
         :return: new :py:class:`TupList`
         """
         if sort:
             self.sort(key=lambda x: (x[0], x[pp]))
-        res_start_finish = []
         last_tup = ()
         all_periods = []
         current_period = []
@@ -152,8 +158,9 @@ class TupList(list):
         if len(current_period):
             all_periods.append(current_period)
 
-        for list_tup in all_periods:
-            res_start_finish.append(tuple(list(list_tup[0]) + [list_tup[-1][pp]]))
+        if join_func is None:
+            join_func = lambda list_tup: tuple(list(list_tup[0]) + [list_tup[-1][pp]])
+        res_start_finish = [join_func(list_tup) for list_tup in all_periods]
         return TupList(res_start_finish)
 
     def to_list(self):

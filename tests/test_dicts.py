@@ -210,6 +210,26 @@ class DictTest(unittest.TestCase):
         dir(prop)
         self.assertTrue('__members__' in prop.keys())
 
+    def test_fill_default(self):
+        prop = self.dict_class.from_dict(TEST_DICT)
+        prop2 = prop.fill_with_default(['f', 'g', 'h'])
+        prop2_result = {'a': {'b': {'c': [1, 2, 3]}}, 'f': 0, 'g': 0, 'h': 0}
+        self.assertEqual(prop2, prop2_result)
+
+    def test_fill_default2(self):
+        prop = self.dict_class.from_dict(TEST_DICT)
+        prop2 = prop.fill_with_default(('f', 'g', 'h'), 'OK')
+        prop2_result = {'a': {'b': {'c': [1, 2, 3]}}, 'f': 'OK', 'g': 'OK', 'h': 'OK'}
+        self.assertEqual(prop2, prop2_result)
+
+    def test_sapply(self):
+        import operator as op
+        prop = self.dict_class.from_dict(TEST_DICT).to_dictup()
+        prop2 = self.dict_class.from_dict(TEST_DICT).to_dictup().vapply(lambda v: [4, 5, 6])
+        sum_prop = prop.sapply(op.__add__, prop2).to_dictdict()
+        result = {'a': {'b': {'c': [1, 2, 3, 4, 5, 6]}}}
+        self.assertEqual(sum_prop, result)
+
     # def test_to_dict(self):
     #     nested = {'a': [{'a': 0}, 2], 'b': {}, 'c': 2}
     #     prop = self.dict_class(nested)
@@ -354,6 +374,19 @@ class DictTest(unittest.TestCase):
         items = zip(keys, values)
         d = self.dict_class(items)
         self.assertEqual(d['a'], 42)
+
+    def test_iterable1(self):
+        no = pt.tools.is_really_iterable('sqdf')
+        self.assertEqual(no, False)
+
+    def test_iterable2(self):
+        yes = pt.tools.is_really_iterable([1, 3, 5])
+        self.assertEqual(yes, True)
+
+    def test_iterable3(self):
+        yes = pt.tools.is_really_iterable((1, 9))
+        self.assertEqual(yes, True)
+
 
     # def test_setdefault_simple(self):
     #     d = self.dict_class()

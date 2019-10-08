@@ -6,7 +6,7 @@ TEST_TUP = [('a', 'b', 'c', 1), ('a', 'b', 'c', 2), ('a', 'b', 'c', 3),
 
 
 class TupTest(unittest.TestCase):
-    dict_class = pt.TupList
+    tuplist_class = pt.TupList
 
     def test_filter(self):
         result = [('a', 'c'), ('a', 'c'), ('a', 'c'),
@@ -64,14 +64,34 @@ class TupTest(unittest.TestCase):
         self.assertTrue(type(self.prop1.to_list()) is list)
 
     def add(self):
-        prop = self.dict_class()
+        prop = self.tuplist_class()
         prop.add('b', 't', '3', 5)
         self.assertListEqual([('b', 't', '3', 5)], prop)
+
+    def test_get(self):
+        prop = self.prop1
+        self.assertEqual(prop[0], ('a', 'b', 'c', 1))
+
+    def test_get2(self):
+        prop = self.prop1
+        prop2 = prop[:2]
+        self.assertIsInstance(prop2, pt.TupList)
+        self.assertEqual(prop2, [('a', 'b', 'c', 1), ('a', 'b', 'c', 2)])
+
+    def test_get3(self):
+        prop = self.prop1
+        prop2 = prop[:-2]
+        self.assertIsInstance(prop2, pt.TupList)
+
+    def test_get4(self):
+        prop = self.prop1
+        prop2 = prop[1:-1]
+        self.assertIsInstance(prop2, pt.TupList)
 
     # intersect
 
     def setUp(self):
-        self.prop1 = self.dict_class(TEST_TUP)
+        self.prop1 = self.tuplist_class(TEST_TUP)
         pass
 
     def tearDown(self):
@@ -80,5 +100,5 @@ class TupTest(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
-    self = TupTest()
-    self.setUp()
+    # self = TupTest()
+    # self.setUp()

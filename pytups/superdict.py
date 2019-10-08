@@ -40,6 +40,19 @@ class SuperDict(dict):
 
         return tl.TupList(self.values())
 
+    def keys_tl(self):
+        """
+        Shortcut to:
+
+        >>> tl.TupList(SuperDict().keys())
+
+        :return: tuple list with keys
+        :rtype: :py:class:`pytups.tuplist.TupList`
+        """
+        from . import tuplist as tl
+
+        return tl.TupList(self.keys())
+
     def clean(self, default_value=0, func=None, **kwargs):
         """
         Filters elements by value
@@ -115,7 +128,7 @@ class SuperDict(dict):
             dictdict.set_m(*key, value=value)
         return dictdict
 
-    def set_m(self, *args, value):
+    def set_m(self, *args, value=None):
         """
         uses `args` as nested keys and then assigns `value`
 
@@ -213,7 +226,7 @@ class SuperDict(dict):
         :param default:
         :return: new :py:class:`SuperDict`
         """
-        rem_keys = self.keys() - set(keys)
+        rem_keys = set(keys) - self.keys()
         _dict = {k: default for k in rem_keys}
         _dict.update(self)
         return SuperDict(_dict)
@@ -285,6 +298,18 @@ class SuperDict(dict):
         """
         return SuperDict({k: func(k, *args, **kwargs) for k in self})
 
+    def sapply(self, func, other):
+        """
+        Applies function to both dictionaries.
+        Using keys of the self.
+        It's like applying a function over the left join.
+
+        :param callable func: function to apply.
+        :param dict other: dictionary to apply function to
+        :return: new :py:class:`SuperDict`
+        """
+        return SuperDict({k: func(v, other[k]) for k, v in self.items()})
+
     def get_m(self, *args, default=None):
         """
         Safe way to search for something in a nested dictionary
@@ -292,8 +317,8 @@ class SuperDict(dict):
         :param args: keys in nested dictionary
         :return: content after traversing the nested dictionary. None if doesn't exit
         """
+        d = self
         try:
-            d = self
             for i in args:
                 d = d[i]
             return d
