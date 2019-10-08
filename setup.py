@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 
 from setuptools import setup
 
@@ -16,11 +16,11 @@ for r in requirementslist:
 
 kwargs = {
     "name": "pytups",
-    "version": 0.3,
+    "version": 0.5,
     "packages": packages,
     "description": "data wrangling for lists of tuples and dictionaries",
     "long_description": long_description,
-    'long_description_content_type': "text/markdown",
+    'long_description_content_type': "text/x-rst",
     "author": "Franco Peschiera",
     "maintainer": "Franco Peschiera",
     "author_email": "pchtsp@gmail.com",

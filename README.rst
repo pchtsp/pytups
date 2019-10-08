@@ -9,8 +9,6 @@ Pytups
 .. image:: https://travis-ci.org/pchtsp/pytups.svg?branch=master
     :target: https://travis-ci.org/pchtsp/pytups
 
-.. highlight:: python
-
 What and why
 ================
 
