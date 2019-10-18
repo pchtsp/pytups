@@ -1,5 +1,7 @@
 import numpy as np
 
+# TODO: change vapply, apply and kapply to be consistent with superdict.
+
 class TupList(list):
 
     def __getitem__(self, key):
@@ -14,7 +16,7 @@ class TupList(list):
             return TupList(self[i] for i in range(start, stop, step))
         return list.__getitem__(self, key)
 
-    def filter(self, indices):
+    def take(self, indices):
         """
         filters the tuple of each element of the list according to a list of positions
 
@@ -34,7 +36,7 @@ class TupList(list):
             return TupList(x[0] for x in arr_filt)
         return TupList(tuple(x) for x in arr_filt)
 
-    def filter_list_f(self, function):
+    def vfilter(self, function):
         """
         returns new list with only tuples for which `function` returns True
 
@@ -177,8 +179,25 @@ class TupList(list):
         """
         return set(self)
 
+    def kvapply(self, func, *args, **kwargs):
+        """
+        maps function into each element of TupList with indexes
 
-    def apply(self, func, *args, **kwargs):
+        :param function func: function to apply
+        :return: new :py:class:`TupList`
+        """
+        return TupList(func(k, v, *args, **kwargs) for k, v in enumerate(self))
+
+    def kapply(self, func, *args, **kwargs):
+        """
+        maps function into each key of TupList
+
+        :param function func: function to apply
+        :return: new :py:class:`TupList`
+        """
+        return TupList(func(k, *args, **kwargs) for k, _ in enumerate(self))
+
+    def vapply(self, func, *args, **kwargs):
         """
         maps function into each element of TupList
 
@@ -187,15 +206,10 @@ class TupList(list):
         """
         return TupList(func(v, *args, **kwargs) for v in self)
 
-    def kapply(self, func, *args, **kwargs):
-        """
-        maps function into each element of TupList
-
-        :param function func: function to apply
-        :return: new :py:class:`TupList`
-        """
-        return TupList(func(k, v, *args, **kwargs) for k, v in enumerate(self))
-
+    def apply(self, *args, **kwargs):
+        import warnings
+        warnings.warn("deprecated", DeprecationWarning)
+        return self.vapply(*args, **kwargs)
 
     def to_df(self, **kwargs):
         try:

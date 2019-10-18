@@ -68,6 +68,20 @@ class SuperDict(dict):
         """
         if func is None:
             func = lambda x: x != default_value
+        return self.vfilter(func=func, **kwargs)
+
+    def vfilter(self, func, **kwargs):
+        """
+
+        :param function func: True for values we want to filter
+        :param kwargs: other arguments for func
+        :return: new :py:class:`SuperDict`
+        :rtype: :py:class:`SuperDict`
+
+        >>> SuperDict({'a': 2, 'b': 3, 'c': 1}).vfilter(lambda v: v > 1)
+        {'a': 2, 'b': 3}
+0
+        """
         return SuperDict({key: value for key, value in self.items() if func(value, **kwargs)})
 
     def len(self):
@@ -272,7 +286,12 @@ class SuperDict(dict):
             return result.values_l()
         return result
 
-    def apply(self, func, *args, **kwargs):
+    def apply(self, *args, **kwargs):
+        import warnings
+        warnings.warn("deprecated", DeprecationWarning)
+        return self.kvapply(*args, **kwargs)
+
+    def kvapply(self, func, *args, **kwargs):
         """Applies a function to the dictionary and returns the result
 
         :param callable func: function with two arguments: one for the key, another for the value
