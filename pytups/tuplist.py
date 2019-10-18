@@ -1,5 +1,5 @@
 import numpy as np
-
+import warnings
 # TODO: change vapply, apply and kapply to be consistent with superdict.
 
 class TupList(list):
@@ -15,6 +15,10 @@ class TupList(list):
                 step = 1
             return TupList(self[i] for i in range(start, stop, step))
         return list.__getitem__(self, key)
+
+    def filter(self, *args, **kwargs):
+        warnings.warn("use take instead of filter", DeprecationWarning)
+        return self.take(*args, **kwargs)
 
     def take(self, indices):
         """
@@ -44,6 +48,10 @@ class TupList(list):
         :return: new :py:class:`TupList`
         """
         return TupList([i for i in self if function(i)])
+
+    def filter_list_f(self, *args, **kwargs):
+        warnings.warn("use vfilter instead of filter_list_f", DeprecationWarning)
+        return self.vfilter(*args, **kwargs)
 
     def to_dict(self, result_col=0, is_list=True, indices=None):
         """
@@ -207,8 +215,7 @@ class TupList(list):
         return TupList(func(v, *args, **kwargs) for v in self)
 
     def apply(self, *args, **kwargs):
-        import warnings
-        warnings.warn("deprecated", DeprecationWarning)
+        warnings.warn("use vapply instead of apply", DeprecationWarning)
         return self.vapply(*args, **kwargs)
 
     def to_df(self, **kwargs):

@@ -1,5 +1,6 @@
 import numpy as np
 from . import tools
+import warnings
 
 class SuperDict(dict):
     """
@@ -287,8 +288,7 @@ class SuperDict(dict):
         return result
 
     def apply(self, *args, **kwargs):
-        import warnings
-        warnings.warn("deprecated", DeprecationWarning)
+        warnings.warn("use kvapply instead", DeprecationWarning)
         return self.kvapply(*args, **kwargs)
 
     def kvapply(self, func, *args, **kwargs):
