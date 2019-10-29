@@ -73,7 +73,7 @@ class SuperDict(dict):
 
     def vfilter(self, func, **kwargs):
         """
-
+        apply a filter over the dictionary values
         :param function func: True for values we want to filter
         :param kwargs: other arguments for func
         :return: new :py:class:`SuperDict`
@@ -81,9 +81,21 @@ class SuperDict(dict):
 
         >>> SuperDict({'a': 2, 'b': 3, 'c': 1}).vfilter(lambda v: v > 1)
         {'a': 2, 'b': 3}
-0
         """
         return SuperDict({key: value for key, value in self.items() if func(value, **kwargs)})
+
+    def kfilter(self, func, **kwargs):
+        """
+        apply a filter over the dictionary keys
+        :param function func: True for keys we want to filter
+        :param kwargs: other arguments for func
+        :return: new :py:class:`SuperDict`
+        :rtype: :py:class:`SuperDict`
+
+        >>> SuperDict({'a': 2, 'b': 3, 'c': 1}).kfilter(lambda k: k > 'a')
+        {'b': 3, 'c': 1}
+        """
+        return SuperDict({key: value for key, value in self.items() if func(key, **kwargs)})
 
     def len(self):
         """

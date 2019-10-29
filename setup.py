@@ -3,15 +3,13 @@
 from setuptools import setup
 
 packages = ['pytups']
-requirementslist = ['requirements.txt']
 
 with open("README.rst", "r") as fh:
     long_description = fh.read()
 
 required = []
-for r in requirementslist:
-    with open(r, 'r') as requirements:
-        required.append(requirements.read().splitlines())
+with open("requirements.txt", "r") as fh:
+    required.append(fh.read().splitlines())
 
 
 kwargs = {
