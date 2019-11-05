@@ -63,10 +63,22 @@ class TupTest(unittest.TestCase):
     def test_to_list(self):
         self.assertTrue(type(self.prop1.to_list()) is list)
 
-    def add(self):
+    def test_add(self):
         prop = self.tuplist_class()
         prop.add('b', 't', '3', 5)
         self.assertListEqual([('b', 't', '3', 5)], prop)
+
+    def test_add_operator(self):
+        prop = self.tuplist_class
+        result = self.prop1 + self.prop1
+        result1 = \
+        [('a', 'b', 'c', 1), ('a', 'b', 'c', 2), ('a', 'b', 'c', 3),
+         ('r', 'b', 'c', 1), ('r', 'b', 'c', 2), ('r', 'b', 'c', 3),
+         ('a', 'b', 'c', 1), ('a', 'b', 'c', 2), ('a', 'b', 'c', 3),
+         ('r', 'b', 'c', 1), ('r', 'b', 'c', 2), ('r', 'b', 'c', 3)
+         ]
+        self.assertIsInstance(result, prop)
+        self.assertListEqual(result, result1)
 
     def test_get(self):
         prop = self.prop1

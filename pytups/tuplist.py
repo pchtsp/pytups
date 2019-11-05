@@ -16,6 +16,9 @@ class TupList(list):
             return TupList(self[i] for i in range(start, stop, step))
         return list.__getitem__(self, key)
 
+    def __add__(self, *args, **kwargs):
+        return TupList(super().__add__(*args, **kwargs))
+
     def filter(self, *args, **kwargs):
         warnings.warn("use take instead of filter", DeprecationWarning)
         return self.take(*args, **kwargs)
