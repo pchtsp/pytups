@@ -12,11 +12,12 @@ class SuperDict(dict):
         _keys = self.keys_l()
         first, last = (_keys[n] for n in [0, -1])
         first_v, last_v = (self[n] for n in [first, last])
-        return "\"{{{}: {}\n... \n{}: {}}}\"".\
+        return "\"{{{}: {}\n,..., \n{}: {}}}\"\n{} elements".\
             format(first.__repr__(),
                    first_v.__repr__(),
                    last.__repr__(),
-                   last_v.__repr__())
+                   last_v.__repr__(),
+                   len(self))
 
     def keys_l(self):
         """

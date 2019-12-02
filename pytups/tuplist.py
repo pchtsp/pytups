@@ -22,7 +22,10 @@ class TupList(list):
     def __repr__(self):
         if len(self) <= 2:
             return list.__repr__(self)
-        return '[' + self[0].__repr__() + '\n...\n' + self[-1].__repr__() + ']'
+        return "[{},\n...,\n{}]\n({} elements)".\
+            format(self[0].__repr__(),
+                   self[-1].__repr__(),
+                   len(self))
 
     def filter(self, *args, **kwargs):
         warnings.warn("use take instead of filter", DeprecationWarning)
