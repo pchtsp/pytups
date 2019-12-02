@@ -1,11 +1,23 @@
-import numpy as np
 from . import tools
 import warnings
+
 
 class SuperDict(dict):
     """
     A dictionary with additional methods
     """
+    def __repr__(self):
+        if len(self) <= 2:
+            return dict.__repr__(self)
+        _keys = self.keys_l()
+        first, last = (_keys[n] for n in [0, -1])
+        first_v, last_v = (self[n] for n in [first, last])
+        return "\"{{{}: {}\n... \n{}: {}}}\"".\
+            format(first.__repr__(),
+                   first_v.__repr__(),
+                   last.__repr__(),
+                   last_v.__repr__())
+
     def keys_l(self):
         """
         Shortcut to:

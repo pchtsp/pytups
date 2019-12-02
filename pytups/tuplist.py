@@ -1,6 +1,6 @@
 import numpy as np
 import warnings
-# TODO: change vapply, apply and kapply to be consistent with superdict.
+
 
 class TupList(list):
 
@@ -18,6 +18,11 @@ class TupList(list):
 
     def __add__(self, *args, **kwargs):
         return TupList(super().__add__(*args, **kwargs))
+
+    def __repr__(self):
+        if len(self) <= 2:
+            return list.__repr__(self)
+        return '[' + self[0].__repr__() + '\n...\n' + self[-1].__repr__() + ']'
 
     def filter(self, *args, **kwargs):
         warnings.warn("use take instead of filter", DeprecationWarning)
