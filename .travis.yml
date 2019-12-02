@@ -4,7 +4,8 @@ python:
   - "3.5"
   - "3.6"
   - "3.7"
-install: "make"
+install:
+   - pip install -r requirements.txt
+   - python setup.py install
 # command to run tests
-script:
-  - make test
+script: python -m unittest discover -s tests
