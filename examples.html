@@ -70,10 +70,10 @@
 </ul>
 </div>
 <div id="searchbox" style="display: none" role="search">
-  <h3>Quick search</h3>
+  <h3 id="searchlabel">Quick search</h3>
     <div class="searchformwrapper">
     <form class="search" action="search.html" method="get">
-      <input type="text" name="q" />
+      <input type="text" name="q" aria-labelledby="searchlabel" />
       <input type="submit" value="Go" />
     </form>
     </div>
@@ -148,9 +148,69 @@
 <span class="c1"># {&#39;a&#39;: {&#39;b&#39;: {&#39;c&#39;: &#39;A&#39;}}, &#39;b&#39;: {&#39;t&#39;: {&#39;d&#39; : &#39;B&#39;}}}</span>
 </pre></div>
 </div>
+<div class="section" id="filtering">
+<h3>Filtering<a class="headerlink" href="#filtering" title="Permalink to this headline">¶</a></h3>
+<p>Example data:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">pytups</span> <span class="kn">as</span> <span class="nn">pt</span>
+<span class="n">indent_dict</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;aabb&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s1">&#39;aacc&#39;</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span> <span class="s1">&#39;bbaa&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">}</span>
+<span class="n">supdict</span> <span class="o">=</span> <span class="n">pt</span><span class="o">.</span><span class="n">SuperDict</span><span class="o">.</span><span class="n">from_dict</span><span class="p">(</span><span class="n">indent_dict</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>According to the value in the dictionary:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">supdict</span><span class="o">.</span><span class="n">vfilter</span><span class="p">(</span><span class="k">lambda</span> <span class="n">v</span><span class="p">:</span> <span class="n">v</span><span class="o">==</span><span class="mi">1</span><span class="p">)</span>
+<span class="c1"># {&#39;aabb&#39;: 1, &#39;bbaa&#39;: 1}</span>
+</pre></div>
+</div>
+<p>According to the key:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">supdict</span><span class="o">.</span><span class="n">kfilter</span><span class="p">(</span><span class="k">lambda</span> <span class="n">k</span><span class="p">:</span> <span class="n">k</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">&#39;aa&#39;</span><span class="p">))</span>
+<span class="c1"># {&#39;aabb&#39;: 1, &#39;aacc&#39;: 2}</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="mutations">
+<h3>Mutations<a class="headerlink" href="#mutations" title="Permalink to this headline">¶</a></h3>
+<p>Example data:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">pytups</span> <span class="kn">as</span> <span class="nn">pt</span>
+<span class="n">indent_dict</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;aabb&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s1">&#39;aacc&#39;</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span> <span class="s1">&#39;bbaa&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">}</span>
+<span class="n">supdict</span> <span class="o">=</span> <span class="n">pt</span><span class="o">.</span><span class="n">SuperDict</span><span class="o">.</span><span class="n">from_dict</span><span class="p">(</span><span class="n">indent_dict</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Mutate using the value only:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">supdict</span><span class="o">.</span><span class="n">vapply</span><span class="p">(</span><span class="k">lambda</span> <span class="n">v</span><span class="p">:</span> <span class="n">v</span> <span class="o">*</span> <span class="mi">2</span><span class="p">)</span>
+<span class="c1"># {&#39;aabb&#39;: 2, &#39;aacc&#39;: 4, &#39;bbaa&#39;: 2}</span>
+</pre></div>
+</div>
+<p>Mutate using the key only:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">supdict</span><span class="o">.</span><span class="n">kapply</span><span class="p">(</span><span class="k">lambda</span> <span class="n">k</span><span class="p">:</span> <span class="n">k</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+<span class="c1"># {&#39;aabb&#39;: &#39;a&#39;, &#39;aacc&#39;: &#39;a&#39;, &#39;bbaa&#39;: &#39;b&#39;}</span>
+</pre></div>
+</div>
+<p>A combination of both:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">supdict</span><span class="o">.</span><span class="n">kvapply</span><span class="p">(</span><span class="k">lambda</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span><span class="p">:</span> <span class="n">k</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">v</span><span class="p">))</span>
+<span class="c1"># {&#39;aabb&#39;: &#39;a1&#39;, &#39;aacc&#39;: &#39;a2&#39;, &#39;bbaa&#39;: &#39;b1&#39;}</span>
+</pre></div>
+</div>
+</div>
 <div class="section" id="setting-and-getting-in-nested-dictionaries">
 <h3>Setting and getting in nested dictionaries<a class="headerlink" href="#setting-and-getting-in-nested-dictionaries" title="Permalink to this headline">¶</a></h3>
-<p>TODO: this part.</p>
+<p>Example data:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">pytups</span> <span class="kn">as</span> <span class="nn">pt</span>
+<span class="n">indent_dict</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;a&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;b&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;c&#39;</span><span class="p">:</span> <span class="s1">&#39;A&#39;</span><span class="p">}},</span> <span class="s1">&#39;b&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;t&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;d&#39;</span> <span class="p">:</span> <span class="s1">&#39;B&#39;</span><span class="p">}}}</span>
+<span class="n">supdict</span> <span class="o">=</span> <span class="n">pt</span><span class="o">.</span><span class="n">SuperDict</span><span class="o">.</span><span class="n">from_dict</span><span class="p">(</span><span class="n">indent_dict</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Getting an path of values:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">supdict</span><span class="o">.</span><span class="n">get_m</span><span class="p">(</span><span class="s1">&#39;a&#39;</span><span class="p">,</span> <span class="s1">&#39;b&#39;</span><span class="p">,</span> <span class="s1">&#39;c&#39;</span><span class="p">)</span>
+<span class="c1"># &#39;A&#39;</span>
+<span class="n">supdict</span><span class="o">.</span><span class="n">get_m</span><span class="p">(</span><span class="s1">&#39;a&#39;</span><span class="p">,</span> <span class="s1">&#39;c&#39;</span><span class="p">)</span>
+<span class="c1"># None</span>
+</pre></div>
+</div>
+<p>Setting a path of values:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">supdict</span><span class="o">.</span><span class="n">set_m</span><span class="p">(</span><span class="s1">&#39;a&#39;</span><span class="p">,</span> <span class="s1">&#39;c&#39;</span><span class="p">,</span> <span class="n">value</span><span class="o">=</span><span class="s1">&#39;R&#39;</span><span class="p">)</span>
+<span class="c1"># {&#39;a&#39;: {&#39;b&#39;: {&#39;c&#39;: &#39;A&#39;}, &#39;c&#39;: &#39;R&#39;}, &#39;b&#39;: {&#39;t&#39;: {&#39;d&#39;: &#39;B&#39;}}}</span>
+</pre></div>
+</div>
 </div>
 </div>
 <div class="section" id="tuplists">

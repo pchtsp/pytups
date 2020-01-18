@@ -61,10 +61,10 @@
 </ul>
 </div>
 <div id="searchbox" style="display: none" role="search">
-  <h3>Quick search</h3>
+  <h3 id="searchlabel">Quick search</h3>
     <div class="searchformwrapper">
     <form class="search" action="search.html" method="get">
-      <input type="text" name="q" />
+      <input type="text" name="q" aria-labelledby="searchlabel" />
       <input type="submit" value="Go" />
     </form>
     </div>
@@ -111,14 +111,6 @@
       <li><a href="code.html#pytups.tuplist.TupList.add">add() (pytups.tuplist.TupList method)</a>
 </li>
   </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="code.html#pytups.superdict.SuperDict.apply">apply() (pytups.superdict.SuperDict method)</a>
-
-      <ul>
-        <li><a href="code.html#pytups.tuplist.TupList.apply">(pytups.tuplist.TupList method)</a>
-</li>
-      </ul></li>
-  </ul></td>
 </tr></table>
 
 <h2 id="C">C</h2>
@@ -143,14 +135,10 @@
       <li><a href="code.html#pytups.superdict.SuperDict.fill_with_default">fill_with_default() (pytups.superdict.SuperDict method)</a>
 </li>
       <li><a href="code.html#pytups.superdict.SuperDict.filter">filter() (pytups.superdict.SuperDict method)</a>
-
-      <ul>
-        <li><a href="code.html#pytups.tuplist.TupList.filter">(pytups.tuplist.TupList method)</a>
 </li>
-      </ul></li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="code.html#pytups.tuplist.TupList.filter_list_f">filter_list_f() (pytups.tuplist.TupList method)</a>
+      <li><a href="code.html#pytups.superdict.SuperDict.from_df">from_df() (pytups.superdict.SuperDict class method)</a>
 </li>
       <li><a href="code.html#pytups.superdict.SuperDict.from_dict">from_dict() (pytups.superdict.SuperDict class method)</a>
 </li>
@@ -176,8 +164,26 @@
 <h2 id="K">K</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="code.html#pytups.superdict.SuperDict.kapply">kapply() (pytups.superdict.SuperDict method)</a>
+
+      <ul>
+        <li><a href="code.html#pytups.tuplist.TupList.kapply">(pytups.tuplist.TupList method)</a>
+</li>
+      </ul></li>
       <li><a href="code.html#pytups.superdict.SuperDict.keys_l">keys_l() (pytups.superdict.SuperDict method)</a>
 </li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="code.html#pytups.superdict.SuperDict.keys_tl">keys_tl() (pytups.superdict.SuperDict method)</a>
+</li>
+      <li><a href="code.html#pytups.superdict.SuperDict.kfilter">kfilter() (pytups.superdict.SuperDict method)</a>
+</li>
+      <li><a href="code.html#pytups.superdict.SuperDict.kvapply">kvapply() (pytups.superdict.SuperDict method)</a>
+
+      <ul>
+        <li><a href="code.html#pytups.tuplist.TupList.kvapply">(pytups.tuplist.TupList method)</a>
+</li>
+      </ul></li>
   </ul></td>
 </tr></table>
 
@@ -210,12 +216,20 @@
 <h2 id="S">S</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="code.html#pytups.superdict.SuperDict.sapply">sapply() (pytups.superdict.SuperDict method)</a>
+</li>
+      <li><a href="code.html#pytups.tuplist.TupList.set_diff">set_diff() (pytups.tuplist.TupList method)</a>
+</li>
       <li><a href="code.html#pytups.superdict.SuperDict.set_m">set_m() (pytups.superdict.SuperDict method)</a>
 </li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="code.html#pytups.superdict.SuperDict.sorted">sorted() (pytups.superdict.SuperDict method)</a>
+
+      <ul>
+        <li><a href="code.html#pytups.tuplist.TupList.sorted">(pytups.tuplist.TupList method)</a>
 </li>
+      </ul></li>
       <li><a href="code.html#pytups.superdict.SuperDict">SuperDict (class in pytups.superdict)</a>
 </li>
   </ul></td>
@@ -224,6 +238,8 @@
 <h2 id="T">T</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="code.html#pytups.tuplist.TupList.take">take() (pytups.tuplist.TupList method)</a>
+</li>
       <li><a href="code.html#pytups.tuplist.TupList.to_dict">to_dict() (pytups.tuplist.TupList method)</a>
 </li>
       <li><a href="code.html#pytups.superdict.SuperDict.to_dictdict">to_dictdict() (pytups.superdict.SuperDict method)</a>
@@ -235,6 +251,8 @@
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="code.html#pytups.tuplist.TupList.to_list">to_list() (pytups.tuplist.TupList method)</a>
+</li>
+      <li><a href="code.html#pytups.tuplist.TupList.to_set">to_set() (pytups.tuplist.TupList method)</a>
 </li>
       <li><a href="code.html#pytups.tuplist.TupList.to_start_finish">to_start_finish() (pytups.tuplist.TupList method)</a>
 </li>
@@ -264,14 +282,26 @@
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="code.html#pytups.superdict.SuperDict.values_l">values_l() (pytups.superdict.SuperDict method)</a>
 </li>
-      <li><a href="code.html#pytups.superdict.SuperDict.vapply">vapply() (pytups.superdict.SuperDict method)</a>
+      <li><a href="code.html#pytups.superdict.SuperDict.values_tl">values_tl() (pytups.superdict.SuperDict method)</a>
 </li>
+      <li><a href="code.html#pytups.superdict.SuperDict.vapply">vapply() (pytups.superdict.SuperDict method)</a>
+
+      <ul>
+        <li><a href="code.html#pytups.tuplist.TupList.vapply">(pytups.tuplist.TupList method)</a>
+</li>
+      </ul></li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="pulp.html#term-variable-declaration"><strong>Variable declaration</strong></a>
 </li>
       <li><a href="pulp.html#term-variable-domain"><strong>Variable domain</strong></a>
 </li>
+      <li><a href="code.html#pytups.superdict.SuperDict.vfilter">vfilter() (pytups.superdict.SuperDict method)</a>
+
+      <ul>
+        <li><a href="code.html#pytups.tuplist.TupList.vfilter">(pytups.tuplist.TupList method)</a>
+</li>
+      </ul></li>
   </ul></td>
 </tr></table>
 
