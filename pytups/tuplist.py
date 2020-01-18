@@ -19,11 +19,11 @@ class TupList(list):
     def __add__(self, *args, **kwargs):
         return TupList(super().__add__(*args, **kwargs))
 
-    def filter(self, *args, **kwargs):
+    def filter(self, *args, **kwargs) -> 'TupList':
         warnings.warn("use take instead of filter", DeprecationWarning)
         return self.take(*args, **kwargs)
 
-    def take(self, indices):
+    def take(self, indices) -> 'TupList':
         """
         filters the tuple of each element of the list according to a list of positions
 
@@ -43,7 +43,7 @@ class TupList(list):
             return TupList(x[0] for x in arr_filt)
         return TupList(tuple(x) for x in arr_filt)
 
-    def vfilter(self, function):
+    def vfilter(self, function) -> 'TupList':
         """
         returns new list with only tuples for which `function` returns True
 
@@ -52,7 +52,7 @@ class TupList(list):
         """
         return TupList([i for i in self if function(i)])
 
-    def filter_list_f(self, *args, **kwargs):
+    def filter_list_f(self, *args, **kwargs) -> 'TupList':
         warnings.warn("use vfilter instead of filter_list_f", DeprecationWarning)
         return self.vfilter(*args, **kwargs)
 
@@ -63,7 +63,7 @@ class TupList(list):
 
         :param result_col: a list of positions of the tuple for the result
         :type result_col: int or list or None
-        :param bool is_list: the value of the dictionary will be a list?
+        :param bool is_list: the value of the dictionary will be a TupList?
         :param list indices: optional way of determining the indeces instead of
             being the complement of result_col
         :return: new :py:class:`pytups.superdict.SuperDict`
@@ -90,7 +90,7 @@ class TupList(list):
                 result[index] = content
                 continue
             if index not in result:
-                result[index] = []
+                result[index] = TupList()
             result[index].append(content)
         return result
 
@@ -111,7 +111,7 @@ class TupList(list):
         """
         return self.append(tuple(args))
 
-    def unique(self, **kwargs):
+    def unique(self, **kwargs) -> 'TupList':
         """
         Applies :py:func:`numpy.unique`.
 
@@ -121,7 +121,7 @@ class TupList(list):
         arr = np.asarray(self, **kwargs)
         return TupList(np.unique(arr, axis=0).tolist())
 
-    def unique2(self):
+    def unique2(self) -> 'TupList':
         """
         Converts to set and then back to TupList.
 
@@ -129,7 +129,7 @@ class TupList(list):
         """
         return TupList(set(self))
 
-    def intersect(self, input_list):
+    def intersect(self, input_list) -> 'TupList':
         """
         Converts list and argument into sets and then intersects them.
 
@@ -138,7 +138,16 @@ class TupList(list):
         """
         return TupList(set(self) & set(input_list))
 
-    def to_start_finish(self, compare_tups, pp=1, sort=True, join_func=None):
+    def set_diff(self, input_list) -> 'TupList':
+        """
+        Converts list and argument into sets and then subtracts one from the other.
+
+        :param list input_list: list to subtract
+        :return: new :py:class:`TupList`
+        """
+        return TupList(set(self) - set(input_list))
+
+    def to_start_finish(self, compare_tups, pp=1, sort=True, join_func=None) -> 'TupList':
         """
         Takes a calendar tuple list of the form: (id, month) and
         returns a tuple list of the form (id, start_month, end_month)
@@ -176,21 +185,21 @@ class TupList(list):
         res_start_finish = [join_func(list_tup) for list_tup in all_periods]
         return TupList(res_start_finish)
 
-    def to_list(self):
+    def to_list(self) -> list:
         """
 
         :return: list
         """
         return list(self)
 
-    def to_set(self):
+    def to_set(self) -> set:
         """
 
         :return: set
         """
         return set(self)
 
-    def kvapply(self, func, *args, **kwargs):
+    def kvapply(self, func, *args, **kwargs) -> 'TupList':
         """
         maps function into each element of TupList with indexes
 
@@ -199,7 +208,7 @@ class TupList(list):
         """
         return TupList(func(k, v, *args, **kwargs) for k, v in enumerate(self))
 
-    def kapply(self, func, *args, **kwargs):
+    def kapply(self, func, *args, **kwargs) -> 'TupList':
         """
         maps function into each key of TupList
 
@@ -208,7 +217,7 @@ class TupList(list):
         """
         return TupList(func(k, *args, **kwargs) for k, _ in enumerate(self))
 
-    def vapply(self, func, *args, **kwargs):
+    def vapply(self, func, *args, **kwargs) -> 'TupList':
         """
         maps function into each element of TupList
 
@@ -217,7 +226,7 @@ class TupList(list):
         """
         return TupList(func(v, *args, **kwargs) for v in self)
 
-    def apply(self, *args, **kwargs):
+    def apply(self, *args, **kwargs) -> 'TupList':
         warnings.warn("use vapply instead of apply", DeprecationWarning)
         return self.vapply(*args, **kwargs)
 
@@ -229,7 +238,7 @@ class TupList(list):
             raise ImportError('Pandas is not present in your system. Try: pip install pandas')
 
 
-    def sorted(self, **kwargs):
+    def sorted(self, **kwargs) -> 'TupList':
         """
         Applies sorted function to elements and returns a TupList
 
