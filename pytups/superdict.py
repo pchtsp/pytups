@@ -138,7 +138,7 @@ class SuperDict(dict):
         else:
             indices = set(indices)
         if not check:
-            intersection = indices & self
+            intersection = indices & self.keys()
             return SuperDict({k: self[k] for k in intersection})
         difference = indices - self.keys()
         if len(difference) > 0:
