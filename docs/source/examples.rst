@@ -59,10 +59,72 @@ Example::
     # {'a': {'b': {'c': 'A'}}, 'b': {'t': {'d' : 'B'}}}
 
 
+Filtering
+-----------------
+
+Example data::
+
+    import pytups as pt
+    indent_dict = {'aabb': 1, 'aacc': 2, 'bbaa': 1}
+    supdict = pt.SuperDict.from_dict(indent_dict)
+
+According to the value in the dictionary::
+
+    supdict.vfilter(lambda v: v==1)
+    # {'aabb': 1, 'bbaa': 1}
+
+According to the key::
+
+    supdict.kfilter(lambda k: k.startswith('aa'))
+    # {'aabb': 1, 'aacc': 2}
+
+
+Mutations
+---------------------
+
+Example data::
+
+    import pytups as pt
+    indent_dict = {'aabb': 1, 'aacc': 2, 'bbaa': 1}
+    supdict = pt.SuperDict.from_dict(indent_dict)
+
+
+Mutate using the value only::
+
+    supdict.vapply(lambda v: v * 2)
+    # {'aabb': 2, 'aacc': 4, 'bbaa': 2}
+
+Mutate using the key only::
+
+    supdict.kapply(lambda k: k[0])
+    # {'aabb': 'a', 'aacc': 'a', 'bbaa': 'b'}
+
+A combination of both::
+
+    supdict.kvapply(lambda k, v: k[0] + str(v))
+    # {'aabb': 'a1', 'aacc': 'a2', 'bbaa': 'b1'}
+
+
 Setting and getting in nested dictionaries
 -------------------------------------------------------
 
-TODO: this part.
+Example data::
+
+    import pytups as pt
+    indent_dict = {'a': {'b': {'c': 'A'}}, 'b': {'t': {'d' : 'B'}}}
+    supdict = pt.SuperDict.from_dict(indent_dict)
+
+Getting an path of values::
+
+    supdict.get_m('a', 'b', 'c')
+    # 'A'
+    supdict.get_m('a', 'c')
+    # None
+
+Setting a path of values::
+
+    supdict.set_m('a', 'c', value='R')
+    # {'a': {'b': {'c': 'A'}, 'c': 'R'}, 'b': {'t': {'d': 'B'}}}
 
 
 TupLists

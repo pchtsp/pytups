@@ -6,7 +6,7 @@ class SuperDict(dict):
     """
     A dictionary with additional methods
     """
-    def __repr__(self):
+    def head(self):
         if len(self) <= 2:
             return dict.__repr__(self)
         _keys = self.keys_l()
@@ -30,7 +30,7 @@ class SuperDict(dict):
         """
         return list(self.keys())
 
-    def values_l(self):
+    def values_l(self) -> list:
         """
         Shortcut to:
 
@@ -84,20 +84,20 @@ class SuperDict(dict):
             func = lambda x: x != default_value
         return self.vfilter(func=func, **kwargs)
 
-    def vfilter(self, func, **kwargs):
+    def vfilter(self, func, **kwargs) -> 'SuperDict':
         """
         apply a filter over the dictionary values
         :param function func: True for values we want to filter
         :param kwargs: other arguments for func
         :return: new :py:class:`SuperDict`
-        :rtype: :py:class:`SuperDict`
+        :rtype: SuperDict
 
         >>> SuperDict({'a': 2, 'b': 3, 'c': 1}).vfilter(lambda v: v > 1)
         {'a': 2, 'b': 3}
         """
         return SuperDict({key: value for key, value in self.items() if func(value, **kwargs)})
 
-    def kfilter(self, func, **kwargs):
+    def kfilter(self, func, **kwargs) -> 'SuperDict':
         """
         apply a filter over the dictionary keys
         :param function func: True for keys we want to filter
@@ -110,7 +110,7 @@ class SuperDict(dict):
         """
         return SuperDict({key: value for key, value in self.items() if func(key, **kwargs)})
 
-    def len(self):
+    def len(self) -> int:
         """
         Shortcut to:
 
@@ -121,12 +121,11 @@ class SuperDict(dict):
         """
         return len(self)
 
-    def filter(self, indices, check=True):
+    def filter(self, indices, check=True) -> 'SuperDict':
         """
         takes out elements that are not in `indices`
 
         :param indices: keys to keep in new dictionary
-        :type indices: int or list
         :param bool check: if True, only return valid ones
         :return: new :py:class:`SuperDict`
         :rtype: :py:class:`SuperDict`
@@ -136,15 +135,18 @@ class SuperDict(dict):
 
         """
         if not tools.is_really_iterable(indices):
-            indices = [indices]
+            indices = {indices}
+        else:
+            indices = set(indices)
         if not check:
-            return SuperDict({k: self[k] for k in indices if k in self})
-        bad_elem = set(indices) - self.keys()
-        if len(bad_elem) > 0:
-            raise KeyError("following elements not in keys: {}".format(bad_elem))
+            intersection = indices & self.keys()
+            return SuperDict({k: self[k] for k in intersection})
+        difference = indices - self.keys()
+        if len(difference) > 0:
+            raise KeyError("following elements not in keys: {}".format(difference))
         return SuperDict({k: self[k] for k in indices})
 
-    def to_dictdict(self):
+    def to_dictdict(self) -> 'SuperDict':
         """
         Expands tuple keys to nested dictionaries
         Useful to get json-compatible objects from the solution
@@ -190,7 +192,7 @@ class SuperDict(dict):
         self[elem].set_m(*args, value=value)
         return self
 
-    def dicts_to_tup(self, keys, content):
+    def dicts_to_tup(self, keys, content) -> 'SuperDict':
         """
         compacts nested dictionaries into one single dictionary
         with tuples as keys.
@@ -207,7 +209,7 @@ class SuperDict(dict):
             self.dicts_to_tup(keys + [key], value)
         return self
 
-    def to_dictup(self):
+    def to_dictup(self) -> 'SuperDict':
         """
         Useful when reading a json and wanting to convert it to tuples.
         Opposite to to_dictdict
@@ -217,7 +219,7 @@ class SuperDict(dict):
         """
         return SuperDict().dicts_to_tup([], self)
 
-    def list_reverse(self):
+    def list_reverse(self) -> 'SuperDict':
         """
         transforms dictionary of lists to another dictionary of lists only indexed by the values.
 
@@ -230,7 +232,7 @@ class SuperDict(dict):
                 dict_out[el].append(k)
         return dict_out
 
-    def to_tuplist(self):
+    def to_tuplist(self) -> 'TupList':
         """
         The last element of the returned tuple was the dict's value.
         We try really hard to expand the tuples so it's a flat tuple list.
@@ -258,7 +260,7 @@ class SuperDict(dict):
                 tup_list.append(tuple(key + val))
         return tup_list
 
-    def fill_with_default(self, keys, default=0):
+    def fill_with_default(self, keys, default=0) -> 'SuperDict':
         """
         guarantees dictionary will have specific keys
 
@@ -274,7 +276,7 @@ class SuperDict(dict):
     def get_property(self, property):
         return SuperDict({key: value[property] for key, value in self.items() if property in value})
 
-    def to_lendict(self):
+    def to_lendict(self) -> 'SuperDict':
         """
         get length of values in dictionary
 
@@ -282,7 +284,7 @@ class SuperDict(dict):
         """
         return self.vapply(len)
 
-    def index_by_property(self, property, get_list=False):
+    def index_by_property(self, property, get_list=False) -> 'SuperDict':
         el = self.keys_l()[0]
         if property not in self[el]:
             raise IndexError('property {} is not present in el {} of dict {}'.
@@ -297,7 +299,7 @@ class SuperDict(dict):
             return result.values_l()
         return result
 
-    def index_by_part_of_tuple(self, position, get_list=False):
+    def index_by_part_of_tuple(self, position, get_list=False) -> 'SuperDict':
         el = self.keys_l()[0]
         if len(el) <= position:
             raise IndexError('length of dict {} keys is smaller than position {}'.
@@ -312,11 +314,11 @@ class SuperDict(dict):
             return result.values_l()
         return result
 
-    def apply(self, *args, **kwargs):
+    def apply(self, *args, **kwargs) -> 'SuperDict':
         warnings.warn("use kvapply instead", DeprecationWarning)
         return self.kvapply(*args, **kwargs)
 
-    def kvapply(self, func, *args, **kwargs):
+    def kvapply(self, func, *args, **kwargs) -> 'SuperDict':
         """Applies a function to the dictionary and returns the result
 
         :param callable func: function with two arguments: one for the key, another for the value
@@ -324,7 +326,7 @@ class SuperDict(dict):
         """
         return SuperDict({k: func(k, v, *args, **kwargs) for k, v in self.items()})
 
-    def vapply(self, func, *args, **kwargs):
+    def vapply(self, func, *args, **kwargs) -> 'SuperDict':
         """
         Same as apply but only on values
 
@@ -333,7 +335,7 @@ class SuperDict(dict):
         """
         return SuperDict({k: func(v, *args, **kwargs) for k, v in self.items()})
 
-    def kapply(self, func, *args, **kwargs):
+    def kapply(self, func, *args, **kwargs) -> 'SuperDict':
         """
         Same as apply but only on keys
 
@@ -342,7 +344,7 @@ class SuperDict(dict):
         """
         return SuperDict({k: func(k, *args, **kwargs) for k in self})
 
-    def sapply(self, func, other):
+    def sapply(self, func, other) -> 'SuperDict':
         """
         Applies function to both dictionaries.
         Using keys of the self.
@@ -392,7 +394,7 @@ class SuperDict(dict):
                 self[k].update(v)
         return self
 
-    def _update(self, dict):
+    def _update(self, dict) -> 'SuperDict':
         """
         Like the dict update but it returns the result without modifying the input
 
@@ -433,7 +435,7 @@ class SuperDict(dict):
         return SuperDict({v: k for k, v in self.items()})
 
     @classmethod
-    def from_dict(cls, data):
+    def from_dict(cls, data) -> 'SuperDict':
         """
         Main initialization. Deals with nested dictionaries.
 
@@ -446,3 +448,14 @@ class SuperDict(dict):
         for key, value in data.items():
             data[key] = cls.from_dict(value)
         return data
+
+    @classmethod
+    def from_df(cls, data) -> 'SuperDict':
+        # TODO: this assuming the object is a pandas dataframe
+        """
+        Main initialization. Deals with nested dictionaries.
+
+        :param dict data: a (possibly nested) dictionary
+        :return: new :py:class:`SuperDict`
+        """
+        pass

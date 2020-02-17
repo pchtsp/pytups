@@ -37,6 +37,10 @@ class DictTest(unittest.TestCase):
         prop = self.dict_class.from_dict(TEST_DICT_2).filter(['b'])
         self.assertDictEqual(prop, {'b': {('c', 't'): {'d' : TEST_VAL2}}})
 
+    def test_filter_good_check(self):
+        prop = self.dict_class.from_dict(TEST_DICT_2).filter(['b'], check=False)
+        self.assertDictEqual(prop, {'b': {('c', 't'): {'d' : TEST_VAL2}}})
+
     def test_to_dictdict(self):
         prop = self.dict_class.from_dict({'b': {('c', 't'): {'d' : TEST_VAL2}}}).to_dictdict()
         self.assertDictEqual(prop, {'b': {'c': {'t': {'d' : TEST_VAL2}}}})
