@@ -5,27 +5,31 @@ import warnings
 class TupList(list):
 
     def __getitem__(self, key):
-        if isinstance(key, slice):
-            start, stop, step = key.start, key.stop, key.step
-            if start is None:
-                start = 0
-            if stop is None:
-                stop = len(self)
-            if step is None:
-                step = 1
-            return TupList(self[i] for i in range(start, stop, step))
-        return list.__getitem__(self, key)
+        if not isinstance(key, slice):
+            return list.__getitem__(self, key)
+        if key.start is not None:
+            start = (len(self) + key.start) if key.start < 0 else key.start
+        else:
+            start = 0
+        if key.stop is not None:
+            stop = (len(self) + key.stop) if key.stop < 0 else key.stop
+        else:
+            stop = len(self)
+        return TupList(self[i] for i in range(start, stop, key.step or 1))
 
     def __add__(self, *args, **kwargs):
         return TupList(super().__add__(*args, **kwargs))
 
-    def __repr__(self):
-        if len(self) <= 2:
+    def head(self):
+        # TODO: change to show 5 first and 5 last, at least.
+        # still wrong
+        if len(self) <= 10:
             return list.__repr__(self)
-        return "[{},\n...,\n{}]\n({} elements)".\
-            format(self[0].__repr__(),
-                   self[-1].__repr__(),
+        text = "[{},\n...,\n{}]\n({} elements)".\
+            format(self[:5].__repr__(),
+                   self[-5:].__repr__(),
                    len(self))
+        repr(text)
 
     def filter(self, *args, **kwargs):
         warnings.warn("use take instead of filter", DeprecationWarning)
@@ -88,9 +92,11 @@ class TupList(list):
             indices = [col for col in range(len(self[0])) if col not in result_col]
         result = sd.SuperDict()
         for tup in self:
+            # TODO: consider using np.take like in self.take
             index = tuple(tup[i] for i in indices)
             if len(index) == 1:
                 index = index[0]
+            # TODO: consider using np.take like in self.take
             content = tuple(tup[i] for i in result_col)
             if len(content) == 1:
                 content = content[0]

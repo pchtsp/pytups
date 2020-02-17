@@ -63,6 +63,31 @@ class TupTest(unittest.TestCase):
     def test_to_list(self):
         self.assertTrue(type(self.prop1.to_list()) is list)
 
+    def test_vapply(self):
+        result = ['a', 'a', 'a', 'r', 'r', 'r']
+        self.assertListEqual(self.prop1.vapply(lambda v: v[0]), result)
+
+    def test_vapply2(self):
+        result = [1 for r in enumerate(self.prop1)]
+        self.assertListEqual(self.prop1.vapply(lambda v: 1), result)
+
+    def test_slicing(self):
+        result = list(self.prop1)
+        self.assertListEqual(result[:-1], self.prop1[:-1])
+
+    def test_slicing2(self):
+        result = list(self.prop1)
+        self.assertListEqual(result[1:], self.prop1[1:])
+
+    def test_get_elem(self):
+        result = list(self.prop1)
+        self.assertEqual(result[1], self.prop1[1])
+
+    def test_kvapply(self):
+        result = ['0a', '1a', '2a', '3r', '4r', '5r']
+        prop = self.prop1.kvapply(lambda k, v: str(k) + v[0])
+        self.assertListEqual(prop, result)
+
     def test_add(self):
         prop = self.tuplist_class()
         prop.add('b', 't', '3', 5)
@@ -100,7 +125,11 @@ class TupTest(unittest.TestCase):
         prop2 = prop[1:-1]
         self.assertIsInstance(prop2, pt.TupList)
 
-    # intersect
+    def test_intersect(self):
+        prop = self.prop1
+        other = [('a', 'b', 'c', 1), ('a', 'b', 'c', 2), ('a', 'b', 'c', 45)]
+        result = {('a', 'b', 'c', 1), ('a', 'b', 'c', 2)}
+        self.assertSetEqual(prop.intersect(other).to_set(), result)
 
     def setUp(self):
         self.prop1 = self.tuplist_class(TEST_TUP)

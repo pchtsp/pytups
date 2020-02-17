@@ -222,6 +222,8 @@ class DictTest(unittest.TestCase):
         prop2_result = {'a': {'b': {'c': [1, 2, 3]}}, 'f': 'OK', 'g': 'OK', 'h': 'OK'}
         self.assertEqual(prop2, prop2_result)
 
+    # TODO: vapply tests
+
     def test_sapply(self):
         import operator as op
         prop = self.dict_class.from_dict(TEST_DICT).to_dictup()
