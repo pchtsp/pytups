@@ -1,5 +1,7 @@
 import numpy as np
 import warnings
+import csv
+from . import tools
 
 
 class TupList(list):
@@ -106,6 +108,52 @@ class TupList(list):
             if index not in result:
                 result[index] = TupList()
             result[index].append(content)
+        return result
+
+
+    def to_dict_new(self, result_col=0, is_list=True, indices=None):
+        """
+        This magic function converts a tuple list into a dictionary
+            by taking one or several of the columns as the result.
+
+        :param result_col: a list of positions of the tuple for the result
+        :type result_col: int or list or None
+        :param bool is_list: the value of the dictionary will be a TupList?
+        :param list indices: optional way of determining the indeces instead of
+            being the complement of result_col
+        :return: new :py:class:`pytups.superdict.SuperDict`
+        """
+        from . import superdict as sd
+
+        if not len(self):
+            return sd.SuperDict()
+        if result_col is None:
+            return sd.SuperDict({k: k for k in self})
+        if not tools.is_really_iterable(result_col):
+            result_col = [result_col]
+        if indices is None:
+            indices = [col for col in range(len(self[0])) if col not in result_col]
+        _to_key = lambda k: k
+        if tools.is_really_iterable(indices):
+            if len(indices) == 1:
+               indices = indices[0]
+            else:
+                _to_key = lambda k: tuple(k)
+        if tools.is_really_iterable(result_col) and len(result_col) == 1:
+            result_col = result_col[0]
+
+        keys = self.take(indices)
+        values = self.take(result_col)
+
+        if not is_list:
+            return sd.SuperDict(zip(keys, values))
+        result = sd.SuperDict()
+        for i, c in zip(keys, values):
+            i = _to_key(i)
+            try:
+                result[i].append(c)
+            except KeyError:
+                result[i] = TupList([c])
         return result
 
     def add(self, *args):
@@ -251,7 +299,6 @@ class TupList(list):
         except ImportError:
             raise ImportError('Pandas is not present in your system. Try: pip install pandas')
 
-
     def sorted(self, **kwargs) -> 'TupList':
         """
         Applies sorted function to elements and returns a TupList
@@ -260,3 +307,27 @@ class TupList(list):
         :return: new :py:class:`TupList`
         """
         return TupList(sorted(self, **kwargs))
+
+    def to_csv(self, path):
+        with open(path, 'w') as out:
+            csv_out = csv.writer(out)
+            csv_out.writerows(self)
+        return self
+
+    # def to_csv2(self, path, dtype, fmt):
+    #     arr = np.array(self, dtype=dtype)
+    #     np.savetxt(path, arr, fmt=fmt)
+    #     return self
+
+    @classmethod
+    def from_csv(cls, path, func=None) -> 'TupList':
+        if func is None:
+            func = tuple
+        with open(path) as f:
+            data = cls(csv.reader(f)).vapply(func)
+        return data
+
+    # @classmethod
+    # def from_csv2(cls, path, delimiter=',') -> 'TupList':
+    #     content = np.genfromtxt(path, delimiter=delimiter)
+    #     return content

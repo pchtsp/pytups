@@ -1,5 +1,6 @@
 import unittest
 import pytups as pt
+import os
 
 TEST_TUP = [('a', 'b', 'c', 1), ('a', 'b', 'c', 2), ('a', 'b', 'c', 3),
             ('r', 'b', 'c', 1), ('r', 'b', 'c', 2), ('r', 'b', 'c', 3)]
@@ -37,6 +38,19 @@ class TupTest(unittest.TestCase):
     def test_to_dict_nolist(self):
         result = {('a', 'b', 'c'): 3, ('r', 'b', 'c'): 3}
         self.assertDictEqual(result, self.prop1.to_dict(result_col=3, is_list=False))
+
+    def test_to_dict_new(self):
+        result = {('a', 'b', 'c'): [1, 2, 3], ('r', 'b', 'c'): [1, 2, 3]}
+        self.assertDictEqual(result, self.prop1.to_dict_new(result_col=3))
+
+    def test_to_dict2_new(self):
+        prop = self.prop1.take([0, 1])
+        result = {'a': ['b', 'b', 'b'], 'r': ['b', 'b', 'b']}
+        self.assertDictEqual(result, prop.to_dict_new(result_col=1))
+
+    def test_to_dict_nolist_new(self):
+        result = {('a', 'b', 'c'): 3, ('r', 'b', 'c'): 3}
+        self.assertDictEqual(result, self.prop1.to_dict_new(result_col=3, is_list=False))
 
     def test_unique(self):
         prop = self.prop1.take([0, 1])
@@ -131,12 +145,32 @@ class TupTest(unittest.TestCase):
         result = {('a', 'b', 'c', 1), ('a', 'b', 'c', 2)}
         self.assertSetEqual(prop.intersect(other).to_set(), result)
 
+    def test_write(self):
+        _filename = 'tmp.csv'
+        self.prop1.to_csv(_filename)
+        with open(_filename, 'r') as file:
+            content = file.read()
+        result = 'a,b,c,1\na,b,c,2\na,b,c,3\nr,b,c,1\nr,b,c,2\nr,b,c,3\n'
+        self.assertEqual(content, result)
+
+    def test_read(self):
+        _filename = 'tmp.csv'
+        self.prop1.to_csv(_filename)
+        def fmt(_tup):
+            _tup[3] = int(_tup[3])
+            return tuple(_tup)
+        a = self.tuplist_class.from_csv(_filename, func=fmt)
+        self.assertEqual(a, self.prop1)
+
     def setUp(self):
         self.prop1 = self.tuplist_class(TEST_TUP)
         pass
 
     def tearDown(self):
-        pass
+        try:
+            os.remove('tmp.csv')
+        except:
+            pass
 
 
 if __name__ == "__main__":

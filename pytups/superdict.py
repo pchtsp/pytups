@@ -1,11 +1,30 @@
 from . import tools
 import warnings
-
+import operator as op
 
 class SuperDict(dict):
     """
     A dictionary with additional methods
     """
+
+    def __add__(self, other):
+        return self.sapply(op.__add__, other)
+
+    # def __radd__(self, other):
+    #     return self.sapply(op.__add__, other)
+
+    def __sub__(self, other):
+        return self.sapply(op.__sub__, other)
+
+    # def __rsub__(self, other):
+    #     return other.sapply(op.__sub__, self)
+
+    def __mul__(self, other):
+        return self.sapply(op.__mul__, other)
+
+    # def __rmul__(self, other):
+    #     return self.sapply(op.__mul__, other)
+
     def head(self):
         if len(self) <= 2:
             return dict.__repr__(self)
@@ -19,53 +38,67 @@ class SuperDict(dict):
                    last_v.__repr__(),
                    len(self))
 
-    def keys_l(self):
+    @staticmethod
+    def _list_or_value(val_list, pos):
+        if pos is None:
+            return val_list
+        return val_list[pos]
+
+    def keys_l(self, pos=None):
         """
         Shortcut to:
 
         >>> list(SuperDict().keys())
 
         :return: list with keys
-        :rtype: list
+        :param int pos: position to extract
+        :rtype: list or object
         """
-        return list(self.keys())
+        result = list(self.keys())
+        return self._list_or_value(result, pos)
 
-    def values_l(self) -> list:
+    def values_l(self, pos=None):
         """
         Shortcut to:
 
         >>> list(SuperDict().values())
 
         :return: list with values
-        :rtype: list
+        :param int pos: position to extract
+        :rtype: list or object
         """
-        return list(self.values())
+        result = list(self.values())
+        return self._list_or_value(result, pos)
 
-    def values_tl(self):
+    def values_tl(self, pos=None):
         """
         Shortcut to:
 
         >>> tl.TupList(SuperDict().values())
 
         :return: tuple list with values
+        :param int pos: position to extract
         :rtype: :py:class:`pytups.tuplist.TupList`
         """
         from . import tuplist as tl
 
-        return tl.TupList(self.values())
+        result = tl.TupList(self.values())
+        return self._list_or_value(result, pos)
 
-    def keys_tl(self):
+    def keys_tl(self, pos=None):
         """
         Shortcut to:
 
         >>> tl.TupList(SuperDict().keys())
 
         :return: tuple list with keys
+        :param int pos: position to extract
         :rtype: :py:class:`pytups.tuplist.TupList`
         """
         from . import tuplist as tl
 
-        return tl.TupList(self.keys())
+        result = tl.TupList(self.keys())
+        return self._list_or_value(result, pos)
 
     def clean(self, default_value=0, func=None, **kwargs):
         """
