@@ -151,10 +151,12 @@ class TupTest(unittest.TestCase):
         with open(_filename, 'r') as file:
             content = file.read()
         result = 'a,b,c,1\na,b,c,2\na,b,c,3\nr,b,c,1\nr,b,c,2\nr,b,c,3\n'
-        self.assertEqual(content, result)
+        self.assertIn(result, content)
 
     def test_read(self):
         _filename = 'tmp.csv'
+        with open(_filename, 'w') as file:
+            file.write('a,b,c,1\na,b,c,2\na,b,c,3\nr,b,c,1\nr,b,c,2\nr,b,c,3\n')
         self.prop1.to_csv(_filename)
         def fmt(_tup):
             _tup[3] = int(_tup[3])
