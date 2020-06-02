@@ -261,6 +261,9 @@ class TupList(list):
         """
         return set(self)
 
+    def to_zip(self) -> tuple:
+        return zip(*self)
+
     def kvapply(self, func, *args, **kwargs) -> 'TupList':
         """
         maps function into each element of TupList with indexes

@@ -192,6 +192,7 @@ class SuperDict(dict):
         """
         dictdict = SuperDict()
         for key in self:
+            # TODO: checking all the time for isinstance is inneficient
             if isinstance(self[key], dict):
                 # if it's a nested dictionary, we traverse it first:
                 self[key] = self[key].to_dictdict()
@@ -235,11 +236,13 @@ class SuperDict(dict):
         :return: modified :py:class:`SuperDict`
         :rtype: :py:class:`SuperDict`
         """
-        if not isinstance(content, dict):
+        try:
+            for key, value in content.items():
+                self.dicts_to_tup(keys + [key], value)
+        except AttributeError:
+            # content is not a dict, we store it
             self[tuple(keys)] = content
             return self
-        for key, value in content.items():
-            self.dicts_to_tup(keys + [key], value)
         return self
 
     def to_dictup(self) -> 'SuperDict':
