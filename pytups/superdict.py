@@ -100,6 +100,21 @@ class SuperDict(dict):
         result = tl.TupList(self.keys())
         return self._list_or_value(result, pos)
 
+    def items_tl(self, pos=None):
+        """
+        Shortcut to:
+
+        >>> tl.TupList(SuperDict().items())
+
+        :return: tuple list with keys
+        :param int pos: position to extract
+        :rtype: :py:class:`pytups.tuplist.TupList`
+        """
+        from . import tuplist as tl
+
+        result = tl.TupList(self.items())
+        return self._list_or_value(result, pos)
+
     def clean(self, default_value=0, func=None, **kwargs):
         """
         Filters elements by value
