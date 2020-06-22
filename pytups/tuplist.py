@@ -311,8 +311,13 @@ class TupList(list):
         """
         return TupList(sorted(self, **kwargs))
 
-    def to_csv(self, path):
-        with open(path, 'w') as out:
+    def to_csv(self, path) -> 'TupList':
+        """
+        exports the list to a csv file.
+        :param path: filename
+        :return: the same :py:class:`TupList`
+        """
+        with open(path, 'w', newline="\n", encoding="utf-8") as out:
             csv_out = csv.writer(out)
             csv_out.writerows(self)
         return self
@@ -324,6 +329,12 @@ class TupList(list):
 
     @classmethod
     def from_csv(cls, path, func=None) -> 'TupList':
+        """
+        Generates a new TupList by reading a csv file
+        :param path: filename
+        :param func: function to apply to each row
+        :return: new :py:class:`TupList`
+        """
         if func is None:
             func = tuple
         with open(path) as f:
