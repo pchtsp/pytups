@@ -24,7 +24,7 @@ Or, using the chaining magic and without actually using the `sapply` given that 
 With pytups one would do::
 
     import pytups as pt
-    pt.TupList([1, 2, 5, 7, 11]).apply(str)
+    pt.TupList([1, 2, 5, 7, 11]).vapply(str)
     # ['1', '2', '5', '7', '11']
 
 A better example could be replacing `sapply` in the following R situatio::
@@ -36,7 +36,7 @@ A better example could be replacing `sapply` in the following R situatio::
 We would do the following in pytups::
     
     import pytups as pt
-    pt.TupList([(1, 2, 5, 7, 5), (5, 6, 7)]).apply(len)
+    pt.TupList([(1, 2, 5, 7, 5), (5, 6, 7)]).vapply(len)
     # [5, 3]
 
 SuperDict
@@ -53,10 +53,26 @@ Example::
     # {('a', 'b', 'c'): 'A', ('b', 't', 'd'): 'B'}
     supdict_dictup.to_tuplist()
     # [('a', 'b', 'c', 'A'), ('b', 't', 'd', 'B')]
-    supdict_dictup.apply(lambda k, v: v+'_1')
+    supdict_dictup.kvapply(lambda k, v: v+'_1')
     # {('a', 'b', 'c'): 'A_1', ('b', 't', 'd'): 'B_1'}
     supdict_dictup.to_dictdict()
     # {'a': {'b': {'c': 'A'}}, 'b': {'t': {'d' : 'B'}}}
+
+
+Normal operations
+-----------------
+
+Some operations have been oveloaded for dictionaries so they can be done between superdicts as if they were numbers:
+
+Example data::
+
+    import pytups as pt
+    have = pt.SuperDict({'apples': 1, 'pears': 1, 'tomatoes': 0})
+    need = pt.SuperDict({'apples': 1, 'pears': 2, 'tomatoes': 1})
+    left_need = need - have
+    # {'pears': 1, 'tomatoes': 1}
+
+
 
 
 Filtering
@@ -77,7 +93,6 @@ According to the key::
 
     supdict.kfilter(lambda k: k.startswith('aa'))
     # {'aabb': 1, 'aacc': 2}
-
 
 Mutations
 ---------------------

@@ -377,7 +377,7 @@ class SuperDict(dict):
         """
         return SuperDict({k: func(k, *args, **kwargs) for k in self})
 
-    def sapply(self, func, other) -> 'SuperDict':
+    def sapply(self, func, other, *args, **kwargs) -> 'SuperDict':
         """
         Applies function to both dictionaries.
         Using keys of the self.
@@ -387,7 +387,8 @@ class SuperDict(dict):
         :param dict other: dictionary to apply function to
         :return: new :py:class:`SuperDict`
         """
-        return SuperDict({k: func(v, other[k]) for k, v in self.items()})
+        return SuperDict({k: func(v, other[k], *args, **kwargs)
+                          for k, v in self.items()})
 
     def get_m(self, *args, default=None):
         """
