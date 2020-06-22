@@ -100,6 +100,21 @@ class SuperDict(dict):
         result = tl.TupList(self.keys())
         return self._list_or_value(result, pos)
 
+    def items_tl(self, pos=None):
+        """
+        Shortcut to:
+
+        >>> tl.TupList(SuperDict().items())
+
+        :return: tuple list with keys
+        :param int pos: position to extract
+        :rtype: :py:class:`pytups.tuplist.TupList`
+        """
+        from . import tuplist as tl
+
+        result = tl.TupList(self.items())
+        return self._list_or_value(result, pos)
+
     def clean(self, default_value=0, func=None, **kwargs):
         """
         Filters elements by value
@@ -192,6 +207,7 @@ class SuperDict(dict):
         """
         dictdict = SuperDict()
         for key in self:
+            # TODO: checking all the time for isinstance is inneficient
             if isinstance(self[key], dict):
                 # if it's a nested dictionary, we traverse it first:
                 self[key] = self[key].to_dictdict()
@@ -235,11 +251,13 @@ class SuperDict(dict):
         :return: modified :py:class:`SuperDict`
         :rtype: :py:class:`SuperDict`
         """
-        if not isinstance(content, dict):
+        try:
+            for key, value in content.items():
+                self.dicts_to_tup(keys + [key], value)
+        except AttributeError:
+            # content is not a dict, we store it
             self[tuple(keys)] = content
             return self
-        for key, value in content.items():
-            self.dicts_to_tup(keys + [key], value)
         return self
 
     def to_dictup(self) -> 'SuperDict':
