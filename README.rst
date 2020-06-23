@@ -12,6 +12,8 @@ Pytups
 What and why
 ================
 
+The idea is to allow sparse operations to be executed in matrix data.
+
 I grew used to the chained operations in R's `tidyverse <https://www.tidyverse.org/>`_  packages or, although not a great fan myself, python's `pandas <https://pandas.pydata.org/>`_ . I find myself using dictionary and list comprehensions all the time to pass from one data format to the other efficiently. But after doing it for the Nth time, I thought of automaticing it.
 
 In my case, it helps me construct optimisation models with  `PuLP <https://github.com/coin-or/pulp>`_. I see other possible uses not related to OR.
@@ -27,17 +29,29 @@ Right now there are three classes to use: dictionaries, tuple lists and ordered 
 Quick example
 ================
 
-We reverse a nested dictionary to take the deepest key outside while keeping the same final values. This chain of operations uses both `superdict` and `tuplist` objects at different points.::
+We index a tuple list according to some index positions.::
 
     import pytups as pt
-    some_dict = {'a': {'b': {'c': 'A'}}, 'b': {'t': {'c' : 'B'}}}
-    pt.SuperDict.from_dict(some_dict).\
-        to_dictup().\
-        to_tuplist().\
-        filter([2, 0, 1, 3]).\
-        to_dict(result_col=3, is_list=False).\
-        to_dictdict()
-    # {'c': {'a': {'b': 'A'}, 'b': {'t': 'B'}}}
+    some_list_of_tuples = [('a', 'b', 'c', 1), ('a', 'b', 'c', 2), ('a', 'b', 'c', 45)]
+    tp_list = pt.TupList(some_list_of_tuples)
+    tp_list.to_dict(result_col=3)
+    # {('a', 'b', 'c'): [1, 2, 45]}
+    tp_list.to_dict(result_col=3).to_dictdict()
+    # {'a': {'b': {'c': [1, 2, 45]}}}
+    tp_list.to_dict(result_col=[2, 3])
+    # {('a', 'b'): [('c', 1), ('c', 2), ('c', 45)]}
+
+We do some operations on dictionaries with common keys.::
+
+    import pytups as pt
+    some_dict = pt.SuperDict(a=1, b=2, c=3, d=5)
+    some_other_dict = pt.SuperDict(a=5, b=7, c=1)
+    some_other_dict + some_dict
+    # {'a': 6, 'b': 9, 'c': 4}
+    some_other_dict.vapply(lambda v: v**2)
+    # {'a': 25, 'b': 49, 'c': 1}
+    some_other_dict.kvapply(lambda k, v: v/some_dict[k])
+    # {'a': 5.0, 'b': 3.5, 'c': 0.3333333333333333}
 
 Installing
 ================
