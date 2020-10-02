@@ -1,3 +1,9 @@
+"""
+
+Example taken from the NPS course Mathematical Programming from Matt Carlyle in 2019.
+
+"""
+
 import pulp as pl
 import pytups as pt
 

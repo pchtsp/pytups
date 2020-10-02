@@ -29,6 +29,8 @@ When using :py:mod:`pulp`, I use the following guidelines:
 Example: Scheduling problem
 =============================
 
+This example was taken with permission from the Naval Postgraduate School course Mathematical Programming given by Matt Carlyle in 2019.
+
 Assume we are given a set of jobs :math:`j` with processing times :math:`p_j`. For a single machine non-preemptive scheduling problem (which we assume here), a schedule of the jobs :math:`N` is given by specifying a start time, :math:`Y_j` , for each job. If job j starts at time :math:`Y_j`, it is processing during the time interval :math:`[Y_j , Y_j + p_j ]`. A schedule is feasible if no two jobs have overlapping processing times.
 
 This means that, for every pair of jobs :math:`i` and :math:`j`, we have that either :math:`Y_j \geq Y_i +p_i` , or :math:`Y_i \geq Y_j +p_j`.
