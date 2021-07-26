@@ -7,8 +7,9 @@ T = TypeVar("T")
 
 
 class OrderSet(col.MutableSequence, Generic[T]):
-    _store: Dict[Any, int]
-    _pos: List[T]
+    # TODO: uncomment when 3.5 is dropped
+    # _store: Dict[Any, int]
+    # _pos: List[T]
 
     def __init__(self, _list: List[T]):
         # _pos is the real list
