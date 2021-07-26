@@ -26,6 +26,12 @@ They're made to always return a new object, so no "in-place" editing, hopefully.
 
 Right now there are three classes to use: dictionaries, tuple lists and ordered sets.
 
+Python versions
+================
+
+Python 3.6 and up.
+
+
 Quick example
 ================
 

@@ -1,5 +1,5 @@
 import collections as col
-from typing import Iterable, TypeVar, Generic, List, Any
+from typing import Iterable, TypeVar, Generic, List, Any, Dict
 
 K = TypeVar("K")
 V = TypeVar("V")
@@ -7,6 +7,9 @@ T = TypeVar("T")
 
 
 class OrderSet(col.MutableSequence, Generic[T]):
+    _store: Dict[Any, int]
+    _pos: List[T]
+
     def __init__(self, _list: List[T]):
         # _pos is the real list
         # _store is the reverse-key mapping
