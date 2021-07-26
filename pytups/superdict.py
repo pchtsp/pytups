@@ -164,6 +164,19 @@ class SuperDict(dict):
             {key: value for key, value in self.items() if func(key, **kwargs)}
         )
 
+    def kvfilter(self, func, **kwargs) -> 'SuperDict':
+        """
+        apply a filter over the dictionary values
+        :param function func: True for values we want to filter
+        :param kwargs: other arguments for func
+        :return: new :py:class:`SuperDict`
+        :rtype: SuperDict
+
+        >>> SuperDict({'a': 2, 'b': 3, 'c': 1}).kvfilter(lambda k, v: v > 1 and k=='a')
+        {'a': 2}
+        """
+        return SuperDict({key: value for key, value in self.items() if func(key, value, **kwargs)})
+
     def len(self) -> int:
         """
         Shortcut to:
