@@ -2,7 +2,7 @@
 
 from setuptools import setup
 
-packages = ['pytups']
+packages = ["pytups"]
 
 with open("README.rst", "r") as fh:
     long_description = fh.read()
@@ -14,11 +14,11 @@ with open("requirements.txt", "r") as fh:
 
 kwargs = {
     "name": "pytups",
-    "version": 0.7,
+    "version": "0.80.0",
     "packages": packages,
     "description": "data wrangling for lists of tuples and dictionaries",
     "long_description": long_description,
-    'long_description_content_type': "text/x-rst",
+    "long_description_content_type": "text/x-rst",
     "author": "Franco Peschiera",
     "maintainer": "Franco Peschiera",
     "author_email": "pchtsp@gmail.com",
@@ -31,7 +31,7 @@ kwargs = {
         "Programming Language :: Python :: 3",
         "License :: OSI Approved :: MIT License",
         "Operating System :: OS Independent",
-    ]
+    ],
 }
 
 setup(**kwargs)
