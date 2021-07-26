@@ -29,7 +29,7 @@ Right now there are three classes to use: dictionaries, tuple lists and ordered 
 Python versions
 ================
 
-Python 3.6 and up.
+Python 3.5 and up.
 
 
 Quick example
