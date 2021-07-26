@@ -2,7 +2,6 @@ import collections as col
 
 
 class OrderSet(col.MutableSequence):
-
     def __init__(self, _list):
         # _pos is the real list
         # _store is the reverse-key mapping
@@ -22,8 +21,8 @@ class OrderSet(col.MutableSequence):
 
     def __delitem__(self, key):
         del self._store[self[key]]
-        if key!=-1:
-            rest = self._pos[key+1:]
+        if key != -1:
+            rest = self._pos[key + 1 :]
             for item in rest:
                 self._store[item] -= 1
         del self._pos[key]
@@ -50,21 +49,19 @@ class OrderSet(col.MutableSequence):
     def prev(self, key, num=1):
         return self[self._store[key] - num]
 
+
 # TODO: forbid list of lists.
 # TODO: add operations.
 
-if __name__ == '__main__':
+if __name__ == "__main__":
 
-    ttt = OrderSet(['1', 'll', 'lll'])
+    ttt = OrderSet(["1", "ll", "lll"])
     ttt._store
-    ttt[1] = 'lllll'
-    ttt.prev(ttt.prev('1'))
-
+    ttt[1] = "lllll"
+    ttt.prev(ttt.prev("1"))
 
     ttt._store
-
 
     d = col.OrderedDict()
-    d['1'] = 0
-    d['11'] = 1
-
+    d["1"] = 0
+    d["11"] = 1

@@ -2,16 +2,28 @@ import unittest
 import pytups as pt
 import os
 
-TEST_TUP = [('a', 'b', 'c', 1), ('a', 'b', 'c', 2), ('a', 'b', 'c', 3),
-            ('r', 'b', 'c', 1), ('r', 'b', 'c', 2), ('r', 'b', 'c', 3)]
+TEST_TUP = [
+    ("a", "b", "c", 1),
+    ("a", "b", "c", 2),
+    ("a", "b", "c", 3),
+    ("r", "b", "c", 1),
+    ("r", "b", "c", 2),
+    ("r", "b", "c", 3),
+]
 
 
 class TupTest(unittest.TestCase):
     tuplist_class = pt.TupList
 
     def test_filter(self):
-        result = [('a', 'c'), ('a', 'c'), ('a', 'c'),
-                  ('r', 'c'), ('r', 'c'), ('r', 'c')]
+        result = [
+            ("a", "c"),
+            ("a", "c"),
+            ("a", "c"),
+            ("r", "c"),
+            ("r", "c"),
+            ("r", "c"),
+        ]
         self.assertListEqual(result, self.prop1.take([0, 2]))
 
     def test_filter2(self):
@@ -19,66 +31,68 @@ class TupTest(unittest.TestCase):
         self.assertListEqual(result, self.prop1.take(3))
 
     def test_filter_order(self):
-        result = [(1, 'a'), (2, 'a'), (3, 'a'), (1, 'r'), (2, 'r'), (3, 'r')]
+        result = [(1, "a"), (2, "a"), (3, "a"), (1, "r"), (2, "r"), (3, "r")]
         self.assertListEqual(result, self.prop1.take([3, 0]))
 
     def test_filter_list_f(self):
-        result = [('a', 'b', 'c', 1), ('a', 'b', 'c', 2), ('a', 'b', 'c', 3)]
-        self.assertListEqual(result, self.prop1.vfilter(lambda x: x[0] <= 'a'))
+        result = [("a", "b", "c", 1), ("a", "b", "c", 2), ("a", "b", "c", 3)]
+        self.assertListEqual(result, self.prop1.vfilter(lambda x: x[0] <= "a"))
 
     def test_to_dict(self):
-        result = {('a', 'b', 'c'): [1, 2, 3], ('r', 'b', 'c'): [1, 2, 3]}
+        result = {("a", "b", "c"): [1, 2, 3], ("r", "b", "c"): [1, 2, 3]}
         self.assertDictEqual(result, self.prop1.to_dict(result_col=3))
 
     def test_to_dict2(self):
         prop = self.prop1.take([0, 1])
-        result = {'a': ['b', 'b', 'b'], 'r': ['b', 'b', 'b']}
+        result = {"a": ["b", "b", "b"], "r": ["b", "b", "b"]}
         self.assertDictEqual(result, prop.to_dict(result_col=1))
 
     def test_to_dict_nolist(self):
-        result = {('a', 'b', 'c'): 3, ('r', 'b', 'c'): 3}
+        result = {("a", "b", "c"): 3, ("r", "b", "c"): 3}
         self.assertDictEqual(result, self.prop1.to_dict(result_col=3, is_list=False))
 
     def test_to_dict_new(self):
-        result = {('a', 'b', 'c'): [1, 2, 3], ('r', 'b', 'c'): [1, 2, 3]}
+        result = {("a", "b", "c"): [1, 2, 3], ("r", "b", "c"): [1, 2, 3]}
         self.assertDictEqual(result, self.prop1.to_dict_new(result_col=3))
 
     def test_to_dict2_new(self):
         prop = self.prop1.take([0, 1])
-        result = {'a': ['b', 'b', 'b'], 'r': ['b', 'b', 'b']}
+        result = {"a": ["b", "b", "b"], "r": ["b", "b", "b"]}
         self.assertDictEqual(result, prop.to_dict_new(result_col=1))
 
     def test_to_dict_nolist_new(self):
-        result = {('a', 'b', 'c'): 3, ('r', 'b', 'c'): 3}
-        self.assertDictEqual(result, self.prop1.to_dict_new(result_col=3, is_list=False))
+        result = {("a", "b", "c"): 3, ("r", "b", "c"): 3}
+        self.assertDictEqual(
+            result, self.prop1.to_dict_new(result_col=3, is_list=False)
+        )
 
     def test_unique(self):
         prop = self.prop1.take([0, 1])
-        result = [('a', 'b'), ('r', 'b')]
-        self.assertSetEqual(set(result), set(prop.unique(dtype='U7,U7')))
+        result = [("a", "b"), ("r", "b")]
+        self.assertSetEqual(set(result), set(prop.unique(dtype="U7,U7")))
 
     def test_unique_int(self):
         prop = self.prop1.take(3)
         result = [1, 2, 3]
-        self.assertSetEqual(set(result), set(prop.unique(dtype='i')))
+        self.assertSetEqual(set(result), set(prop.unique(dtype="i")))
 
     def test_unique2(self):
         prop = self.prop1.take([0, 1])
-        result = [('a', 'b'), ('r', 'b')]
+        result = [("a", "b"), ("r", "b")]
         self.assertSetEqual(set(result), set(prop.unique2()))
 
     def test_start_finish(self):
         prop = self.prop1.take([0, 3])
-        compare_tups = lambda x, y, p: x[0] != y[0] or x[p] -1 != y[p]
+        compare_tups = lambda x, y, p: x[0] != y[0] or x[p] - 1 != y[p]
         st_fin = prop.to_start_finish(compare_tups=compare_tups, pp=1)
-        result = [('a', 1, 3), ('r', 1, 3)]
+        result = [("a", 1, 3), ("r", 1, 3)]
         self.assertListEqual(result, st_fin)
 
     def test_to_list(self):
         self.assertTrue(type(self.prop1.to_list()) is list)
 
     def test_vapply(self):
-        result = ['a', 'a', 'a', 'r', 'r', 'r']
+        result = ["a", "a", "a", "r", "r", "r"]
         self.assertListEqual(self.prop1.vapply(lambda v: v[0]), result)
 
     def test_vapply2(self):
@@ -98,36 +112,44 @@ class TupTest(unittest.TestCase):
         self.assertEqual(result[1], self.prop1[1])
 
     def test_kvapply(self):
-        result = ['0a', '1a', '2a', '3r', '4r', '5r']
+        result = ["0a", "1a", "2a", "3r", "4r", "5r"]
         prop = self.prop1.kvapply(lambda k, v: str(k) + v[0])
         self.assertListEqual(prop, result)
 
     def test_add(self):
         prop = self.tuplist_class()
-        prop.add('b', 't', '3', 5)
-        self.assertListEqual([('b', 't', '3', 5)], prop)
+        prop.add("b", "t", "3", 5)
+        self.assertListEqual([("b", "t", "3", 5)], prop)
 
     def test_add_operator(self):
         prop = self.tuplist_class
         result = self.prop1 + self.prop1
-        result1 = \
-        [('a', 'b', 'c', 1), ('a', 'b', 'c', 2), ('a', 'b', 'c', 3),
-         ('r', 'b', 'c', 1), ('r', 'b', 'c', 2), ('r', 'b', 'c', 3),
-         ('a', 'b', 'c', 1), ('a', 'b', 'c', 2), ('a', 'b', 'c', 3),
-         ('r', 'b', 'c', 1), ('r', 'b', 'c', 2), ('r', 'b', 'c', 3)
-         ]
+        result1 = [
+            ("a", "b", "c", 1),
+            ("a", "b", "c", 2),
+            ("a", "b", "c", 3),
+            ("r", "b", "c", 1),
+            ("r", "b", "c", 2),
+            ("r", "b", "c", 3),
+            ("a", "b", "c", 1),
+            ("a", "b", "c", 2),
+            ("a", "b", "c", 3),
+            ("r", "b", "c", 1),
+            ("r", "b", "c", 2),
+            ("r", "b", "c", 3),
+        ]
         self.assertIsInstance(result, prop)
         self.assertListEqual(result, result1)
 
     def test_get(self):
         prop = self.prop1
-        self.assertEqual(prop[0], ('a', 'b', 'c', 1))
+        self.assertEqual(prop[0], ("a", "b", "c", 1))
 
     def test_get2(self):
         prop = self.prop1
         prop2 = prop[:2]
         self.assertIsInstance(prop2, pt.TupList)
-        self.assertEqual(prop2, [('a', 'b', 'c', 1), ('a', 'b', 'c', 2)])
+        self.assertEqual(prop2, [("a", "b", "c", 1), ("a", "b", "c", 2)])
 
     def test_get3(self):
         prop = self.prop1
@@ -141,25 +163,27 @@ class TupTest(unittest.TestCase):
 
     def test_intersect(self):
         prop = self.prop1
-        other = [('a', 'b', 'c', 1), ('a', 'b', 'c', 2), ('a', 'b', 'c', 45)]
-        result = {('a', 'b', 'c', 1), ('a', 'b', 'c', 2)}
+        other = [("a", "b", "c", 1), ("a", "b", "c", 2), ("a", "b", "c", 45)]
+        result = {("a", "b", "c", 1), ("a", "b", "c", 2)}
         self.assertSetEqual(prop.intersect(other).to_set(), result)
 
     def test_write(self):
-        _filename = 'tmp.csv'
+        _filename = "tmp.csv"
         self.prop1.to_csv(_filename)
-        with open(_filename, 'r') as file:
+        with open(_filename, "r") as file:
             content = file.read()
-        result = 'a,b,c,1\na,b,c,2\na,b,c,3\nr,b,c,1\nr,b,c,2\nr,b,c,3\n'
+        result = "a,b,c,1\na,b,c,2\na,b,c,3\nr,b,c,1\nr,b,c,2\nr,b,c,3\n"
         self.assertIn(result, content)
 
     def test_read(self):
-        _filename = 'tmp.csv'
-        with open(_filename, 'w') as file:
-            file.write('a,b,c,1\na,b,c,2\na,b,c,3\nr,b,c,1\nr,b,c,2\nr,b,c,3\n')
+        _filename = "tmp.csv"
+        with open(_filename, "w") as file:
+            file.write("a,b,c,1\na,b,c,2\na,b,c,3\nr,b,c,1\nr,b,c,2\nr,b,c,3\n")
+
         def fmt(_tup):
             _tup[3] = int(_tup[3])
             return tuple(_tup)
+
         a = self.tuplist_class.from_csv(_filename, func=fmt)
         self.assertEqual(a, self.prop1)
 
@@ -169,7 +193,7 @@ class TupTest(unittest.TestCase):
 
     def tearDown(self):
         try:
-            os.remove('tmp.csv')
+            os.remove("tmp.csv")
         except:
             pass
 

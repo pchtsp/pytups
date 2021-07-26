@@ -9,89 +9,94 @@ import pytups as pt
 
 TEST_VAL = [1, 2, 3]
 TEST_VAL2 = 4
-TEST_DICT = {'a': {'b': {'c': TEST_VAL}}}
-TEST_DICT_2 = {'a': {'b': {'c': TEST_VAL}}, 'b': {('c', 't'): {'d' : TEST_VAL2}}}
-TEST_DICT_3 = {'ABC': {('a', 'b', 'c'): TEST_VAL2}}
+TEST_DICT = {"a": {"b": {"c": TEST_VAL}}}
+TEST_DICT_2 = {"a": {"b": {"c": TEST_VAL}}, "b": {("c", "t"): {"d": TEST_VAL2}}}
+TEST_DICT_3 = {"ABC": {("a", "b", "c"): TEST_VAL2}}
+
 
 class DictTest(unittest.TestCase):
     dict_class = pt.SuperDict
 
     def test_property(self):
-        prop = self.dict_class.from_dict(TEST_DICT).get_property('b')
-        self.assertDictEqual(prop, {'a': {'c': [1, 2, 3]}})
+        prop = self.dict_class.from_dict(TEST_DICT).get_property("b")
+        self.assertDictEqual(prop, {"a": {"c": [1, 2, 3]}})
 
     def test_dictup(self):
         prop = self.dict_class.from_dict(TEST_DICT).to_dictup()
-        self.assertDictEqual(prop, {('a', 'b', 'c'): TEST_VAL})
+        self.assertDictEqual(prop, {("a", "b", "c"): TEST_VAL})
 
     def test_tuplist(self):
         prop = self.dict_class.from_dict(TEST_DICT).to_dictup().to_tuplist()
-        self.assertListEqual(prop, [('a', 'b', 'c', 1), ('a', 'b', 'c', 2), ('a', 'b', 'c', 3)])
+        self.assertListEqual(
+            prop, [("a", "b", "c", 1), ("a", "b", "c", 2), ("a", "b", "c", 3)]
+        )
 
     def test_filter_wrong(self):
-        prop = lambda: self.dict_class.from_dict(TEST_DICT).filter(['b'])
+        prop = lambda: self.dict_class.from_dict(TEST_DICT).filter(["b"])
         with self.assertRaises(KeyError):
             prop()
 
     def test_filter_good(self):
-        prop = self.dict_class.from_dict(TEST_DICT_2).filter(['b'])
-        self.assertDictEqual(prop, {'b': {('c', 't'): {'d' : TEST_VAL2}}})
+        prop = self.dict_class.from_dict(TEST_DICT_2).filter(["b"])
+        self.assertDictEqual(prop, {"b": {("c", "t"): {"d": TEST_VAL2}}})
 
     def test_filter_good_check(self):
-        prop = self.dict_class.from_dict(TEST_DICT_2).filter(['b'], check=False)
-        self.assertDictEqual(prop, {'b': {('c', 't'): {'d' : TEST_VAL2}}})
+        prop = self.dict_class.from_dict(TEST_DICT_2).filter(["b"], check=False)
+        self.assertDictEqual(prop, {"b": {("c", "t"): {"d": TEST_VAL2}}})
 
     def test_to_dictdict(self):
-        prop = self.dict_class.from_dict({'b': {('c', 't'): {'d' : TEST_VAL2}}}).to_dictdict()
-        self.assertDictEqual(prop, {'b': {'c': {'t': {'d' : TEST_VAL2}}}})
+        prop = self.dict_class.from_dict(
+            {"b": {("c", "t"): {"d": TEST_VAL2}}}
+        ).to_dictdict()
+        self.assertDictEqual(prop, {"b": {"c": {"t": {"d": TEST_VAL2}}}})
 
     def test_to_dictdict2(self):
         prop = self.dict_class.from_dict(TEST_DICT_3).to_dictdict()
-        self.assertDictEqual(prop, {'ABC': {'a': {'b': {'c': TEST_VAL2}}}})
+        self.assertDictEqual(prop, {"ABC": {"a": {"b": {"c": TEST_VAL2}}}})
 
     def test_set_one_level_item(self):
-        some_dict = {'a': TEST_VAL}
+        some_dict = {"a": TEST_VAL}
         prop = self.dict_class()
-        prop['a'] = TEST_VAL
+        prop["a"] = TEST_VAL
         self.assertDictEqual(prop, some_dict)
 
     def test_set_two_level_items(self):
-        some_dict = {'a': {'b': TEST_VAL}}
+        some_dict = {"a": {"b": TEST_VAL}}
         prop = self.dict_class()
-        prop.set_m('a', 'b', value=TEST_VAL)
+        prop.set_m("a", "b", value=TEST_VAL)
         self.assertDictEqual(prop, some_dict)
 
     def test_set_three_level_items(self):
         prop = self.dict_class()
-        prop.set_m('a', 'b', 'c', value=TEST_VAL)
+        prop.set_m("a", "b", "c", value=TEST_VAL)
         self.assertDictEqual(prop, TEST_DICT)
 
     def test_set_one_level_property(self):
         prop = self.dict_class()
-        prop['a'] = TEST_VAL
-        self.assertDictEqual(prop, {'a': TEST_VAL})
+        prop["a"] = TEST_VAL
+        self.assertDictEqual(prop, {"a": TEST_VAL})
 
     def test_set_two_level_properties(self):
         prop = self.dict_class()
-        prop.set_m('a', 'b', value=TEST_VAL)
-        self.assertDictEqual(prop, {'a': {'b': TEST_VAL}})
+        prop.set_m("a", "b", value=TEST_VAL)
+        self.assertDictEqual(prop, {"a": {"b": TEST_VAL}})
 
     def test_set_existing_key(self):
         prop = self.dict_class()
-        prop.set_m('a', 'b', 'c', 'd', value=1)
-        self.assertDictEqual(prop, {'a': {'b': {'c': {'d': 1}}}})
+        prop.set_m("a", "b", "c", "d", value=1)
+        self.assertDictEqual(prop, {"a": {"b": {"c": {"d": 1}}}})
 
     def test_set_three_level_properties(self):
         prop = self.dict_class()
-        prop.set_m('a', 'b', 'c', value=TEST_VAL)
+        prop.set_m("a", "b", "c", value=TEST_VAL)
         self.assertDictEqual(prop, TEST_DICT)
 
     def test_init_with_dict(self):
         self.assertDictEqual(TEST_DICT, self.dict_class(TEST_DICT))
 
     def test_init_with_kws(self):
-        prop = self.dict_class(a=2, b={'a': 2}, c=[{'a': 2}])
-        self.assertDictEqual(prop, {'a': 2, 'b': {'a': 2}, 'c': [{'a': 2}]})
+        prop = self.dict_class(a=2, b={"a": 2}, c=[{"a": 2}])
+        self.assertDictEqual(prop, {"a": 2, "b": {"a": 2}, "c": [{"a": 2}]})
 
     def test_init_with_tuples(self):
         prop = self.dict_class([(0, 1), (1, 2), (2, 3)])
@@ -114,7 +119,8 @@ class DictTest(unittest.TestCase):
             self.dict_class(5)
 
         def init2():
-            self.dict_class('a')
+            self.dict_class("a")
+
         self.assertRaises(TypeError, init)
         self.assertRaises(ValueError, init2)
 
@@ -130,26 +136,26 @@ class DictTest(unittest.TestCase):
     #     self.assertEqual(a['a'][0]['b'], 2)
 
     def test_init_with_kwargs(self):
-        a = self.dict_class(a='b', c=dict(d='e', f=dict(g='h')))
+        a = self.dict_class(a="b", c=dict(d="e", f=dict(g="h")))
         a = self.dict_class.from_dict(a)
-        self.assertEqual(a['a'], 'b')
-        self.assertIsInstance(a['c'], self.dict_class)
+        self.assertEqual(a["a"], "b")
+        self.assertIsInstance(a["c"], self.dict_class)
 
-        self.assertEqual(a.get_m('c', 'f', 'g'), 'h')
-        self.assertIsInstance(a['c']['f'], self.dict_class)
+        self.assertEqual(a.get_m("c", "f", "g"), "h")
+        self.assertIsInstance(a["c"]["f"], self.dict_class)
 
     def test_getitem(self):
         prop = self.dict_class(TEST_DICT)
-        self.assertEqual(prop['a']['b']['c'], TEST_VAL)
+        self.assertEqual(prop["a"]["b"]["c"], TEST_VAL)
 
     def test_empty_getitem(self):
         prop = self.dict_class()
-        prop.get_m('a', 'b', 'c')
+        prop.get_m("a", "b", "c")
         self.assertEqual(prop, {})
 
     def test_getattr(self):
         prop = self.dict_class(TEST_DICT)
-        self.assertEqual(prop['a']['b']['c'], TEST_VAL)
+        self.assertEqual(prop["a"]["b"]["c"], TEST_VAL)
 
     def test_isinstance(self):
         self.assertTrue(isinstance(self.dict_class(), dict))
@@ -162,34 +168,34 @@ class DictTest(unittest.TestCase):
         some_dict = TEST_DICT
         some_json = json.dumps(some_dict)
         prop = self.dict_class()
-        prop.set_m('a', 'b', 'c', value=TEST_VAL)
+        prop.set_m("a", "b", "c", value=TEST_VAL)
         prop_json = json.dumps(prop)
         self.assertEqual(some_json, prop_json)
 
     def test_delitem(self):
-        prop = self.dict_class.from_dict({'a': 2})
-        del prop['a']
+        prop = self.dict_class.from_dict({"a": 2})
+        del prop["a"]
         self.assertDictEqual(prop, {})
 
     def test_delitem_nested(self):
         prop = self.dict_class.from_dict(TEST_DICT)
-        del prop['a']['b']['c']
-        self.assertDictEqual(prop, {'a': {'b': {}}})
+        del prop["a"]["b"]["c"]
+        self.assertDictEqual(prop, {"a": {"b": {}}})
 
     def test_delattr(self):
-        prop = self.dict_class.from_dict({'a': 2})
-        del prop['a']
+        prop = self.dict_class.from_dict({"a": 2})
+        del prop["a"]
         self.assertDictEqual(prop, {})
 
     def test_delattr_nested(self):
         prop = self.dict_class.from_dict(TEST_DICT)
-        del prop['a']['b']['c']
-        self.assertDictEqual(prop, {'a': {'b': {}}})
+        del prop["a"]["b"]["c"]
+        self.assertDictEqual(prop, {"a": {"b": {}}})
 
     def test_delitem_delattr(self):
         prop = self.dict_class.from_dict(TEST_DICT)
-        del prop['a']['b']
-        self.assertDictEqual(prop, {'a': {}})
+        del prop["a"]["b"]
+        self.assertDictEqual(prop, {"a": {}})
 
     def test_tuple_key(self):
         prop = self.dict_class()
@@ -198,7 +204,7 @@ class DictTest(unittest.TestCase):
         self.assertEqual(prop[(1, 2)], 2)
 
     def test_dir(self):
-        key = 'a'
+        key = "a"
         prop = self.dict_class({key: 1})
         dir_prop = dir(prop)
 
@@ -206,34 +212,37 @@ class DictTest(unittest.TestCase):
         for d in dir_dict:
             self.assertTrue(d in dir_prop, d)
 
-        self.assertTrue('__methods__' not in dir_prop)
-        self.assertTrue('__members__' not in dir_prop)
+        self.assertTrue("__methods__" not in dir_prop)
+        self.assertTrue("__members__" not in dir_prop)
 
     def test_dir_with_members(self):
-        prop = self.dict_class({'__members__': 1})
+        prop = self.dict_class({"__members__": 1})
         dir(prop)
-        self.assertTrue('__members__' in prop.keys())
+        self.assertTrue("__members__" in prop.keys())
 
     def test_fill_default(self):
         prop = self.dict_class.from_dict(TEST_DICT)
-        prop2 = prop.fill_with_default(['f', 'g', 'h'])
-        prop2_result = {'a': {'b': {'c': [1, 2, 3]}}, 'f': 0, 'g': 0, 'h': 0}
+        prop2 = prop.fill_with_default(["f", "g", "h"])
+        prop2_result = {"a": {"b": {"c": [1, 2, 3]}}, "f": 0, "g": 0, "h": 0}
         self.assertEqual(prop2, prop2_result)
 
     def test_fill_default2(self):
         prop = self.dict_class.from_dict(TEST_DICT)
-        prop2 = prop.fill_with_default(('f', 'g', 'h'), 'OK')
-        prop2_result = {'a': {'b': {'c': [1, 2, 3]}}, 'f': 'OK', 'g': 'OK', 'h': 'OK'}
+        prop2 = prop.fill_with_default(("f", "g", "h"), "OK")
+        prop2_result = {"a": {"b": {"c": [1, 2, 3]}}, "f": "OK", "g": "OK", "h": "OK"}
         self.assertEqual(prop2, prop2_result)
 
     # TODO: vapply tests
 
     def test_sapply(self):
         import operator as op
+
         prop = self.dict_class.from_dict(TEST_DICT).to_dictup()
-        prop2 = self.dict_class.from_dict(TEST_DICT).to_dictup().vapply(lambda v: [4, 5, 6])
+        prop2 = (
+            self.dict_class.from_dict(TEST_DICT).to_dictup().vapply(lambda v: [4, 5, 6])
+        )
         sum_prop = prop.sapply(op.__add__, prop2).to_dictdict()
-        result = {'a': {'b': {'c': [1, 2, 3, 4, 5, 6]}}}
+        result = {"a": {"b": {"c": [1, 2, 3, 4, 5, 6]}}}
         self.assertEqual(sum_prop, result)
 
     # def test_to_dict(self):
@@ -263,35 +272,33 @@ class DictTest(unittest.TestCase):
 
     def test_update(self):
         old = self.dict_class()
-        old.set_m('child', 'a', value='a')
-        old.set_m('child', 'b', value='b')
-        old['foo'] = 'c'
+        old.set_m("child", "a", value="a")
+        old.set_m("child", "b", value="b")
+        old["foo"] = "c"
 
         new = self.dict_class()
-        new.set_m('child', 'b', value='b2')
-        new.set_m('child', 'c', value='c')
-        new.set_m('foo', 'bar', value=True)
+        new.set_m("child", "b", value="b2")
+        new.set_m("child", "c", value="c")
+        new.set_m("foo", "bar", value=True)
 
         old.update(new)
 
-        reference = {'foo': {'bar': True},
-                     'child': {'a': 'a', 'c': 'c', 'b': 'b2'}}
+        reference = {"foo": {"bar": True}, "child": {"a": "a", "c": "c", "b": "b2"}}
 
         self.assertDictEqual(old, reference)
 
     def test_update_with_lists(self):
         org = self.dict_class()
-        org['a'] = [1, 2, {'a': 'superman'}]
+        org["a"] = [1, 2, {"a": "superman"}]
         someother = self.dict_class()
-        someother['b'] = [{'b': 123}]
+        someother["b"] = [{"b": 123}]
         org.update(someother)
 
-        correct = {'a': [1, 2, {'a': 'superman'}],
-                   'b': [{'b': 123}]}
+        correct = {"a": [1, 2, {"a": "superman"}], "b": [{"b": 123}]}
 
         org.update(someother)
         self.assertDictEqual(org, correct)
-        self.assertIsInstance(org['b'][0], dict)
+        self.assertIsInstance(org["b"][0], dict)
 
     def test_update_with_kws(self):
         org = self.dict_class(one=1, two=2)
@@ -300,24 +307,24 @@ class DictTest(unittest.TestCase):
         self.assertDictEqual(org, someother)
 
     def test_update_with_args_and_kwargs(self):
-        expected = {'a': 1, 'b': 2}
+        expected = {"a": 1, "b": 2}
         org = self.dict_class()
-        org.update({'a': 3, 'b': 2}, a=1)
+        org.update({"a": 3, "b": 2}, a=1)
         self.assertDictEqual(org, expected)
 
     def test_update_with_multiple_args(self):
         def update():
-            org.update({'a': 2}, {'a': 1})
+            org.update({"a": 2}, {"a": 1})
+
         org = self.dict_class()
         self.assertRaises(TypeError, update)
 
     def test_hook_in_constructor(self):
         a_dict = self.dict_class.from_dict(TEST_DICT)
-        self.assertIsInstance(a_dict['a'], self.dict_class)
+        self.assertIsInstance(a_dict["a"], self.dict_class)
 
     def test_copy(self):
         class MyMutableObject(object):
-
             def __init__(self):
                 self.attribute = None
 
@@ -325,23 +332,25 @@ class DictTest(unittest.TestCase):
         foo.attribute = True
 
         a = self.dict_class()
-        a['child'] = self.dict_class()
-        a['child']['immutable'] = 42
-        a['child']['mutable'] = foo
+        a["child"] = self.dict_class()
+        a["child"]["immutable"] = 42
+        a["child"]["mutable"] = foo
 
         b = a.copy()
 
         # immutable object should not change
-        b['child']['immutable'] = 21
-        self.assertEqual(a['child']['immutable'], 21)
+        b["child"]["immutable"] = 21
+        self.assertEqual(a["child"]["immutable"], 21)
 
         # mutable object should change
-        b['child']['mutable'].attribute = False
-        self.assertEqual(a['child']['mutable'].attribute, b['child']['mutable'].attribute)
+        b["child"]["mutable"].attribute = False
+        self.assertEqual(
+            a["child"]["mutable"].attribute, b["child"]["mutable"].attribute
+        )
 
         # changing child of b should not affect a
-        b['child'] = "new stuff"
-        self.assertTrue(isinstance(a['child'], self.dict_class))
+        b["child"] = "new stuff"
+        self.assertTrue(isinstance(a["child"], self.dict_class))
 
     def test_deepcopy(self):
         class MyMutableObject(object):
@@ -352,37 +361,37 @@ class DictTest(unittest.TestCase):
         foo.attribute = True
 
         a = self.dict_class()
-        a['child'] = self.dict_class()
-        a['child']['immutable'] = 42
-        a['child']['mutable'] = foo
+        a["child"] = self.dict_class()
+        a["child"]["immutable"] = 42
+        a["child"]["mutable"] = foo
 
         b = copy.deepcopy(a)
 
         # immutable object should not change
-        b['child']['immutable'] = 21
-        self.assertEqual(a['child']['immutable'], 42)
+        b["child"]["immutable"] = 21
+        self.assertEqual(a["child"]["immutable"], 42)
 
         # mutable object should not change
-        b['child']['mutable'].attribute = False
-        self.assertTrue(a['child']['mutable'].attribute)
+        b["child"]["mutable"].attribute = False
+        self.assertTrue(a["child"]["mutable"].attribute)
 
         # changing child of b should not affect a
         b.child = "new stuff"
-        self.assertTrue(isinstance(a['child'], self.dict_class))
+        self.assertTrue(isinstance(a["child"], self.dict_class))
 
     def test_pickle(self):
         a = self.dict_class(TEST_DICT)
         self.assertEqual(a, pickle.loads(pickle.dumps(a)))
 
     def test_init_from_zip(self):
-        keys = ['a']
+        keys = ["a"]
         values = [42]
         items = zip(keys, values)
         d = self.dict_class(items)
-        self.assertEqual(d['a'], 42)
+        self.assertEqual(d["a"], 42)
 
     def test_iterable1(self):
-        no = pt.tools.is_really_iterable('sqdf')
+        no = pt.tools.is_really_iterable("sqdf")
         self.assertEqual(no, False)
 
     def test_iterable2(self):
@@ -392,7 +401,6 @@ class DictTest(unittest.TestCase):
     def test_iterable3(self):
         yes = pt.tools.is_really_iterable((1, 9))
         self.assertEqual(yes, True)
-
 
     # def test_setdefault_simple(self):
     #     d = self.dict_class()
@@ -413,22 +421,22 @@ class DictTest(unittest.TestCase):
     def test_parent_key_item(self):
         a = self.dict_class()
         try:
-            a.set_m('keys', 'x', value=1)
+            a.set_m("keys", "x", value=1)
         except AttributeError as e:
             self.fail(e)
         try:
-            a.set_m(1, 'x', value=3)
+            a.set_m(1, "x", value=3)
         except Exception as e:
             self.fail(e)
-        self.assertEqual(a, {'keys': {'x': 1}, 1: {'x': 3}})
+        self.assertEqual(a, {"keys": {"x": 1}, 1: {"x": 3}})
 
     def test_parent_key_prop(self):
         a = self.dict_class()
         try:
-            a.set_m('y', 'x', value=1)
+            a.set_m("y", "x", value=1)
         except AttributeError as e:
             self.fail(e)
-        self.assertEqual(a, {'y': {'x': 1}})
+        self.assertEqual(a, {"y": {"x": 1}})
 
     def setUp(self):
         pass

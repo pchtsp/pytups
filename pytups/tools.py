@@ -1,5 +1,5 @@
-import collections
+from collections.abc import Iterable
+
 
 def is_really_iterable(var):
-    return isinstance(var, collections.Iterable) \
-           and not isinstance(var, str)
+    return isinstance(var, Iterable) and not isinstance(var, str)

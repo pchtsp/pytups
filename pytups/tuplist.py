@@ -5,7 +5,6 @@ from . import tools
 
 
 class TupList(list):
-
     def __getitem__(self, key):
         if not isinstance(key, slice):
             return list.__getitem__(self, key)
@@ -27,17 +26,16 @@ class TupList(list):
         # still wrong
         if len(self) <= 10:
             return list.__repr__(self)
-        text = "[{},\n...,\n{}]\n({} elements)".\
-            format(self[:5].__repr__(),
-                   self[-5:].__repr__(),
-                   len(self))
+        text = "[{},\n...,\n{}]\n({} elements)".format(
+            self[:5].__repr__(), self[-5:].__repr__(), len(self)
+        )
         repr(text)
 
-    def filter(self, *args, **kwargs) -> 'TupList':
+    def filter(self, *args, **kwargs) -> "TupList":
         warnings.warn("use take instead of filter", DeprecationWarning)
         return self.take(*args, **kwargs)
 
-    def take(self, indices) -> 'TupList':
+    def take(self, indices) -> "TupList":
         """
         filters the tuple of each element of the list according to a list of positions
 
@@ -57,16 +55,16 @@ class TupList(list):
             return TupList(x[0] for x in arr_filt)
         return TupList(tuple(x) for x in arr_filt)
 
-    def vfilter(self, function) -> 'TupList':
+    def vfilter(self, function) -> "TupList":
         """
         returns new list with only tuples for which `function` returns True
 
-        :param function function: function to apply to each element
+        :param callable function: function to apply to each element
         :return: new :py:class:`TupList`
         """
         return TupList([i for i in self if function(i)])
 
-    def filter_list_f(self, *args, **kwargs) -> 'TupList':
+    def filter_list_f(self, *args, **kwargs) -> "TupList":
         warnings.warn("use vfilter instead of filter_list_f", DeprecationWarning)
         return self.vfilter(*args, **kwargs)
 
@@ -110,7 +108,6 @@ class TupList(list):
             result[index].append(content)
         return result
 
-
     def to_dict_new(self, result_col=0, is_list=True, indices=None):
         """
         This magic function converts a tuple list into a dictionary
@@ -136,7 +133,7 @@ class TupList(list):
         _to_key = lambda k: k
         if tools.is_really_iterable(indices):
             if len(indices) == 1:
-               indices = indices[0]
+                indices = indices[0]
             else:
                 _to_key = lambda k: tuple(k)
         if tools.is_really_iterable(result_col) and len(result_col) == 1:
@@ -173,7 +170,7 @@ class TupList(list):
         """
         return self.append(tuple(args))
 
-    def unique(self, **kwargs) -> 'TupList':
+    def unique(self, **kwargs) -> "TupList":
         """
         Applies :py:func:`numpy.unique`.
 
@@ -183,7 +180,7 @@ class TupList(list):
         arr = np.asarray(self, **kwargs)
         return TupList(np.unique(arr, axis=0).tolist())
 
-    def unique2(self) -> 'TupList':
+    def unique2(self) -> "TupList":
         """
         Converts to set and then back to TupList.
 
@@ -191,7 +188,7 @@ class TupList(list):
         """
         return TupList(set(self))
 
-    def intersect(self, input_list) -> 'TupList':
+    def intersect(self, input_list) -> "TupList":
         """
         Converts list and argument into sets and then intersects them.
 
@@ -200,7 +197,7 @@ class TupList(list):
         """
         return TupList(set(self) & set(input_list))
 
-    def set_diff(self, input_list) -> 'TupList':
+    def set_diff(self, input_list) -> "TupList":
         """
         Converts list and argument into sets and then subtracts one from the other.
 
@@ -209,15 +206,17 @@ class TupList(list):
         """
         return TupList(set(self) - set(input_list))
 
-    def to_start_finish(self, compare_tups, pp=1, sort=True, join_func=None) -> 'TupList':
+    def to_start_finish(
+        self, compare_tups, pp=1, sort=True, join_func=None
+    ) -> "TupList":
         """
         Takes a calendar tuple list of the form: (id, month) and
         returns a tuple list of the form (id, start_month, end_month)
         it works with a bigger tuple too.
 
-        :param function compare_tups: returns True if tups are not consecutive. Takes 3 arguments
+        :param callable compare_tups: returns True if tups are not consecutive. Takes 3 arguments
         :param int pp: the position in the tuple where the period is
-        :param function join_func: returns joined tuple from list of consecutive tuples. Takes 1 argument.
+        :param callable join_func: returns joined tuple from list of consecutive tuples. Takes 1 argument.
         :return: new :py:class:`TupList`
         """
         if sort:
@@ -264,45 +263,48 @@ class TupList(list):
     def to_zip(self) -> tuple:
         return zip(*self)
 
-    def kvapply(self, func, *args, **kwargs) -> 'TupList':
+    def kvapply(self, func, *args, **kwargs) -> "TupList":
         """
         maps function into each element of TupList with indexes
 
-        :param function func: function to apply
+        :param callable func: function to apply
         :return: new :py:class:`TupList`
         """
         return TupList(func(k, v, *args, **kwargs) for k, v in enumerate(self))
 
-    def kapply(self, func, *args, **kwargs) -> 'TupList':
+    def kapply(self, func, *args, **kwargs) -> "TupList":
         """
         maps function into each key of TupList
 
-        :param function func: function to apply
+        :param callable func: function to apply
         :return: new :py:class:`TupList`
         """
         return TupList(func(k, *args, **kwargs) for k, _ in enumerate(self))
 
-    def vapply(self, func, *args, **kwargs) -> 'TupList':
+    def vapply(self, func, *args, **kwargs) -> "TupList":
         """
         maps function into each element of TupList
 
-        :param function func: function to apply
+        :param callable func: function to apply
         :return: new :py:class:`TupList`
         """
         return TupList(func(v, *args, **kwargs) for v in self)
 
-    def apply(self, *args, **kwargs) -> 'TupList':
+    def apply(self, *args, **kwargs) -> "TupList":
         warnings.warn("use vapply instead of apply", DeprecationWarning)
         return self.vapply(*args, **kwargs)
 
     def to_df(self, **kwargs):
         try:
             import pandas as pd
+
             return pd.DataFrame(self.to_list(), **kwargs)
         except ImportError:
-            raise ImportError('Pandas is not present in your system. Try: pip install pandas')
+            raise ImportError(
+                "Pandas is not present in your system. Try: pip install pandas"
+            )
 
-    def sorted(self, **kwargs) -> 'TupList':
+    def sorted(self, **kwargs) -> "TupList":
         """
         Applies sorted function to elements and returns a TupList
 
@@ -311,13 +313,13 @@ class TupList(list):
         """
         return TupList(sorted(self, **kwargs))
 
-    def to_csv(self, path) -> 'TupList':
+    def to_csv(self, path) -> "TupList":
         """
         exports the list to a csv file.
         :param path: filename
         :return: the same :py:class:`TupList`
         """
-        with open(path, 'w', newline="\n", encoding="utf-8") as out:
+        with open(path, "w", newline="\n", encoding="utf-8") as out:
             csv_out = csv.writer(out)
             csv_out.writerows(self)
         return self
@@ -328,11 +330,11 @@ class TupList(list):
     #     return self
 
     @classmethod
-    def from_csv(cls, path, func=None) -> 'TupList':
+    def from_csv(cls, path, func=None) -> "TupList":
         """
         Generates a new TupList by reading a csv file
         :param path: filename
-        :param func: function to apply to each row
+        :param callable func: function to apply to each row
         :return: new :py:class:`TupList`
         """
         if func is None:
