@@ -1,12 +1,37 @@
 from . import tools
 import warnings
 import operator as op
+from typing import (
+    Callable,
+    Iterable,
+    Any,
+    Union,
+    TypeVar,
+    Generic,
+    Mapping,
+    Iterator,
+    List,
+    TYPE_CHECKING,
+)
+
+if TYPE_CHECKING:
+    from tuplist import TupList
+
+K = TypeVar("K")
+V = TypeVar("V")
+T = TypeVar("T")
 
 
-class SuperDict(dict):
+class SuperDict(dict, Generic[K, V], Mapping[K, V]):
     """
     A dictionary with additional methods
     """
+
+    def __getitem__(self, key: K) -> V:
+        return dict.__getitem__(self, key)
+
+    def __iter__(self) -> Iterator[K]:
+        return dict.__iter__(self)
 
     def __add__(self, other):
         return self.sapply(op.__add__, other)
@@ -41,12 +66,12 @@ class SuperDict(dict):
         )
 
     @staticmethod
-    def _list_or_value(val_list, pos):
+    def _list_or_value(val_list: List[T], pos: int) -> Union[List[T], T]:
         if pos is None:
             return val_list
         return val_list[pos]
 
-    def keys_l(self, pos=None):
+    def keys_l(self, pos: int = None) -> list:
         """
         Shortcut to:
 
@@ -59,7 +84,7 @@ class SuperDict(dict):
         result = list(self.keys())
         return self._list_or_value(result, pos)
 
-    def values_l(self, pos=None):
+    def values_l(self, pos: int = None) -> list:
         """
         Shortcut to:
 
@@ -72,7 +97,7 @@ class SuperDict(dict):
         result = list(self.values())
         return self._list_or_value(result, pos)
 
-    def values_tl(self, pos=None):
+    def values_tl(self, pos: int = None) -> "TupList":
         """
         Shortcut to:
 
@@ -87,7 +112,7 @@ class SuperDict(dict):
         result = tl.TupList(self.values())
         return self._list_or_value(result, pos)
 
-    def keys_tl(self, pos=None):
+    def keys_tl(self, pos: int = None) -> "TupList":
         """
         Shortcut to:
 
@@ -102,7 +127,7 @@ class SuperDict(dict):
         result = tl.TupList(self.keys())
         return self._list_or_value(result, pos)
 
-    def items_tl(self, pos=None):
+    def items_tl(self, pos: int = None) -> "TupList":
         """
         Shortcut to:
 
@@ -117,7 +142,7 @@ class SuperDict(dict):
         result = tl.TupList(self.items())
         return self._list_or_value(result, pos)
 
-    def clean(self, default_value=0, func=None, **kwargs):
+    def clean(self, default_value=0, func: Callable = None, **kwargs) -> "SuperDict":
         """
         Filters elements by value
 
@@ -134,7 +159,7 @@ class SuperDict(dict):
             func = lambda x: x != default_value
         return self.vfilter(func=func, **kwargs)
 
-    def vfilter(self, func, **kwargs) -> "SuperDict":
+    def vfilter(self, func: Callable, **kwargs) -> "SuperDict":
         """
         apply a filter over the dictionary values
         :param function func: True for values we want to filter
@@ -149,7 +174,7 @@ class SuperDict(dict):
             {key: value for key, value in self.items() if func(value, **kwargs)}
         )
 
-    def kfilter(self, func, **kwargs) -> "SuperDict":
+    def kfilter(self, func: Callable, **kwargs) -> "SuperDict":
         """
         apply a filter over the dictionary keys
         :param function func: True for keys we want to filter
@@ -164,10 +189,10 @@ class SuperDict(dict):
             {key: value for key, value in self.items() if func(key, **kwargs)}
         )
 
-    def kvfilter(self, func, **kwargs) -> 'SuperDict':
+    def kvfilter(self, func: Callable, **kwargs) -> "SuperDict":
         """
         apply a filter over the dictionary values
-        :param function func: True for values we want to filter
+        :param callable func: True for values we want to filter
         :param kwargs: other arguments for func
         :return: new :py:class:`SuperDict`
         :rtype: SuperDict
@@ -175,7 +200,9 @@ class SuperDict(dict):
         >>> SuperDict({'a': 2, 'b': 3, 'c': 1}).kvfilter(lambda k, v: v > 1 and k=='a')
         {'a': 2}
         """
-        return SuperDict({key: value for key, value in self.items() if func(key, value, **kwargs)})
+        return SuperDict(
+            {key: value for key, value in self.items() if func(key, value, **kwargs)}
+        )
 
     def len(self) -> int:
         """
@@ -188,7 +215,7 @@ class SuperDict(dict):
         """
         return len(self)
 
-    def filter(self, indices, check=True) -> "SuperDict":
+    def filter(self, indices: Iterable, check: bool = True) -> "SuperDict":
         """
         takes out elements that are not in `indices`
 
@@ -238,7 +265,7 @@ class SuperDict(dict):
             dictdict.set_m(*key, value=value)
         return dictdict
 
-    def set_m(self, *args, value=None):
+    def set_m(self, *args, value=None) -> "SuperDict":
         """
         uses `args` as nested keys and then assigns `value`
 
@@ -260,7 +287,7 @@ class SuperDict(dict):
         self[elem].set_m(*args, value=value)
         return self
 
-    def dicts_to_tup(self, keys, content) -> "SuperDict":
+    def dicts_to_tup(self, keys: list, content) -> "SuperDict":
         """
         compacts nested dictionaries into one single dictionary
         with tuples as keys.
@@ -356,7 +383,7 @@ class SuperDict(dict):
         """
         return self.vapply(len)
 
-    def index_by_property(self, property, get_list=False) -> "SuperDict":
+    def index_by_property(self, property, get_list=False) -> Union["SuperDict", list]:
         el = self.keys_l()[0]
         if property not in self[el]:
             raise IndexError(
@@ -374,7 +401,9 @@ class SuperDict(dict):
             return result.values_l()
         return result
 
-    def index_by_part_of_tuple(self, position, get_list=False) -> "SuperDict":
+    def index_by_part_of_tuple(
+        self, position, get_list=False
+    ) -> Union["SuperDict", list]:
         el = self.keys_l()[0]
         if len(el) <= position:
             raise IndexError(
@@ -396,7 +425,7 @@ class SuperDict(dict):
         warnings.warn("use kvapply instead", DeprecationWarning)
         return self.kvapply(*args, **kwargs)
 
-    def kvapply(self, func, *args, **kwargs) -> "SuperDict":
+    def kvapply(self, func: Callable, *args, **kwargs) -> "SuperDict":
         """Applies a function to the dictionary and returns the result
 
         :param callable func: function with two arguments: one for the key, another for the value
@@ -404,7 +433,7 @@ class SuperDict(dict):
         """
         return SuperDict({k: func(k, v, *args, **kwargs) for k, v in self.items()})
 
-    def vapply(self, func, *args, **kwargs) -> "SuperDict":
+    def vapply(self, func: Callable, *args, **kwargs) -> "SuperDict":
         """
         Same as apply but only on values
 
@@ -413,7 +442,7 @@ class SuperDict(dict):
         """
         return SuperDict({k: func(v, *args, **kwargs) for k, v in self.items()})
 
-    def kapply(self, func, *args, **kwargs) -> "SuperDict":
+    def kapply(self, func: Callable, *args, **kwargs) -> "SuperDict":
         """
         Same as apply but only on keys
 
@@ -422,7 +451,7 @@ class SuperDict(dict):
         """
         return SuperDict({k: func(k, *args, **kwargs) for k in self})
 
-    def sapply(self, func, other, *args, **kwargs) -> "SuperDict":
+    def sapply(self, func: Callable, other: dict, *args, **kwargs) -> "SuperDict":
         """
         Applies function to both dictionaries.
         Using keys of the self.
@@ -436,7 +465,7 @@ class SuperDict(dict):
             {k: func(v, other[k], *args, **kwargs) for k, v in self.items()}
         )
 
-    def get_m(self, *args, default=None):
+    def get_m(self, *args, default=None) -> Any:
         """
         Safe way to search for something in a nested dictionary
 
@@ -451,7 +480,7 @@ class SuperDict(dict):
         except KeyError:
             return default
 
-    def update(self, *args, **kwargs):
+    def update(self, *args, **kwargs) -> "SuperDict":
         """
         updates a nested dictionary.
 
@@ -497,7 +526,7 @@ class SuperDict(dict):
     #     dictionary = dict(dictionary)
     #     return dictionary
 
-    def sorted(self, **kwargs):
+    def sorted(self, **kwargs) -> list:
         """
         Applies sorted function to dictionary keys
 
@@ -537,10 +566,5 @@ class SuperDict(dict):
     @classmethod
     def from_df(cls, data) -> "SuperDict":
         # TODO: this assuming the object is a pandas dataframe
-        """
-        Main initialization. Deals with nested dictionaries.
 
-        :param dict data: a (possibly nested) dictionary
-        :return: new :py:class:`SuperDict`
-        """
         pass
