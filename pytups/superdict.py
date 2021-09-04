@@ -1,5 +1,4 @@
 from . import tools
-import warnings
 import operator as op
 from typing import (
     Callable,
@@ -420,10 +419,6 @@ class SuperDict(dict, Generic[K, V], Mapping[K, V]):
         if get_list:
             return result.values_l()
         return result
-
-    def apply(self, *args, **kwargs) -> "SuperDict":
-        warnings.warn("use kvapply instead", DeprecationWarning)
-        return self.kvapply(*args, **kwargs)
 
     def kvapply(self, func: Callable, *args, **kwargs) -> "SuperDict":
         """Applies a function to the dictionary and returns the result

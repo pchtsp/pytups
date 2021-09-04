@@ -1,5 +1,5 @@
 import collections as col
-from typing import Iterable, TypeVar, Generic, List, Any, Dict
+from typing import Iterable, TypeVar, Generic, List, Any
 
 K = TypeVar("K")
 V = TypeVar("V")

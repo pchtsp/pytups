@@ -1,5 +1,3 @@
-import numpy as np
-import warnings
 import csv
 from . import tools
 from typing import Callable, Iterable, Union, TypeVar, Generic, TYPE_CHECKING
@@ -38,11 +36,17 @@ class TupList(list, Generic[T]):
         )
         return repr(text)
 
-    def filter(self, *args, **kwargs) -> "TupList":
-        warnings.warn("use take instead of filter", DeprecationWarning)
-        return self.take(*args, **kwargs)
+    def take(self, indices: Union[Iterable, int], use_numpy=False) -> "TupList":
+        if use_numpy:
+            try:
+                return self.take_np(indices)
+            except ImportError:
+                pass
+        if not isinstance(indices, list):
+            return self.vapply(lambda tup: tup[indices])
+        return self.vapply(lambda tup: tuple(tup[a] for a in indices))
 
-    def take(self, indices: Union[Iterable, int]) -> "TupList":
+    def take_np(self, indices: Union[Iterable, int]) -> "TupList":
         """
         filters the tuple of each element of the list according to a list of positions
 
@@ -50,6 +54,8 @@ class TupList(list, Generic[T]):
         :type indices: int or list
         :return: a new :py:class:`TupList`
         """
+        import numpy as np
+
         if not len(self):
             return self
         single = False
@@ -70,10 +76,6 @@ class TupList(list, Generic[T]):
         :return: new :py:class:`TupList`
         """
         return TupList([i for i in self if function(i)])
-
-    def filter_list_f(self, *args, **kwargs) -> "TupList":
-        warnings.warn("use vfilter instead of filter_list_f", DeprecationWarning)
-        return self.vfilter(*args, **kwargs)
 
     def to_dict(
         self,
@@ -105,11 +107,9 @@ class TupList(list, Generic[T]):
             indices = [col for col in range(len(self[0])) if col not in result_col]
         result = sd.SuperDict()
         for tup in self:
-            # TODO: consider using np.take like in self.take
             index = tuple(tup[i] for i in indices)
             if len(index) == 1:
                 index = index[0]
-            # TODO: consider using np.take like in self.take
             content = tuple(tup[i] for i in result_col)
             if len(content) == 1:
                 content = content[0]
@@ -190,8 +190,13 @@ class TupList(list, Generic[T]):
         :param dtype: arguments to :py:func:`numpy.asarray`
         :return: new :py:class:`TupList`
         """
-        arr = np.asarray(self, **kwargs)
-        return TupList(np.unique(arr, axis=0).tolist())
+        try:
+            import numpy as np
+
+            arr = np.asarray(self, **kwargs)
+            return TupList(np.unique(arr, axis=0).tolist())
+        except ImportError:
+            return self.unique2()
 
     def unique2(self) -> "TupList":
         """
@@ -307,10 +312,6 @@ class TupList(list, Generic[T]):
         """
         return TupList(func(v, *args, **kwargs) for v in self)
 
-    def apply(self, *args, **kwargs) -> "TupList":
-        warnings.warn("use vapply instead of apply", DeprecationWarning)
-        return self.vapply(*args, **kwargs)
-
     def to_df(self, **kwargs):
         try:
             import pandas as pd
@@ -341,11 +342,6 @@ class TupList(list, Generic[T]):
             csv_out.writerows(self)
         return self
 
-    # def to_csv2(self, path, dtype, fmt):
-    #     arr = np.array(self, dtype=dtype)
-    #     np.savetxt(path, arr, fmt=fmt)
-    #     return self
-
     @classmethod
     def from_csv(cls, path: str, func: Callable = None) -> "TupList":
         """
@@ -359,8 +355,3 @@ class TupList(list, Generic[T]):
         with open(path) as f:
             data = cls(csv.reader(f)).vapply(func)
         return data
-
-    # @classmethod
-    # def from_csv2(cls, path, delimiter=',') -> 'TupList':
-    #     content = np.genfromtxt(path, delimiter=delimiter)
-    #     return content
