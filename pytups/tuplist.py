@@ -285,6 +285,17 @@ class TupList(list, Generic[T]):
     def to_zip(self) -> zip:
         return zip(*self)
 
+    def len(self) -> int:
+        """
+        Shortcut to:
+
+        >>> len(TupList())
+
+        :return: length of list
+        :rtype: int
+        """
+        return len(self)
+
     def kvapply(self, func: Callable, *args, **kwargs) -> "TupList":
         """
         maps function into each element of TupList with indexes
@@ -343,15 +354,16 @@ class TupList(list, Generic[T]):
         return self
 
     @classmethod
-    def from_csv(cls, path: str, func: Callable = None) -> "TupList":
+    def from_csv(cls, path: str, func: Callable = None, **kwargs) -> "TupList":
         """
         Generates a new TupList by reading a csv file
         :param path: filename
         :param callable func: function to apply to each row
+        :**kwargs: arguments to csv.reader
         :return: new :py:class:`TupList`
         """
         if func is None:
             func = tuple
         with open(path) as f:
-            data = cls(csv.reader(f)).vapply(func)
+            data = cls(csv.reader(f, **kwargs)).vapply(func)
         return data

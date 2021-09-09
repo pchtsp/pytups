@@ -13,7 +13,15 @@ TEST_DATES = ["2019-0" + str(i) for i in range(1, 10)]
 
 
 class OrdSetTest(unittest.TestCase):
-    dict_class = pt.OrderSet
+    list_class = pt.OrderSet
+
+    def setUp(self):
+        self.prop1 = self.list_class(TEST_TUP)
+        self.dates1 = self.list_class(TEST_DATES)
+        self.refDates1 = list(TEST_DATES)
+
+    def tearDown(self):
+        pass
 
     def test_select(self):
         self.assertEqual(self.prop1[1], ("a", "b", "c", 2))
@@ -66,14 +74,6 @@ class OrdSetTest(unittest.TestCase):
         del self.refDates1[3]
         del self.dates1[3]
         self.assertListEqual(self.refDates1, self.dates1._pos)
-
-    def setUp(self):
-        self.prop1 = self.dict_class(TEST_TUP)
-        self.dates1 = self.dict_class(TEST_DATES)
-        self.refDates1 = list(TEST_DATES)
-
-    def tearDown(self):
-        pass
 
 
 if __name__ == "__main__":

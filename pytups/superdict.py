@@ -16,6 +16,11 @@ from typing import (
 if TYPE_CHECKING:
     from tuplist import TupList
 
+try:
+    import ujson as json
+except:
+    import json
+
 K = TypeVar("K")
 V = TypeVar("V")
 T = TypeVar("T")
@@ -356,11 +361,11 @@ class SuperDict(dict, Generic[K, V], Mapping[K, V]):
                 tup_list.append(tuple(key + val))
         return tup_list
 
-    def fill_with_default(self, keys, default=0) -> "SuperDict":
+    def fill_with_default(self, keys: Iterable, default=0) -> "SuperDict":
         """
         guarantees dictionary will have specific keys
 
-        :param list keys: dictionary will have at least these keys
+        :param Iterable keys: dictionary will have at least these keys
         :param default:
         :return: new :py:class:`SuperDict`
         """

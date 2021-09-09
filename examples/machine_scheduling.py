@@ -85,7 +85,7 @@ tasks = duration.keys()
 jk_all = pt.TupList((t, p) for t in tasks for p in periods)
 
 # we filter the starts that are too late to be possible:
-JK = jk_all.filter_list_f(lambda x: x[1] + duration[x[0]] <= C_max)
+JK = jk_all.vfilter(lambda x: x[1] + duration[x[0]] <= C_max)
 
 # we create a set of tasks that can start at time period k
 K_j = JK.to_dict(result_col=1)
@@ -140,10 +140,10 @@ print("solution is \n{}".format(solution))
 
 # verify that all periods are filled:
 # counting if there is any with a minus -1
-pt.TupList(solution).filter_list_f(lambda v: v == -1)
+pt.TupList(solution).vfilter(lambda v: v == -1)
 
 # verify that each task t appears exactly duration[t] times
 task_count = pt.SuperDict().fill_with_default(keys=duration.keys())
 for period, task in enumerate(solution):
     task_count[task] += 1
-task_count.apply(lambda k, v: duration[k] - v).clean()
+task_count.kvapply(lambda k, v: duration[k] - v).clean()
