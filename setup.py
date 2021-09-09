@@ -14,7 +14,7 @@ with open("requirements.txt", "r") as fh:
 
 kwargs = {
     "name": "pytups",
-    "version": "0.81.0",
+    "version": "0.81.1",
     "packages": packages,
     "description": "data wrangling for lists of tuples and dictionaries",
     "long_description": long_description,
