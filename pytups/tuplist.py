@@ -1,5 +1,4 @@
 import csv
-from . import tools
 from typing import Callable, Iterable, Union, TypeVar, Generic, TYPE_CHECKING
 
 if TYPE_CHECKING:
@@ -93,7 +92,6 @@ class TupList(list, Generic[T]):
         :param list indices: optional way of determining the indices instead of
             being the complement of result_col
         :return: new :py:class:`pytups.superdict.SuperDict`
-        :return: new :py:class:`pytups.superdict.SuperDict`
         """
         from . import superdict as sd
 
@@ -121,50 +119,14 @@ class TupList(list, Generic[T]):
             result[index].append(content)
         return result
 
-    def to_dict_new(self, result_col=0, is_list=True, indices=None):
+    def to_dictlist(self, keys: list) -> "TupList":
         """
-        This magic function converts a tuple list into a dictionary
-            by taking one or several of the columns as the result.
+        Converts a list of tuples to a list of dictionaries.
 
-        :param result_col: a list of positions of the tuple for the result
-        :type result_col: int or list or None
-        :param bool is_list: the value of the dictionary will be a TupList?
-        :param list indices: optional way of determining the indeces instead of
-            being the complement of result_col
-        :return: new :py:class:`pytups.superdict.SuperDict`
+        :param list keys: a unique list of dictionary keys
+        :return: new :py:class:`TupList`
         """
-        from . import superdict as sd
-
-        if not len(self):
-            return sd.SuperDict()
-        if result_col is None:
-            return sd.SuperDict({k: k for k in self})
-        if not tools.is_really_iterable(result_col):
-            result_col = [result_col]
-        if indices is None:
-            indices = [col for col in range(len(self[0])) if col not in result_col]
-        _to_key = lambda k: k
-        if tools.is_really_iterable(indices):
-            if len(indices) == 1:
-                indices = indices[0]
-            else:
-                _to_key = lambda k: tuple(k)
-        if tools.is_really_iterable(result_col) and len(result_col) == 1:
-            result_col = result_col[0]
-
-        keys = self.take(indices)
-        values = self.take(result_col)
-
-        if not is_list:
-            return sd.SuperDict(zip(keys, values))
-        result = sd.SuperDict()
-        for i, c in zip(keys, values):
-            i = _to_key(i)
-            try:
-                result[i].append(c)
-            except KeyError:
-                result[i] = TupList([c])
-        return result
+        return self.vapply(lambda v: dict(zip(keys, v)))
 
     def add(self, *args) -> None:
         """

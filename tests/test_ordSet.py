@@ -75,6 +75,9 @@ class OrdSetTest(unittest.TestCase):
         del self.dates1[3]
         self.assertListEqual(self.refDates1, self.dates1._pos)
 
+    def test_dist(self):
+        self.assertEqual(self.dates1.dist("2019-01", "2019-09"), 8)
+
 
 if __name__ == "__main__":
     unittest.main()

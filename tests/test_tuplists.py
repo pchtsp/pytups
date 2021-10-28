@@ -11,9 +11,28 @@ TEST_TUP = [
     ("r", "b", "c", 3),
 ]
 
+TEST_DICT = [
+    {1: "a", 2: "b", 3: "c", 4: 1},
+    {1: "a", 2: "b", 3: "c", 4: 2},
+    {1: "a", 2: "b", 3: "c", 4: 3},
+    {1: "r", 2: "b", 3: "c", 4: 1},
+    {1: "r", 2: "b", 3: "c", 4: 2},
+    {1: "r", 2: "b", 3: "c", 4: 3},
+]
+
 
 class TupTest(unittest.TestCase):
     tuplist_class = pt.TupList
+
+    def setUp(self):
+        self.prop1 = self.tuplist_class(TEST_TUP)
+        self.prop2 = self.tuplist_class(TEST_DICT)
+
+    def tearDown(self):
+        try:
+            os.remove("tmp.csv")
+        except:
+            pass
 
     def test_filter(self):
         result = [
@@ -50,21 +69,6 @@ class TupTest(unittest.TestCase):
     def test_to_dict_nolist(self):
         result = {("a", "b", "c"): 3, ("r", "b", "c"): 3}
         self.assertDictEqual(result, self.prop1.to_dict(result_col=3, is_list=False))
-
-    def test_to_dict_new(self):
-        result = {("a", "b", "c"): [1, 2, 3], ("r", "b", "c"): [1, 2, 3]}
-        self.assertDictEqual(result, self.prop1.to_dict_new(result_col=3))
-
-    def test_to_dict2_new(self):
-        prop = self.prop1.take([0, 1])
-        result = {"a": ["b", "b", "b"], "r": ["b", "b", "b"]}
-        self.assertDictEqual(result, prop.to_dict_new(result_col=1))
-
-    def test_to_dict_nolist_new(self):
-        result = {("a", "b", "c"): 3, ("r", "b", "c"): 3}
-        self.assertDictEqual(
-            result, self.prop1.to_dict_new(result_col=3, is_list=False)
-        )
 
     def test_unique(self):
         prop = self.prop1.take([0, 1])
@@ -187,15 +191,10 @@ class TupTest(unittest.TestCase):
         a = self.tuplist_class.from_csv(_filename, func=fmt)
         self.assertEqual(a, self.prop1)
 
-    def setUp(self):
-        self.prop1 = self.tuplist_class(TEST_TUP)
-        pass
+    def test_to_dictlist(self):
+        self.assertEqual(self.prop1.to_dictlist([1, 2, 3, 4]), self.prop2)
 
-    def tearDown(self):
-        try:
-            os.remove("tmp.csv")
-        except:
-            pass
+        pass
 
 
 if __name__ == "__main__":
