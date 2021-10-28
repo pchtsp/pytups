@@ -1,5 +1,5 @@
 import collections as col
-from typing import Iterable, TypeVar, Generic, List, Any
+from typing import Iterable, TypeVar, Generic, List, Dict
 
 K = TypeVar("K")
 V = TypeVar("V")
@@ -7,9 +7,12 @@ T = TypeVar("T")
 
 
 class OrderSet(col.MutableSequence, Generic[T]):
-    # TODO: uncomment when 3.5 is dropped
-    # _store: Dict[T, int]
-    # _pos: List[T]
+    """
+    An ordered set of elements.
+    """
+
+    _store: Dict[T, int]
+    _pos: List[T]
 
     def __init__(self, _list: List[T]):
         # _pos is the real list
