@@ -9,6 +9,11 @@ T = TypeVar("T")
 
 
 class TupList(list, Generic[T]):
+
+    """
+    A list of tuples or dictionaries
+    """
+
     def __getitem__(self, key: int) -> Union[T, "TupList[T]"]:
         if not isinstance(key, slice):
             return list.__getitem__(self, key)
