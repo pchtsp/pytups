@@ -107,7 +107,10 @@ class TupList(list, Generic[T]):
         if len(self) == 0:
             return sd.SuperDict()
         if indices is None:
-            indices = [col for col in range(len(self[0])) if col not in result_col]
+            indices = [col for col in range(len(self[0]))
+                       if col not in result_col and (col - len(self[0])) not in result_col]
+        if indices is not list:
+            indices = [indices]
         result = sd.SuperDict()
         for tup in self:
             index = tuple(tup[i] for i in indices)
@@ -305,6 +308,9 @@ class TupList(list, Generic[T]):
         Applies sorted function to elements and returns a TupList
 
         :param kwargs: arguments for sorted function
+        main arguments for sorted are:
+            - key
+            - reverse
         :return: new :py:class:`TupList`
         """
         return TupList(sorted(self, **kwargs))
