@@ -48,9 +48,7 @@ height_data = data_tl.to_dict(
 print("height_data:", height_data)
 
 # Get heights for each sex
-# this create an error to be corrected:
-# sex_height_data = data_tl.to_dict(result_col="height", indices="sex", is_list=True)
-sex_height_data = data_tl.to_dict(result_col="height", indices=["sex"], is_list=True)
+sex_height_data = data_tl.to_dict(result_col="height", indices="sex", is_list=True)
 print("sex_height_data:", sex_height_data)
 
 # Transform the tuplist in a dict indexed by name
@@ -73,6 +71,3 @@ print("dict_height:", dict_height)
 # Separate males and females
 dict_sex = data_sd.index_by_property("sex")
 print("dict_sex", dict_sex)
-
-a=data_sd.dicts_to_tup("birthyear","height")
-print(a)
