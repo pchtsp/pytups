@@ -1,5 +1,7 @@
-from pytups.pytups.tuplist import TupList
-from pytups.pytups.superdict import SuperDict
+# from pytups.pytups.tuplist import TupList
+# from pytups.pytups.superdict import SuperDict
+
+from pytups import TupList, Superdict
 
 # Data example
 data = [
