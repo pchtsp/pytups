@@ -91,7 +91,7 @@ class TupList(list, Generic[T]):
         This magic function converts a tuple list into a dictionary
             by taking one or several of the columns as the result.
 
-        :param result_col: a list of positions of the tuple for the result
+        :param result_col: a list of keys for the result (positions of the tuple or keys of the dict)
         :type result_col: int or list or None
         :param bool is_list: the value of the dictionary will be a TupList?
         :param list indices: optional way of determining the indices instead of
@@ -100,16 +100,32 @@ class TupList(list, Generic[T]):
         """
         from . import superdict as sd
 
-        if result_col is None:
-            return sd.SuperDict({k: k for k in self})
-        if type(result_col) is not list:
-            result_col = [result_col]
         if len(self) == 0:
             return sd.SuperDict()
+        # Handle case of list of dict
+        if isinstance(self[0], dict):
+            if indices is None:
+                raise ValueError(
+                    "For a list of dict, to_dict require indices to be specified"
+                )
+            if result_col is None:
+                if type(indices) is not list or len(indices) == 1:
+                    return sd.SuperDict({d[indices]: d for d in self})
+                else:
+                    return sd.SuperDict({tuple(d[i] for i in indices): d for d in self})
+        if result_col is None and indices is None:
+            return sd.SuperDict({k: k for k in self})
+        if result_col is None:
+            result_col = [col for col in range(len(self[0]))]
+        if type(result_col) is not list:
+            result_col = [result_col]
         if indices is None:
-            indices = [col for col in range(len(self[0]))
-                       if col not in result_col and (col - len(self[0])) not in result_col]
-        if indices is not list:
+            indices = [
+                col
+                for col in range(len(self[0]))
+                if col not in result_col and (col - len(self[0])) not in result_col
+            ]
+        if type(indices) is not list:
             indices = [indices]
         result = sd.SuperDict()
         for tup in self:
