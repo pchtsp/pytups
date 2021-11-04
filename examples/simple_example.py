@@ -1,7 +1,7 @@
 # from pytups.pytups.tuplist import TupList
 # from pytups.pytups.superdict import SuperDict
-
-from pytups import TupList, Superdict
+# from pytups import TupList, Superdict
+import pytups as pt
 
 # Data example
 data = [
@@ -12,7 +12,7 @@ data = [
     dict(name="Ellen", birthyear=1968, sex="F", height=158),
 ]
 
-data_tl = TupList(data)
+data_tl = pt.TupList(data)
 
 # get all adult males (adults in 2021)
 adults_M = data_tl.vfilter(lambda v: v["sex"] == "M").vfilter(
@@ -61,7 +61,7 @@ data_sd = data_tl.to_dict(indices="name", result_col=None)
 print("data_sd:", data_sd)
 
 # Equivalent superdict created with dict comprehension
-equivalent_sd = SuperDict.from_dict({d["name"]: d for d in data})
+equivalent_sd = pt.SuperDict.from_dict({d["name"]: d for d in data})
 print("equivalent_sd:", equivalent_sd)
 
 # Get a dict of heights
@@ -71,3 +71,9 @@ print("dict_height:", dict_height)
 # Separate males and females
 dict_sex = data_sd.index_by_property("sex")
 print("dict_sex", dict_sex)
+
+# Return to tuplist format
+data_tl3 = data_sd.values_l()
+print(data_tl3)
+print(data_tl3 == data_tl)
+

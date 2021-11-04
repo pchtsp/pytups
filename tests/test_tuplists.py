@@ -192,10 +192,21 @@ class TupTest(unittest.TestCase):
         self.assertEqual(a, self.prop1)
 
     def test_to_dictlist(self):
-        self.assertEqual(self.prop1.to_dictlist([1, 2, 3, 4]), self.prop2)
+        # self.assertEqual(self.prop1.to_dictlist([1, 2, 3, 4]), self.prop2)
 
         pass
 
+    def test_to_dict_for_dict_list(self):
+
+        result1 = {d[2]:d for d in self.prop2}
+        result2 = {(d[1], d[2]):d for d in self.prop2}
+        result3 = {d[1]:d[2] for d in self.prop2}
+        result4 = {(d[1], d[2]):(d[3],d[4]) for d in self.prop2}
+        self.assertRaises(ValueError, self.prop2.to_dict, result_col=4)
+        self.assertDictEqual(self.prop2.to_dict(result_col=None, indices=2, is_list=False), result1)
+        self.assertDictEqual(self.prop2.to_dict(result_col=None, indices=[1,2], is_list=False), result2)
+        self.assertDictEqual(self.prop2.to_dict(result_col=2, indices=1, is_list=False), result3)
+        self.assertDictEqual(self.prop2.to_dict(result_col=[3,4], indices=[1,2], is_list=False), result4)
 
 if __name__ == "__main__":
     unittest.main()
