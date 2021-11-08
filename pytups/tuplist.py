@@ -4,6 +4,7 @@ from typing import Callable, Iterable, Union, TypeVar, Generic, TYPE_CHECKING
 if TYPE_CHECKING:
     from superdict import SuperDict
 
+from .tools import is_really_iterable
 
 T = TypeVar("T")
 
@@ -85,7 +86,7 @@ class TupList(list, Generic[T]):
         self,
         result_col: Union[Iterable, int, None] = 0,
         is_list: bool = True,
-        indices: Iterable = None,
+        indices: Union[Iterable, int, None] = None,
     ) -> "SuperDict":
         """
         This magic function converts a tuple list into a dictionary
@@ -102,22 +103,36 @@ class TupList(list, Generic[T]):
 
         if len(self) == 0:
             return sd.SuperDict()
-        # Handle case of list of dict
+        # Handle case of list of dict with indices = None
         if isinstance(self[0], dict):
             if indices is None:
                 raise ValueError(
                     "For a list of dict, to_dict require indices to be specified"
                 )
-            if result_col is None:
-                if type(indices) is not list or len(indices) == 1:
-                    return sd.SuperDict({d[indices]: d for d in self})
-                else:
-                    return sd.SuperDict({tuple(d[i] for i in indices): d for d in self})
+            # TODO: Remove this when sure it is useless
+            # if result_col is None:
+            #     if not is_really_iterable(indices):
+            #         return sd.SuperDict({d[indices]: d for d in self})
+            #     elif len([i for i in indices]) == 1:
+            #         index = [i for i in indices][0]
+            #         return sd.SuperDict({d[index]: d for d in self})
+            #     else:
+            #         return sd.SuperDict({tuple(d[i] for i in indices): d for d in self})
+
+        is_dict = False
         if result_col is None and indices is None:
             return sd.SuperDict({k: k for k in self})
         if result_col is None:
-            result_col = [col for col in range(len(self[0]))]
-        if type(result_col) is not list:
+            if isinstance(self[0], dict):
+                # TODO: there is some inconsistency between the dict returned if result_col is None and
+                # TODO: the tuples if it is not None
+                # TODO: maybe is_dict should also be an argument of the function
+                is_dict = True
+                all_keys = self[0].keys()
+            else:
+                all_keys = range(len(self[0]))
+            result_col = [col for col in all_keys]
+        if not is_really_iterable(result_col):
             result_col = [result_col]
         if indices is None:
             indices = [
@@ -125,14 +140,17 @@ class TupList(list, Generic[T]):
                 for col in range(len(self[0]))
                 if col not in result_col and (col - len(self[0])) not in result_col
             ]
-        if type(indices) is not list:
+        if not is_really_iterable(indices):
             indices = [indices]
         result = sd.SuperDict()
         for tup in self:
             index = tuple(tup[i] for i in indices)
             if len(index) == 1:
                 index = index[0]
-            content = tuple(tup[i] for i in result_col)
+            if is_dict:
+                content = {i:tup[i] for i in result_col}
+            else:
+                content = tuple(tup[i] for i in result_col)
             if len(content) == 1:
                 content = content[0]
             if not is_list:

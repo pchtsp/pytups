@@ -2,6 +2,13 @@ from collections.abc import Iterable
 
 
 def is_really_iterable(var):
+    """
+    Check if an object is iterable and not a string.
+
+    :param var: a python object
+    :return: bool True if the object is really iterable,
+     False if it is not iterable or a string
+    """
     return isinstance(var, Iterable) and not isinstance(var, str)
 
 
