@@ -198,7 +198,6 @@ class TupTest(unittest.TestCase):
 
     def test_to_dictlist(self):
         self.assertEqual(self.prop1.to_dictlist([1, 2, 3, 4]), self.prop2)
-        pass
 
     def test_to_dict_for_dictlist_0(self):
         # Should raise error if indices is missing and the object is a list of dict.
