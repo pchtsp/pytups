@@ -66,6 +66,11 @@ class TupTest(unittest.TestCase):
         result = {"a": ["b", "b", "b"], "r": ["b", "b", "b"]}
         self.assertDictEqual(result, prop.to_dict(result_col=1))
 
+    def test_to_dict_negative_col(self):
+        prop = self.prop1.take([0, 1])
+        result = {"a": ["b", "b", "b"], "r": ["b", "b", "b"]}
+        self.assertDictEqual(result, prop.to_dict(result_col=-1))
+
     def test_to_dict_nolist(self):
         result = {("a", "b", "c"): 3, ("r", "b", "c"): 3}
         self.assertDictEqual(result, self.prop1.to_dict(result_col=3, is_list=False))
