@@ -5,6 +5,7 @@ from .tools import is_really_iterable
 if TYPE_CHECKING:
     from .superdict import SuperDict
 
+from .tools import is_really_iterable
 
 T = TypeVar("T")
 
