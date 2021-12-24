@@ -1,4 +1,7 @@
-import collections as col
+try:
+    from collections import MutableSequence
+except:
+    from collections.abc import MutableSequence
 from typing import Iterable, TypeVar, Generic, List, Dict
 
 K = TypeVar("K")
@@ -6,7 +9,7 @@ V = TypeVar("V")
 T = TypeVar("T")
 
 
-class OrderSet(col.MutableSequence, Generic[T]):
+class OrderSet(MutableSequence, Generic[T]):
     """
     An ordered set of elements.
     """

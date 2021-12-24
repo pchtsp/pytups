@@ -1,9 +1,11 @@
 import csv
 from typing import Callable, Iterable, Union, TypeVar, Generic, TYPE_CHECKING
+from .tools import is_really_iterable
 
 if TYPE_CHECKING:
-    from superdict import SuperDict
+    from .superdict import SuperDict
 
+from .tools import is_really_iterable
 
 T = TypeVar("T")
 
@@ -85,13 +87,13 @@ class TupList(list, Generic[T]):
         self,
         result_col: Union[Iterable, int, None] = 0,
         is_list: bool = True,
-        indices: Iterable = None,
+        indices: Union[Iterable, int, None] = None,
     ) -> "SuperDict":
         """
         This magic function converts a tuple list into a dictionary
             by taking one or several of the columns as the result.
 
-        :param result_col: a list of positions of the tuple for the result
+        :param result_col: a list of keys for the result (positions of the tuple or keys of the dict)
         :type result_col: int or list or None
         :param bool is_list: the value of the dictionary will be a TupList?
         :param list indices: optional way of determining the indices instead of
@@ -100,28 +102,59 @@ class TupList(list, Generic[T]):
         """
         from . import superdict as sd
 
-        if result_col is None:
-            return sd.SuperDict({k: k for k in self})
-        if type(result_col) is not list:
-            result_col = [result_col]
         if len(self) == 0:
             return sd.SuperDict()
+        first = self[0]
+        # Handle case of list of dict with indices = None
+        if isinstance(first, dict) and indices is None:
+            raise ValueError(
+                "For a list of dicts, to_dict require indices to be specified"
+            )
+
+        if result_col is None:
+            # if everything is None, we return the same tuple as index and as result
+            if indices is None:
+                return sd.SuperDict({k: k for k in self})
+        elif not is_really_iterable(result_col):
+            result_col = [result_col]
+
+        # now that we have a result_col, we can fill indices
         if indices is None:
-            indices = [col for col in range(len(self[0])) if col not in result_col]
-        result = sd.SuperDict()
-        for tup in self:
-            index = tuple(tup[i] for i in indices)
-            if len(index) == 1:
-                index = index[0]
-            content = tuple(tup[i] for i in result_col)
-            if len(content) == 1:
-                content = content[0]
+            indices = [
+                col
+                for col in range(len(self[0]))
+                if col not in result_col and (col - len(self[0])) not in result_col
+            ]
+        elif not is_really_iterable(indices):
+            indices = [indices]
+
+        one_or_tup = lambda _list: _list[0] if len(_list)==1 else _list
+
+        def get_index(el):
+            index = tuple(el[i] for i in indices)
+            return one_or_tup(index)
+
+        if result_col is None:
+            # the content matches the input, no need to do anything
+            get_content = lambda x: x
+        else:
+            def get_content(el):
+                content = tuple(el[i] for i in result_col)
+                return one_or_tup(content)
+
+        def assign_result(result, index, content):
             if not is_list:
                 result[index] = content
-                continue
+                return
             if index not in result:
                 result[index] = TupList()
             result[index].append(content)
+
+        result = sd.SuperDict()
+        for el in self:
+            index = get_index(el)
+            content = get_content(el)
+            assign_result(result, index, content)
         return result
 
     def to_dictlist(self, keys: list) -> "TupList":
@@ -305,6 +338,9 @@ class TupList(list, Generic[T]):
         Applies sorted function to elements and returns a TupList
 
         :param kwargs: arguments for sorted function
+            main arguments for sorted are:
+            - key
+            - reverse
         :return: new :py:class:`TupList`
         """
         return TupList(sorted(self, **kwargs))

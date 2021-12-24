@@ -14,7 +14,7 @@ from typing import (
 )
 
 if TYPE_CHECKING:
-    from tuplist import TupList
+    from .tuplist import TupList
 
 try:
     import ujson as json
