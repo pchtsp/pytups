@@ -1,5 +1,6 @@
 from . import tools
 import operator as op
+import pickle
 from typing import (
     Callable,
     Iterable,
@@ -562,6 +563,26 @@ class SuperDict(dict, Generic[K, V], Mapping[K, V]):
         for key, value in data.items():
             data[key] = cls.from_dict(value)
         return data
+
+    def copy_shallow(self) -> "SuperDict":
+        """
+        Copies the immediate keys only.
+
+        :return: new :py:class:`SuperDict`
+        """
+        return SuperDict(self)
+
+    def copy_deep(self) -> "SuperDict":
+        """
+        Copies the complete object using python's pickle
+        """
+        return pickle.loads(pickle.dumps(self, -1))
+
+    def copy_deep2(self) -> "SuperDict":
+        """
+        Copies the complete object using json (or ujson if available)
+        """
+        return json.loads(json.dumps(self))
 
     @classmethod
     def from_df(cls, data) -> "SuperDict":
