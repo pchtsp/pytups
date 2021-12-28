@@ -1,6 +1,6 @@
 import csv
 from typing import Callable, Iterable, Union, TypeVar, Generic, TYPE_CHECKING
-from .tools import is_really_iterable
+import pickle
 
 if TYPE_CHECKING:
     from .superdict import SuperDict
@@ -51,6 +51,20 @@ class TupList(list, Generic[T]):
         if not isinstance(indices, list):
             return self.vapply(lambda tup: tup[indices])
         return self.vapply(lambda tup: tuple(tup[a] for a in indices))
+
+    def copy_shallow(self) -> "TupList":
+        """
+        Copies the list only. Not it's contents
+
+        :return: new :py:class:`TupList`
+        """
+        return TupList(self)
+
+    def copy_deep(self) -> "TupList":
+        """
+        Copies the complete object using python's pickle
+        """
+        return pickle.loads(pickle.dumps(self, -1))
 
     def take_np(self, indices: Union[Iterable, int]) -> "TupList":
         """
@@ -128,7 +142,7 @@ class TupList(list, Generic[T]):
         elif not is_really_iterable(indices):
             indices = [indices]
 
-        one_or_tup = lambda _list: _list[0] if len(_list)==1 else _list
+        one_or_tup = lambda _list: _list[0] if len(_list) == 1 else _list
 
         def get_index(el):
             index = tuple(el[i] for i in indices)
@@ -138,6 +152,7 @@ class TupList(list, Generic[T]):
             # the content matches the input, no need to do anything
             get_content = lambda x: x
         else:
+
             def get_content(el):
                 content = tuple(el[i] for i in result_col)
                 return one_or_tup(content)

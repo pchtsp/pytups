@@ -418,6 +418,30 @@ class DictTest(unittest.TestCase):
     #     d.one.setdefault('three', []).append(3)
     #     self.assertEqual(d.one.three, [3])
 
+    def test_copy_shallow(self):
+        original = self.dict_class.from_dict(TEST_DICT)
+        copy = original.copy_shallow()
+        copy["a"] = 1
+        self.assertEqual(type(original["a"]), self.dict_class)
+
+    def test_copy_shallow_modify(self):
+        original = self.dict_class.from_dict(TEST_DICT).copy_deep()
+        copy = original.copy_shallow()
+        copy["a"]["b"] = 1
+        self.assertEqual(original["a"]["b"], 1)
+
+    def test_copy_deep(self):
+        original = self.dict_class.from_dict(TEST_DICT)
+        copy = original.copy_deep()
+        copy["a"]["b"] = 1
+        self.assertEqual(type(original["a"]["b"]), self.dict_class)
+
+    def test_copy_deep2(self):
+        original = self.dict_class.from_dict(TEST_DICT)
+        copy = original.copy_deep2()
+        copy["a"]["b"] = 1
+        self.assertEqual(type(original["a"]["b"]), self.dict_class)
+
     def test_parent_key_item(self):
         a = self.dict_class()
         try:
@@ -447,5 +471,3 @@ class DictTest(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
-
-    # pt.SuperDict({('a', 'b'): 1, ('b', 'c'): 0, 'c': 1}).set_m('c', 'd', value=1)

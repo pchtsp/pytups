@@ -207,62 +207,142 @@ class TupTest(unittest.TestCase):
     def test_to_dict_for_dictlist_1(self):
         # Should work if result_col=None and indices is a single value
         # result1 = {d[2]: d for d in self.prop2}
-        result1 = {'b': {1: 'r', 2: 'b', 3: 'c', 4: 3}}
-        self.assertDictEqual(self.prop2.to_dict(result_col=None, indices=2, is_list=False), result1)
-        self.assertDictEqual(self.prop2.to_dict(result_col=None, indices=[2], is_list=False), result1)
+        result1 = {"b": {1: "r", 2: "b", 3: "c", 4: 3}}
+        self.assertDictEqual(
+            self.prop2.to_dict(result_col=None, indices=2, is_list=False), result1
+        )
+        self.assertDictEqual(
+            self.prop2.to_dict(result_col=None, indices=[2], is_list=False), result1
+        )
 
     def test_to_dict_for_dictlist_2(self):
         # Should work if result_col=None and indices has multiples values
         # result2 = {(d[1], d[2]):d for d in self.prop2}
-        result2 = {('a', 'b'): {1: 'a', 2: 'b', 3: 'c', 4: 3}, ('r', 'b'): {1: 'r', 2: 'b', 3: 'c', 4: 3}}
-        self.assertDictEqual(self.prop2.to_dict(result_col=None, indices=[1, 2], is_list=False), result2)
+        result2 = {
+            ("a", "b"): {1: "a", 2: "b", 3: "c", 4: 3},
+            ("r", "b"): {1: "r", 2: "b", 3: "c", 4: 3},
+        }
+        self.assertDictEqual(
+            self.prop2.to_dict(result_col=None, indices=[1, 2], is_list=False), result2
+        )
 
     def test_to_dict_for_dictlist_3(self):
         # Should work if indices and result_col are given as list or scalar.
         # TODO: a test with a string should be added
         # result3 = {d[1]:d[2] for d in self.prop2}
-        result3 = {'a': 'b', 'r': 'b'}
-        self.assertDictEqual(self.prop2.to_dict(result_col=2, indices=1, is_list=False), result3)
-        self.assertDictEqual(self.prop2.to_dict(result_col=[2], indices=[1], is_list=False), result3)
-        self.assertDictEqual(self.prop2.to_dict(result_col=[2], indices=1, is_list=False), result3)
-        self.assertDictEqual(self.prop2.to_dict(result_col=2, indices=[1], is_list=False), result3)
+        result3 = {"a": "b", "r": "b"}
+        self.assertDictEqual(
+            self.prop2.to_dict(result_col=2, indices=1, is_list=False), result3
+        )
+        self.assertDictEqual(
+            self.prop2.to_dict(result_col=[2], indices=[1], is_list=False), result3
+        )
+        self.assertDictEqual(
+            self.prop2.to_dict(result_col=[2], indices=1, is_list=False), result3
+        )
+        self.assertDictEqual(
+            self.prop2.to_dict(result_col=2, indices=[1], is_list=False), result3
+        )
 
     def test_to_dict_for_dictlist_4(self):
         # Should work with multiple values in result_col and indices (list or tuple)
         # result4 = {(d[1], d[2]):(d[3],d[4]) for d in self.prop2}
-        result4 = {('a', 'b'): ('c', 3), ('r', 'b'): ('c', 3)}
-        self.assertDictEqual(self.prop2.to_dict(result_col=[3, 4], indices=[1, 2], is_list=False), result4)
-        self.assertDictEqual(self.prop2.to_dict(result_col=(3, 4), indices=(1, 2), is_list=False), result4)
+        result4 = {("a", "b"): ("c", 3), ("r", "b"): ("c", 3)}
+        self.assertDictEqual(
+            self.prop2.to_dict(result_col=[3, 4], indices=[1, 2], is_list=False),
+            result4,
+        )
+        self.assertDictEqual(
+            self.prop2.to_dict(result_col=(3, 4), indices=(1, 2), is_list=False),
+            result4,
+        )
 
     def test_to_dict_for_dictlist_5(self):
         # Should work with is_list=True if result_col=None and indices is a single value
-        result5 = {'a': [{1: 'a', 2: 'b', 3: 'c', 4: 1}, {1: 'a', 2: 'b', 3: 'c', 4: 2},
-                         {1: 'a', 2: 'b', 3: 'c', 4: 3}], 'r': [{1: 'r', 2: 'b', 3: 'c', 4: 1},
-                        {1: 'r', 2: 'b', 3: 'c', 4: 2}, {1: 'r', 2: 'b', 3: 'c', 4: 3}]}
-        self.assertDictEqual(self.prop2.to_dict(result_col=None, indices=1, is_list=True), result5)
-        self.assertDictEqual(self.prop2.to_dict(result_col=None, indices=[1], is_list=True), result5)
+        result5 = {
+            "a": [
+                {1: "a", 2: "b", 3: "c", 4: 1},
+                {1: "a", 2: "b", 3: "c", 4: 2},
+                {1: "a", 2: "b", 3: "c", 4: 3},
+            ],
+            "r": [
+                {1: "r", 2: "b", 3: "c", 4: 1},
+                {1: "r", 2: "b", 3: "c", 4: 2},
+                {1: "r", 2: "b", 3: "c", 4: 3},
+            ],
+        }
+        self.assertDictEqual(
+            self.prop2.to_dict(result_col=None, indices=1, is_list=True), result5
+        )
+        self.assertDictEqual(
+            self.prop2.to_dict(result_col=None, indices=[1], is_list=True), result5
+        )
 
     def test_to_dict_for_dictlist_6(self):
         # Should work with is_list=True if result_col=None and indices has multiples values
-        result6 = {('a', 'b'): [{1: 'a', 2: 'b', 3: 'c', 4: 1}, {1: 'a', 2: 'b', 3: 'c', 4: 2},
-                                {1: 'a', 2: 'b', 3: 'c', 4: 3}],
-                   ('r', 'b'): [{1: 'r', 2: 'b', 3: 'c', 4: 1}, {1: 'r', 2: 'b', 3: 'c', 4: 2},
-                                {1: 'r', 2: 'b', 3: 'c', 4: 3}]}
-        self.assertDictEqual(self.prop2.to_dict(result_col=None, indices=[1, 2], is_list=True), result6)
+        result6 = {
+            ("a", "b"): [
+                {1: "a", 2: "b", 3: "c", 4: 1},
+                {1: "a", 2: "b", 3: "c", 4: 2},
+                {1: "a", 2: "b", 3: "c", 4: 3},
+            ],
+            ("r", "b"): [
+                {1: "r", 2: "b", 3: "c", 4: 1},
+                {1: "r", 2: "b", 3: "c", 4: 2},
+                {1: "r", 2: "b", 3: "c", 4: 3},
+            ],
+        }
+        self.assertDictEqual(
+            self.prop2.to_dict(result_col=None, indices=[1, 2], is_list=True), result6
+        )
 
     def test_to_dict_for_dictlist_7(self):
         # Should work with is_list=True if indices and result_col are given as list or scalar.
-        result7 = {'a': ['b', 'b', 'b'], 'r': ['b', 'b', 'b']}
-        self.assertDictEqual(self.prop2.to_dict(result_col=2, indices=1, is_list=True), result7)
-        self.assertDictEqual(self.prop2.to_dict(result_col=[2], indices=1, is_list=True), result7)
-        self.assertDictEqual(self.prop2.to_dict(result_col=2, indices=[1], is_list=True), result7)
-        self.assertDictEqual(self.prop2.to_dict(result_col=[2], indices=[1], is_list=True), result7)
+        result7 = {"a": ["b", "b", "b"], "r": ["b", "b", "b"]}
+        self.assertDictEqual(
+            self.prop2.to_dict(result_col=2, indices=1, is_list=True), result7
+        )
+        self.assertDictEqual(
+            self.prop2.to_dict(result_col=[2], indices=1, is_list=True), result7
+        )
+        self.assertDictEqual(
+            self.prop2.to_dict(result_col=2, indices=[1], is_list=True), result7
+        )
+        self.assertDictEqual(
+            self.prop2.to_dict(result_col=[2], indices=[1], is_list=True), result7
+        )
 
     def test_to_dict_for_dictlist_8(self):
         # Should work with is_list=True and with multiple values in result_col and indices (list or tuple)
-        result8 = {('a', 'b'): [('c', 1), ('c', 2), ('c', 3)], ('r', 'b'): [('c', 1), ('c', 2), ('c', 3)]}
-        self.assertDictEqual(self.prop2.to_dict(result_col=[3, 4], indices=[1, 2], is_list=True), result8)
-        self.assertDictEqual(self.prop2.to_dict(result_col=(3, 4), indices=(1, 2), is_list=True), result8)
+        result8 = {
+            ("a", "b"): [("c", 1), ("c", 2), ("c", 3)],
+            ("r", "b"): [("c", 1), ("c", 2), ("c", 3)],
+        }
+        self.assertDictEqual(
+            self.prop2.to_dict(result_col=[3, 4], indices=[1, 2], is_list=True), result8
+        )
+        self.assertDictEqual(
+            self.prop2.to_dict(result_col=(3, 4), indices=(1, 2), is_list=True), result8
+        )
+
+    def test_copy_shallow(self):
+        original = self.prop1.copy_deep()
+        copy = original.copy_shallow()
+        copy[0] = 1
+        self.assertEqual(type(original[0]), tuple)
+
+    def test_copy_shallow_modify(self):
+        original = self.prop2.copy_deep()
+        copy = original.copy_shallow()
+        copy[0][1] = 1
+        self.assertEqual(original[0][1], 1)
+
+    def test_copy_deep(self):
+        original = self.prop2.copy_deep()
+        copy = original.copy_deep()
+        copy[0][1] = 1
+        self.assertEqual(original[0][1], "a")
+
 
 if __name__ == "__main__":
     unittest.main()
