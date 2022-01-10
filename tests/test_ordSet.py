@@ -26,6 +26,14 @@ class OrdSetTest(unittest.TestCase):
     def test_select(self):
         self.assertEqual(self.prop1[1], ("a", "b", "c", 2))
 
+    def test_missing_value(self):
+        _func = lambda: self.dates1.ord("2018-01")
+        self.assertRaises(pt.MissingValue, _func)
+
+    def test_wrong_list(self):
+        _func = lambda: self.list_class([[]])
+        self.assertRaises(TypeError, _func)
+
     def test_select_ord(self):
         self.assertEqual(self.prop1.ord(("r", "b", "c", 3)), 5)
 

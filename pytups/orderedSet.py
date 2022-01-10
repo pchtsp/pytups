@@ -20,7 +20,11 @@ class OrderSet(MutableSequence, Generic[T]):
     def __init__(self, _list: List[T]):
         # _pos is the real list
         # _store is the reverse-key mapping
-        if len(_list) > len(set(_list)):
+        try:
+            list_set = set(_list)
+        except TypeError as e:
+            raise TypeError("values in list need to be hashable") from e
+        if len(_list) > len(list_set):
             raise ValueError("The list needs to have unique values.")
         self._pos = list(_list)
         _data = [(key, pos) for pos, key in enumerate(self._pos)]
@@ -57,16 +61,51 @@ class OrderSet(MutableSequence, Generic[T]):
         self._pos.append(value)
 
     def ord(self, value: T) -> int:
-        return self._store[value]
+        """
+
+        :param value: element in the set
+        :return: the position of the element in the set
+        """
+        try:
+            return self._store[value]
+        except KeyError as e:
+            raise MissingValue("value {} does not exist".format(value)) from e
 
     def next(self, value: T, num: int = 1) -> T:
-        return self[self._store[value] + num]
+        """
+
+        :param value: element in set
+        :param num: number of elements to offset
+        :return: next element in the list
+        """
+        return self[self.ord(value) + num]
 
     def prev(self, value: T, num: int = 1) -> T:
-        return self[self._store[value] - num]
+        """
+
+        :param value: element in set
+        :param num: number of elements to offset backwards
+        :return: previous element in the list
+        """
+        return self[self.ord(value) - num]
 
     def dist(self, value1, value2) -> int:
-        return self._store[value2] - self._store[value1]
+        """
+
+        :param value1: element in set
+        :param value2: element in set
+        :return: difference in position between the two elements
+        """
+        return self.ord(value2) - self.ord(value1)
+
+    def between(self, value1: T, value2: T) -> List[T]:
+        """
+
+        :param value1: element in set
+        :param value2: element in set
+        :return: elements between value1 and value2, both inclusive
+        """
+        return [self[i] for i in range(self.ord(value1), self.ord(value2) + 1)]
 
     def splice(self, start, delete_count, *items) -> List:
         """Remove existing elements and/or add new elements to a list.
@@ -94,4 +133,5 @@ class OrderSet(MutableSequence, Generic[T]):
         pass
 
 
-# TODO: forbid list of lists.
+class MissingValue(Exception):
+    pass
