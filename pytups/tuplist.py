@@ -1,6 +1,7 @@
 import csv
 from typing import Callable, Iterable, Union, TypeVar, Generic, TYPE_CHECKING
 import pickle
+from itertools import chain
 
 if TYPE_CHECKING:
     from .superdict import SuperDict
@@ -359,6 +360,12 @@ class TupList(list, Generic[T]):
         :return: new :py:class:`TupList`
         """
         return TupList(sorted(self, **kwargs))
+
+    def chain(self):
+        """
+        flattens a TupList by applying itertools chain method
+        """
+        return TupList(chain(*self))
 
     def to_csv(self, path: str) -> "TupList":
         """
