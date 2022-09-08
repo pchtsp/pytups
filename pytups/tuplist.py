@@ -361,15 +361,15 @@ class TupList(list, Generic[T]):
         """
         return TupList(sorted(self, **kwargs))
 
-    def chain(self):
+    def chain(self) -> "TupList":
         """
-        flattens a TupList by applying itertools chain method
+        Flattens a TupList by applying itertools chain method
         """
         return TupList(chain(*self))
 
     def to_csv(self, path: str) -> "TupList":
         """
-        exports the list to a csv file.
+        Exports the list to a csv file
         :param path: filename
         :return: the same :py:class:`TupList`
         """
@@ -392,3 +392,26 @@ class TupList(list, Generic[T]):
         with open(path) as f:
             data = cls(csv.reader(f, **kwargs)).vapply(func)
         return data
+
+    def vapply_col(self, pos: Union[int, str, None], func: Callable):
+        """
+        Like vapply, but it stores the result in one of the positions of the tuple (or dictionary)
+        :param pos: int or str
+        :param callable func: function to apply to create col
+        """
+
+        def apply_to_tub(my_tuple):
+            # if it's un-mutable (tuple), we need to make it a list
+            tuple_flag = 0
+            if isinstance(my_tuple, tuple):
+                tuple_flag = 1
+                my_tuple = list(my_tuple)
+            if tuple_flag and pos is None:
+                my_tuple.append(func(my_tuple))
+            else:
+                my_tuple[pos] = func(my_tuple)
+            if tuple_flag:
+                my_tuple = tuple(my_tuple)
+            return my_tuple
+
+        return self.vapply(apply_to_tub)

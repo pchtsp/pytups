@@ -343,6 +343,58 @@ class TupTest(unittest.TestCase):
         copy[0][1] = 1
         self.assertEqual(original[0][1], "a")
 
+    def test_chain(self):
+        some_test = self.tuplist_class([[{"a": 1}], [{"b": 2, "c": 4}]])
+        self.assertEqual(some_test.chain(), [{"a": 1}, {"b": 2, "c": 4}])
+
+    def test_vapply_col(self):
+        result = self.prop1.vapply_col(0, lambda v: v[1] + v[2])
+        result_good = [
+            ("bc", "b", "c", 1),
+            ("bc", "b", "c", 2),
+            ("bc", "b", "c", 3),
+            ("bc", "b", "c", 1),
+            ("bc", "b", "c", 2),
+            ("bc", "b", "c", 3),
+        ]
+        self.assertEqual(result, result_good)
+
+    def test_vapply_col_new(self):
+        result = self.prop1.vapply_col(None, lambda v: v[1] + v[2])
+        result_good = [
+            ("a", "b", "c", 1, "bc"),
+            ("a", "b", "c", 2, "bc"),
+            ("a", "b", "c", 3, "bc"),
+            ("r", "b", "c", 1, "bc"),
+            ("r", "b", "c", 2, "bc"),
+            ("r", "b", "c", 3, "bc"),
+        ]
+        self.assertEqual(result, result_good)
+
+    def test_vapply_col_last(self):
+        result = self.prop1.vapply_col(-1, lambda v: v[1] + v[2])
+        result_good = [
+            ("a", "b", "c", "bc"),
+            ("a", "b", "c", "bc"),
+            ("a", "b", "c", "bc"),
+            ("r", "b", "c", "bc"),
+            ("r", "b", "c", "bc"),
+            ("r", "b", "c", "bc"),
+        ]
+        self.assertEqual(result, result_good)
+
+    def test_vapply_col_dict(self):
+        result = self.prop2.vapply_col(5, lambda v: v[1] + v[2] + str(v[4]))
+        result_good = [
+            {1: "a", 2: "b", 3: "c", 4: 1, 5: "ab1"},
+            {1: "a", 2: "b", 3: "c", 4: 2, 5: "ab2"},
+            {1: "a", 2: "b", 3: "c", 4: 3, 5: "ab3"},
+            {1: "r", 2: "b", 3: "c", 4: 1, 5: "rb1"},
+            {1: "r", 2: "b", 3: "c", 4: 2, 5: "rb2"},
+            {1: "r", 2: "b", 3: "c", 4: 3, 5: "rb3"},
+        ]
+        self.assertEqual(result, result_good)
+
 
 if __name__ == "__main__":
     unittest.main()
