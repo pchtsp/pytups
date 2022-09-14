@@ -400,18 +400,21 @@ class TupList(list, Generic[T]):
         :param callable func: function to apply to create col
         """
 
-        def apply_to_tub(my_tuple):
+        def apply_to_tup(my_tuple):
+            # we apply the function before any potential modification
+            result = func(my_tuple)
             # if it's un-mutable (tuple), we need to make it a list
             tuple_flag = 0
             if isinstance(my_tuple, tuple):
                 tuple_flag = 1
                 my_tuple = list(my_tuple)
+            # if None, we assume we want it at the end
             if tuple_flag and pos is None:
-                my_tuple.append(func(my_tuple))
+                my_tuple.append(result)
             else:
-                my_tuple[pos] = func(my_tuple)
+                my_tuple[pos] = result
             if tuple_flag:
                 my_tuple = tuple(my_tuple)
             return my_tuple
 
-        return self.vapply(apply_to_tub)
+        return self.vapply(apply_to_tup)
