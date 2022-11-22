@@ -11,7 +11,7 @@ required = []
 
 kwargs = {
     "name": "pytups",
-    "version": "0.86.1",
+    "version": "0.86.2",
     "packages": packages,
     "description": "data wrangling for lists of tuples and dictionaries",
     "long_description": long_description,
