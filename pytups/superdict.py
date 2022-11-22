@@ -327,8 +327,10 @@ class SuperDict(dict, Generic[K, V], Mapping[K, V]):
 
         :return: new :py:class:`SuperDict`
         """
+        from . import tuplist as tl
+
         new_keys = list(set(val for l in self.values() for val in l))
-        dict_out = SuperDict({k: [] for k in new_keys})
+        dict_out = SuperDict({k: tl.TupList() for k in new_keys})
         for k, v in self.items():
             for el in v:
                 dict_out[el].append(k)

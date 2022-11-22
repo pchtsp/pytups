@@ -9,11 +9,8 @@ jobs:
     strategy:
       max-parallel: 21
       matrix:
-        python-version: [3.6, 3.7, 3.8, 3.9, '3.10']
+        python-version: [3.7, 3.8, 3.9, '3.10']
         os: [ubuntu-latest, macOS-latest, windows-latest]
-        exclude:
-          - os: macos-latest
-            python-version: '3.6'
 
     steps:
     - uses: actions/checkout@v1

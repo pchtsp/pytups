@@ -8,9 +8,6 @@ with open("README.rst", "r") as fh:
     long_description = fh.read()
 
 required = []
-with open("requirements.txt", "r") as fh:
-    required.append(fh.read().splitlines())
-
 
 kwargs = {
     "name": "pytups",
