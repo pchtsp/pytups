@@ -7,11 +7,15 @@ packages = ["pytups"]
 with open("README.rst", "r") as fh:
     long_description = fh.read()
 
+version_dict = {}
+exec(open("pytups/constants.py").read(), version_dict)
+VERSION = version_dict["VERSION"]
+
 required = []
 
 kwargs = {
     "name": "pytups",
-    "version": "0.86.2",
+    "version": VERSION,
     "packages": packages,
     "description": "data wrangling for lists of tuples and dictionaries",
     "long_description": long_description,

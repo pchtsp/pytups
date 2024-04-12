@@ -153,7 +153,7 @@ class SuperDict(dict, Generic[K, V], Mapping[K, V]):
 
         :param default_value: value of elements to take out
         :param function func: function that evaluates to true if we take out the element
-        :param **kwags: optional arguments for func
+        :param kwargs: optional arguments for func
         :return: new :py:class:`SuperDict`
         :rtype: :py:class:`SuperDict`
 

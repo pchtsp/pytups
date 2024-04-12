@@ -353,7 +353,8 @@ class TupList(list, Generic[T]):
     def from_df(cls, data, **kwargs):
         try:
             import pandas as pd
-            return cls(data.to_dict(orient='records', **kwargs))
+
+            return cls(data.to_dict(orient="records", **kwargs))
 
         except ImportError:
             raise ImportError(
@@ -402,9 +403,10 @@ class TupList(list, Generic[T]):
     def from_csv(cls, path: str, func: Callable = None, **kwargs) -> "TupList":
         """
         Generates a new TupList by reading a csv file
-        :param path: filename
+
+        :param str path: filename
         :param callable func: function to apply to each row
-        :**kwargs: arguments to csv.reader
+        :param kwargs: arguments to csv.reader
         :return: new :py:class:`TupList`
         """
         if func is None:

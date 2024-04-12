@@ -24,7 +24,11 @@ copyright = "2019, Franco Peschiera"
 author = "Franco Peschiera"
 
 # The full version, including alpha/beta/rc tags
-release = "0.3"
+import pytups
+
+release = pytups.VERSION
+# The short X.Y version.
+version = ".".join(release.split(".")[:2])
 
 
 # -- General configuration ---------------------------------------------------
@@ -74,5 +78,5 @@ intersphinx_mapping = {
     "scipy": ("http://docs.scipy.org/doc/scipy/reference", None),
     "matplotlib": ("http://matplotlib.sourceforge.net", None),
     "pandas": ("http://pandas.pydata.org/pandas-docs/stable", None),
-    "pulp": ("https://pythonhosted.org/PuLP", None),
+    "pulp": ("https://coin-or.github.io/pulp", None),
 }

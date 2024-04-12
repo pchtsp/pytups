@@ -3,9 +3,9 @@
 
 # You can set these variables from the command line.
 SPHINXOPTS    =
-SPHINXBUILD   = sphinx-build
+SPHINXBUILD   = python3 -msphinx
 SOURCEDIR     = source
-BUILDDIR      = ./../../pytups-docs
+BUILDDIR      = ./build
 PDFBUILDDIR   = /tmp
 PDF           = ../manual.pdf
 
@@ -22,4 +22,4 @@ help:
 
 buildandcommithtml: html latexpdf
 
-    cd $(BUILDDIR)/html; git add . ; git commit -m "rebuilt docs"; git push origin gh-pages
+	cd $(BUILDDIR)/html; git add . ; git commit -m "rebuilt docs"; git push origin gh-pages
