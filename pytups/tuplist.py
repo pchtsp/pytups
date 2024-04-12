@@ -349,6 +349,17 @@ class TupList(list, Generic[T]):
                 "Pandas is not present in your system. Try: pip install pandas"
             )
 
+    @classmethod
+    def from_df(cls, data, **kwargs):
+        try:
+            import pandas as pd
+            return cls(data.to_dict(orient='records', **kwargs))
+
+        except ImportError:
+            raise ImportError(
+                "Pandas is not present in your system. Try: pip install pandas"
+            )
+
     def sorted(self, **kwargs) -> "TupList":
         """
         Applies sorted function to elements and returns a TupList
@@ -373,9 +384,18 @@ class TupList(list, Generic[T]):
         :param path: filename
         :return: the same :py:class:`TupList`
         """
+        if len(self) == 0:
+            return None
+        first = self[0]
+        # Handle case of list of dict
+        if isinstance(first, dict):
+            cols = first.keys()
+            thing_to_write = [tuple(cols)] + self.take(list(cols))
+        else:
+            thing_to_write = self
         with open(path, "w", newline="\n", encoding="utf-8") as out:
             csv_out = csv.writer(out)
-            csv_out.writerows(self)
+            csv_out.writerows(thing_to_write)
         return self
 
     @classmethod

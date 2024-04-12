@@ -17,7 +17,7 @@ I really like `dplyr`, `magrittr` and `tidyverse` libraries in R. They provide a
 
 Most functions available in `pytups` return an object instead of changing it 'in place'. So, for example if a function is applies to a dictionary::
 
-    import pytups pt
+    import pytups as pt
     original = pt.SuperDict({'a': 1, 'b': 2, 'f': 3})
     new = original.vapply(lambda: x: x**2)
     print(original)
@@ -27,7 +27,7 @@ Most functions available in `pytups` return an object instead of changing it 'in
 
 This can lead to several chaining operations::
 
-    import pytups pt
+    import pytups as pt
     pt.SuperDict({'a': 1, 'b': 2, 'f': 3}).
         vapply(lambda x: x**2).\
         clean(1).\
@@ -49,7 +49,7 @@ If one has a single-level dictionary, one can get a tuple 'fairly' easily by 'ju
 
 ::
 
-    import pytups pt
+    import pytups as pt
     pt.SuperDict({'a': 1, 'b': 2, 'f': 3}).to_tuplist()
     # [('a', 1), ('b', 2), ('f', 3)]
     pt.SuperDict({'a': 1, 'b': 2, 'f': 3}).items()
@@ -57,7 +57,7 @@ If one has a single-level dictionary, one can get a tuple 'fairly' easily by 'ju
 
 In some, cases this function takes some liberties to interpret the content so as to make the TupList flat::
 
-    import pytups pt
+    import pytups as pt
     pt.SuperDict({'a': [1, 2, 5], 'b': 2, 'f': 3}).to_tuplist()
     # [('a', 1), ('a', 2), ('a', 5), ('b', 2), ('f', 3)]
     pt.SuperDict({'a': [1, 2, 5], 'b': 2, 'f': 3}).items()
