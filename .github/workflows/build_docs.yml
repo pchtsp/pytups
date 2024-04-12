@@ -32,8 +32,8 @@ jobs:
         cp -r docs/build/html/* gh-pages/
         cd gh-pages
         touch .nojekyll
-        git config --local user.email "action@github.com"
-        git config --local user.name "GitHub Action"
+        git config user.name github-actions
+        git config user.email github-actions@github.com
         git add .
         git commit -m "Update documentation" -a || true
         git push
