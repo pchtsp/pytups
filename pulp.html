@@ -1,26 +1,26 @@
-
 <!DOCTYPE html>
 
-<html xmlns="http://www.w3.org/1999/xhtml">
+<html lang="en" data-content_root="./">
   <head>
     <meta charset="utf-8" />
-    <title>Using it with PuLP &#8212; pytups 0.3 documentation</title>
-    <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
-    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
-    <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
-    <script type="text/javascript" src="_static/jquery.js"></script>
-    <script type="text/javascript" src="_static/underscore.js"></script>
-    <script type="text/javascript" src="_static/doctools.js"></script>
-    <script type="text/javascript" src="_static/language_data.js"></script>
-    <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Using it with PuLP &#8212; pytups 0.87.1 documentation</title>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=d1102ebc" />
+    <link rel="stylesheet" type="text/css" href="_static/alabaster.css?v=a66d8bb5" />
+    <script src="_static/documentation_options.js?v=2cb28c5e"></script>
+    <script src="_static/doctools.js?v=888ff710"></script>
+    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
     <link rel="prev" title="Documentation for the Code" href="code.html" />
    
   <link rel="stylesheet" href="_static/custom.css" type="text/css" />
   
+
   
-  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+  
 
   </head><body>
   <div class="document">
@@ -44,7 +44,7 @@
 
 
 <h3>Navigation</h3>
-<p class="caption"><span class="caption-text">Contents:</span></p>
+<p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="includeme.html">Pytups</a></li>
 <li class="toctree-l1"><a class="reference internal" href="idea.html">Philisophy</a></li>
@@ -71,12 +71,12 @@
   <h3 id="searchlabel">Quick search</h3>
     <div class="searchformwrapper">
     <form class="search" action="search.html" method="get">
-      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
       <input type="submit" value="Go" />
     </form>
     </div>
 </div>
-<script type="text/javascript">$('#searchbox').show(0);</script>
+<script>document.getElementById('searchbox').style.display = "block"</script>
 
 
 
@@ -93,29 +93,30 @@
 
           <div class="body" role="main">
             
-  <div class="section" id="using-it-with-pulp">
-<h1>Using it with PuLP<a class="headerlink" href="#using-it-with-pulp" title="Permalink to this headline">¶</a></h1>
-<p>Copied from <a class="reference external" href="https://pythonhosted.org/PuLP/pulp.html#module-pulp" title="(in PuLP v1.6)"><code class="xref py py-mod docutils literal notranslate"><span class="pre">pulp</span></code></a>:</p>
+  <section id="using-it-with-pulp">
+<h1>Using it with PuLP<a class="headerlink" href="#using-it-with-pulp" title="Link to this heading">¶</a></h1>
+<p>Copied from <a class="reference external" href="https://coin-or.github.io/pulp/technical/pulp.html#module-pulp" title="(in PuLP v2.8)"><code class="xref py py-mod docutils literal notranslate"><span class="pre">pulp</span></code></a>:</p>
 <blockquote>
 <div><p>PuLP is a free open source software written in Python. It is used to describe optimisation problems as mathematical models. PuLP can then call any of numerous external LP solvers (CBC, GLPK, CPLEX, Gurobi etc) to solve this model and then use python commands to manipulate and display the solution.</p>
 </div></blockquote>
-<div class="section" id="nomenclature">
-<h2>Nomenclature<a class="headerlink" href="#nomenclature" title="Permalink to this headline">¶</a></h2>
-<dl class="glossary simple">
-<dt id="term-variable-declaration">Variable declaration</dt><dd><p>A group of decision variables that share the same naming and significance. In <cite>PuLP</cite> they are all created within a single call to <a class="reference external" href="https://pythonhosted.org/PuLP/pulp.html#pulp.LpVariable.dicts" title="(in PuLP v1.6)"><code class="xref py py-meth docutils literal notranslate"><span class="pre">pulp.LpVariable.dicts()</span></code></a> and they are all accessed by slicing the created <cite>python</cite> variable as a dictionary. An optimization problem can have one variable declaration but thousands of variables.</p>
+<section id="nomenclature">
+<h2>Nomenclature<a class="headerlink" href="#nomenclature" title="Link to this heading">¶</a></h2>
+<dl class="simple glossary">
+<dt id="term-Variable-declaration">Variable declaration<a class="headerlink" href="#term-Variable-declaration" title="Link to this term">¶</a></dt><dd><p>A group of decision variables that share the same naming and significance. In <cite>PuLP</cite> they are all created within a single call to <a class="reference external" href="https://coin-or.github.io/pulp/technical/pulp.html#pulp.LpVariable.dicts" title="(in PuLP v2.8)"><code class="xref py py-meth docutils literal notranslate"><span class="pre">pulp.LpVariable.dicts()</span></code></a> and they are all accessed by slicing the created <cite>python</cite> variable as a dictionary. An optimization problem can have one variable declaration but thousands of variables.</p>
 </dd>
-<dt id="term-variable-domain">Variable domain</dt><dd><p>The complete space over which variables in a single variable declaration are created. The length of the domain is the number of variables in the declaration. Each variable declaration has its own domain and is indicated with the argument <cite>index</cite> when calling the function <a class="reference external" href="https://pythonhosted.org/PuLP/pulp.html#pulp.LpVariable.dicts" title="(in PuLP v1.6)"><code class="xref py py-meth docutils literal notranslate"><span class="pre">pulp.LpVariable.dicts()</span></code></a>. It usually consists of some kind of iterator where all its elements should be unique.</p>
+<dt id="term-Variable-domain">Variable domain<a class="headerlink" href="#term-Variable-domain" title="Link to this term">¶</a></dt><dd><p>The complete space over which variables in a single variable declaration are created. The length of the domain is the number of variables in the declaration. Each variable declaration has its own domain and is indicated with the argument <cite>index</cite> when calling the function <a class="reference external" href="https://coin-or.github.io/pulp/technical/pulp.html#pulp.LpVariable.dicts" title="(in PuLP v2.8)"><code class="xref py py-meth docutils literal notranslate"><span class="pre">pulp.LpVariable.dicts()</span></code></a>. It usually consists of some kind of iterator where all its elements should be unique.</p>
 </dd>
 </dl>
-<p>When using <a class="reference external" href="https://pythonhosted.org/PuLP/pulp.html#module-pulp" title="(in PuLP v1.6)"><code class="xref py py-mod docutils literal notranslate"><span class="pre">pulp</span></code></a>, I use the following guidelines:</p>
+<p>When using <a class="reference external" href="https://coin-or.github.io/pulp/technical/pulp.html#module-pulp" title="(in PuLP v2.8)"><code class="xref py py-mod docutils literal notranslate"><span class="pre">pulp</span></code></a>, I use the following guidelines:</p>
 <ol class="arabic simple">
-<li><p>Use <a class="reference external" href="https://pythonhosted.org/PuLP/pulp.html#pulp.LpVariable.dicts" title="(in PuLP v1.6)"><code class="xref py py-meth docutils literal notranslate"><span class="pre">pulp.LpVariable.dicts()</span></code></a> for variable declaration, unless there is a very good reason not to.</p></li>
+<li><p>Use <a class="reference external" href="https://coin-or.github.io/pulp/technical/pulp.html#pulp.LpVariable.dicts" title="(in PuLP v2.8)"><code class="xref py py-meth docutils literal notranslate"><span class="pre">pulp.LpVariable.dicts()</span></code></a> for variable declaration, unless there is a very good reason not to.</p></li>
 <li><p>Use a list of tuples to declare the variable domain.</p></li>
 <li><p>Use <cite>pytups</cite> to index parts of the domain for clean, pretty and fast constraint generation.</p></li>
 </ol>
-</div>
-<div class="section" id="example-scheduling-problem">
-<h2>Example: Scheduling problem<a class="headerlink" href="#example-scheduling-problem" title="Permalink to this headline">¶</a></h2>
+</section>
+<section id="example-scheduling-problem">
+<h2>Example: Scheduling problem<a class="headerlink" href="#example-scheduling-problem" title="Link to this heading">¶</a></h2>
+<p>This example was taken with permission from the Naval Postgraduate School course Mathematical Programming given by Matt Carlyle in 2019.</p>
 <p>Assume we are given a set of jobs <span class="math notranslate nohighlight">\(j\)</span> with processing times <span class="math notranslate nohighlight">\(p_j\)</span>. For a single machine non-preemptive scheduling problem (which we assume here), a schedule of the jobs <span class="math notranslate nohighlight">\(N\)</span> is given by specifying a start time, <span class="math notranslate nohighlight">\(Y_j\)</span> , for each job. If job j starts at time <span class="math notranslate nohighlight">\(Y_j\)</span>, it is processing during the time interval <span class="math notranslate nohighlight">\([Y_j , Y_j + p_j ]\)</span>. A schedule is feasible if no two jobs have overlapping processing times.</p>
 <p>This means that, for every pair of jobs <span class="math notranslate nohighlight">\(i\)</span> and <span class="math notranslate nohighlight">\(j\)</span>, we have that either <span class="math notranslate nohighlight">\(Y_j \geq Y_i +p_i\)</span> , or <span class="math notranslate nohighlight">\(Y_i \geq Y_j +p_j\)</span>.</p>
 <p>Job <span class="math notranslate nohighlight">\(j\)</span> will complete at time <span class="math notranslate nohighlight">\(C_j =(Y_j + p_j )\)</span>, and if it also has an associated due date, <span class="math notranslate nohighlight">\(d_j\)</span> , its tardiness, <span class="math notranslate nohighlight">\(T_j\)</span> , is defined to be:</p>
@@ -129,16 +130,12 @@
    TWT    &amp; = &amp; \sum_{j \in N} w_j T_j \\
    TWT    &amp; = &amp; \sum_{j \in N} w_j (Y_j + p_j - d_j)^+
 \end{eqnarray}</div><p>The objective is to schedule all the jobs without overlapping them and minimizing the total weighted tardiness <span class="math notranslate nohighlight">\(TWT\)</span>.</p>
-</div>
-<div class="section" id="mathematical-formulation">
-<h2>Mathematical formulation<a class="headerlink" href="#mathematical-formulation" title="Permalink to this headline">¶</a></h2>
+</section>
+<section id="mathematical-formulation">
+<h2>Mathematical formulation<a class="headerlink" href="#mathematical-formulation" title="Link to this heading">¶</a></h2>
 <p>The following is just one of many possible formulations to solve this problem.</p>
 <p>SETS</p>
 <table class="docutils align-default">
-<colgroup>
-<col style="width: 51%" />
-<col style="width: 49%" />
-</colgroup>
 <tbody>
 <tr class="row-odd"><td><p><span class="math notranslate nohighlight">\(j \in J\)</span></p></td>
 <td><p>jobs</p></td>
@@ -150,10 +147,6 @@
 </table>
 <p>DATA [UNITS]</p>
 <table class="docutils align-default">
-<colgroup>
-<col style="width: 22%" />
-<col style="width: 78%" />
-</colgroup>
 <tbody>
 <tr class="row-odd"><td><p><span class="math notranslate nohighlight">\(p_j\)</span></p></td>
 <td><p>processing time of job j [periods]</p></td>
@@ -168,10 +161,6 @@
 </table>
 <p>DERIVED DATA</p>
 <table class="docutils align-default">
-<colgroup>
-<col style="width: 14%" />
-<col style="width: 86%" />
-</colgroup>
 <tbody>
 <tr class="row-odd"><td><p><span class="math notranslate nohighlight">\(C_{max}\)</span></p></td>
 <td><p>Size of planning horizon.</p></td>
@@ -214,109 +203,177 @@ The first set of constraints enforces that each job is scheduled only once. The 
 \begin{eqnarray}
    &amp; \sum_{k \in K_j} X_{jk} = 1 &amp; j \in J \\
    &amp; \sum_{(j, k) \in JK_{k2}} X_{jk} = 1 &amp; k2 \in K \\
-\end{eqnarray}</div></div>
-<div class="section" id="implementation-using-pulp-and-pytups">
-<h2>Implementation using pulp and pytups<a class="headerlink" href="#implementation-using-pulp-and-pytups" title="Permalink to this headline">¶</a></h2>
+\end{eqnarray}</div></section>
+<section id="implementation-using-pulp-and-pytups">
+<h2>Implementation using pulp and pytups<a class="headerlink" href="#implementation-using-pulp-and-pytups" title="Link to this heading">¶</a></h2>
 <p>We import libraries and get input data.</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">pulp</span> <span class="kn">as</span> <span class="nn">pl</span>
-<span class="kn">import</span> <span class="nn">pytups</span> <span class="kn">as</span> <span class="nn">pt</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="sd">&quot;&quot;&quot;</span>
 
-<span class="c1"># Get input data</span>
-<span class="n">duration</span> <span class="o">=</span> <span class="p">{</span><span class="mi">1</span><span class="p">:</span> <span class="mi">8</span><span class="p">,</span> <span class="mi">2</span><span class="p">:</span> <span class="mi">12</span><span class="p">,</span> <span class="mi">3</span><span class="p">:</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">4</span><span class="p">:</span> <span class="mi">13</span><span class="p">,</span> <span class="mi">5</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">6</span><span class="p">:</span> <span class="mi">12</span><span class="p">,</span> <span class="mi">7</span><span class="p">:</span> <span class="mi">15</span><span class="p">,</span> <span class="mi">8</span><span class="p">:</span> <span class="mi">20</span><span class="p">,</span> <span class="mi">9</span><span class="p">:</span> <span class="mi">16</span><span class="p">,</span> <span class="mi">10</span><span class="p">:</span> <span class="mi">16</span><span class="p">,</span> <span class="mi">11</span><span class="p">:</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">12</span><span class="p">:</span> <span class="mi">14</span><span class="p">,</span> <span class="mi">13</span><span class="p">:</span> <span class="mi">17</span><span class="p">,</span> <span class="mi">14</span><span class="p">:</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">15</span><span class="p">:</span> <span class="mi">20</span><span class="p">,</span> <span class="mi">16</span><span class="p">:</span> <span class="mi">19</span><span class="p">,</span> <span class="mi">17</span><span class="p">:</span> <span class="mi">13</span><span class="p">,</span> <span class="mi">18</span><span class="p">:</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">19</span><span class="p">:</span> <span class="mi">18</span><span class="p">,</span> <span class="mi">20</span><span class="p">:</span> <span class="mi">11</span><span class="p">}</span>
-<span class="n">priority</span> <span class="o">=</span> <span class="p">{</span><span class="mi">1</span><span class="p">:</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">2</span><span class="p">:</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">3</span><span class="p">:</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">4</span><span class="p">:</span> <span class="mi">8</span><span class="p">,</span> <span class="mi">5</span><span class="p">:</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">6</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">7</span><span class="p">:</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">8</span><span class="p">:</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">9</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">10</span><span class="p">:</span> <span class="mi">8</span><span class="p">,</span> <span class="mi">11</span><span class="p">:</span> <span class="mi">8</span><span class="p">,</span> <span class="mi">12</span><span class="p">:</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">13</span><span class="p">:</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">14</span><span class="p">:</span> <span class="mi">8</span><span class="p">,</span> <span class="mi">15</span><span class="p">:</span> <span class="mi">9</span><span class="p">,</span> <span class="mi">16</span><span class="p">:</span> <span class="mi">11</span><span class="p">,</span> <span class="mi">17</span><span class="p">:</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">18</span><span class="p">:</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">19</span><span class="p">:</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">20</span><span class="p">:</span> <span class="mi">9</span><span class="p">}</span>
-<span class="n">duedate</span> <span class="o">=</span> <span class="p">{</span><span class="mi">1</span><span class="p">:</span> <span class="mi">52</span><span class="p">,</span> <span class="mi">2</span><span class="p">:</span> <span class="mi">80</span><span class="p">,</span> <span class="mi">3</span><span class="p">:</span> <span class="mi">133</span><span class="p">,</span> <span class="mi">4</span><span class="p">:</span> <span class="mi">150</span><span class="p">,</span> <span class="mi">5</span><span class="p">:</span> <span class="mi">53</span><span class="p">,</span> <span class="mi">6</span><span class="p">:</span> <span class="mi">133</span><span class="p">,</span> <span class="mi">7</span><span class="p">:</span> <span class="mi">113</span><span class="p">,</span> <span class="mi">8</span><span class="p">:</span> <span class="mi">107</span><span class="p">,</span> <span class="mi">9</span><span class="p">:</span> <span class="mi">75</span><span class="p">,</span> <span class="mi">10</span><span class="p">:</span> <span class="mi">133</span><span class="p">,</span> <span class="mi">11</span><span class="p">:</span> <span class="mi">77</span><span class="p">,</span> <span class="mi">12</span><span class="p">:</span> <span class="mi">126</span><span class="p">,</span> <span class="mi">13</span><span class="p">:</span> <span class="mi">117</span><span class="p">,</span> <span class="mi">14</span><span class="p">:</span> <span class="mi">72</span><span class="p">,</span> <span class="mi">15</span><span class="p">:</span> <span class="mi">111</span><span class="p">,</span> <span class="mi">16</span><span class="p">:</span> <span class="mi">111</span><span class="p">,</span> <span class="mi">17</span><span class="p">:</span> <span class="mi">117</span><span class="p">,</span> <span class="mi">18</span><span class="p">:</span> <span class="mi">69</span><span class="p">,</span> <span class="mi">19</span><span class="p">:</span> <span class="mi">115</span><span class="p">,</span> <span class="mi">20</span><span class="p">:</span> <span class="mi">68</span><span class="p">}</span>
+<span class="sd">Example taken from the NPS course Mathematical Programming from Matt Carlyle in 2019.</span>
 
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">import</span> <span class="nn">pulp</span> <span class="k">as</span> <span class="nn">pl</span>
+<span class="kn">import</span> <span class="nn">pytups</span> <span class="k">as</span> <span class="nn">pt</span>
 </pre></div>
 </div>
 <p>We then calculate intermediate sets and parameters. Note the use of <cite>pytups</cite> functions to filter and convert from tuple lists to dictionaries.</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Get intermediate paramters, sets.</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">duration</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="mi">1</span><span class="p">:</span> <span class="mi">8</span><span class="p">,</span>
+    <span class="mi">2</span><span class="p">:</span> <span class="mi">12</span><span class="p">,</span>
+    <span class="mi">3</span><span class="p">:</span> <span class="mi">6</span><span class="p">,</span>
+    <span class="mi">4</span><span class="p">:</span> <span class="mi">13</span><span class="p">,</span>
+    <span class="mi">5</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span>
+    <span class="mi">6</span><span class="p">:</span> <span class="mi">12</span><span class="p">,</span>
+    <span class="mi">7</span><span class="p">:</span> <span class="mi">15</span><span class="p">,</span>
+    <span class="mi">8</span><span class="p">:</span> <span class="mi">20</span><span class="p">,</span>
+    <span class="mi">9</span><span class="p">:</span> <span class="mi">16</span><span class="p">,</span>
+    <span class="mi">10</span><span class="p">:</span> <span class="mi">16</span><span class="p">,</span>
+    <span class="mi">11</span><span class="p">:</span> <span class="mi">10</span><span class="p">,</span>
+    <span class="mi">12</span><span class="p">:</span> <span class="mi">14</span><span class="p">,</span>
+    <span class="mi">13</span><span class="p">:</span> <span class="mi">17</span><span class="p">,</span>
+    <span class="mi">14</span><span class="p">:</span> <span class="mi">3</span><span class="p">,</span>
+    <span class="mi">15</span><span class="p">:</span> <span class="mi">20</span><span class="p">,</span>
+    <span class="mi">16</span><span class="p">:</span> <span class="mi">19</span><span class="p">,</span>
+    <span class="mi">17</span><span class="p">:</span> <span class="mi">13</span><span class="p">,</span>
+    <span class="mi">18</span><span class="p">:</span> <span class="mi">6</span><span class="p">,</span>
+    <span class="mi">19</span><span class="p">:</span> <span class="mi">18</span><span class="p">,</span>
+    <span class="mi">20</span><span class="p">:</span> <span class="mi">11</span><span class="p">,</span>
+<span class="p">}</span>
+<span class="n">priority</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="mi">1</span><span class="p">:</span> <span class="mi">4</span><span class="p">,</span>
+    <span class="mi">2</span><span class="p">:</span> <span class="mi">5</span><span class="p">,</span>
+    <span class="mi">3</span><span class="p">:</span> <span class="mi">6</span><span class="p">,</span>
+    <span class="mi">4</span><span class="p">:</span> <span class="mi">8</span><span class="p">,</span>
+    <span class="mi">5</span><span class="p">:</span> <span class="mi">4</span><span class="p">,</span>
+    <span class="mi">6</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span>
+</pre></div>
+</div>
+<p>We now create the PuLP model and solve it.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span>    <span class="mi">9</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
+    <span class="mi">10</span><span class="p">:</span> <span class="mi">8</span><span class="p">,</span>
+    <span class="mi">11</span><span class="p">:</span> <span class="mi">8</span><span class="p">,</span>
+    <span class="mi">12</span><span class="p">:</span> <span class="mi">4</span><span class="p">,</span>
+    <span class="mi">13</span><span class="p">:</span> <span class="mi">4</span><span class="p">,</span>
+    <span class="mi">14</span><span class="p">:</span> <span class="mi">8</span><span class="p">,</span>
+    <span class="mi">15</span><span class="p">:</span> <span class="mi">9</span><span class="p">,</span>
+    <span class="mi">16</span><span class="p">:</span> <span class="mi">11</span><span class="p">,</span>
+    <span class="mi">17</span><span class="p">:</span> <span class="mi">6</span><span class="p">,</span>
+    <span class="mi">18</span><span class="p">:</span> <span class="mi">10</span><span class="p">,</span>
+    <span class="mi">19</span><span class="p">:</span> <span class="mi">6</span><span class="p">,</span>
+    <span class="mi">20</span><span class="p">:</span> <span class="mi">9</span><span class="p">,</span>
+<span class="p">}</span>
+<span class="n">duedate</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="mi">1</span><span class="p">:</span> <span class="mi">52</span><span class="p">,</span>
+    <span class="mi">2</span><span class="p">:</span> <span class="mi">80</span><span class="p">,</span>
+    <span class="mi">3</span><span class="p">:</span> <span class="mi">133</span><span class="p">,</span>
+    <span class="mi">4</span><span class="p">:</span> <span class="mi">150</span><span class="p">,</span>
+    <span class="mi">5</span><span class="p">:</span> <span class="mi">53</span><span class="p">,</span>
+    <span class="mi">6</span><span class="p">:</span> <span class="mi">133</span><span class="p">,</span>
+    <span class="mi">7</span><span class="p">:</span> <span class="mi">113</span><span class="p">,</span>
+</pre></div>
+</div>
+<p>We get the solution from the variable contents. Not how we also use <cite>pytups</cite> to extract the content from the variable.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span>    <span class="mi">10</span><span class="p">:</span> <span class="mi">133</span><span class="p">,</span>
+    <span class="mi">11</span><span class="p">:</span> <span class="mi">77</span><span class="p">,</span>
+    <span class="mi">12</span><span class="p">:</span> <span class="mi">126</span><span class="p">,</span>
+    <span class="mi">13</span><span class="p">:</span> <span class="mi">117</span><span class="p">,</span>
+    <span class="mi">14</span><span class="p">:</span> <span class="mi">72</span><span class="p">,</span>
+    <span class="mi">15</span><span class="p">:</span> <span class="mi">111</span><span class="p">,</span>
+    <span class="mi">16</span><span class="p">:</span> <span class="mi">111</span><span class="p">,</span>
+    <span class="mi">17</span><span class="p">:</span> <span class="mi">117</span><span class="p">,</span>
+    <span class="mi">18</span><span class="p">:</span> <span class="mi">69</span><span class="p">,</span>
+</pre></div>
+</div>
+<p>Finally, we do some tests on the solution using <cite>pytups</cite> to guarantee the solution is feasible:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span>
+
+<span class="c1"># Get intermediate paramters, sets.</span>
 <span class="n">C_max</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">(</span><span class="n">duration</span><span class="o">.</span><span class="n">values</span><span class="p">())</span>
 <span class="n">periods</span> <span class="o">=</span> <span class="nb">range</span><span class="p">(</span><span class="n">C_max</span><span class="p">)</span>
 <span class="n">tasks</span> <span class="o">=</span> <span class="n">duration</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span>
 
 <span class="c1"># all legal combinations of task-period assignment</span>
 <span class="n">jk_all</span> <span class="o">=</span> <span class="n">pt</span><span class="o">.</span><span class="n">TupList</span><span class="p">((</span><span class="n">t</span><span class="p">,</span> <span class="n">p</span><span class="p">)</span> <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="n">tasks</span> <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">periods</span><span class="p">)</span>
-
-<span class="c1"># we filter the starts that are too late to be possible:</span>
-<span class="n">JK</span> <span class="o">=</span> <span class="n">jk_all</span><span class="o">.</span><span class="n">filter_list_f</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="n">duration</span><span class="p">[</span><span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">]]</span> <span class="o">&lt;=</span> <span class="n">C_max</span><span class="p">)</span>
-
-<span class="c1"># we create a set of tasks that can start at time period k</span>
-<span class="n">K_j</span> <span class="o">=</span> <span class="n">JK</span><span class="o">.</span><span class="n">to_dict</span><span class="p">(</span><span class="n">result_col</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
-
-<span class="c1"># all combinations (t, p, p2) such that I start a task j </span>
-<span class="c1"># in time period k and is active in period k2</span>
-<span class="n">jkk2</span> <span class="o">=</span> <span class="n">pt</span><span class="o">.</span><span class="n">TupList</span><span class="p">((</span><span class="n">j</span><span class="p">,</span> <span class="n">k</span><span class="p">,</span> <span class="n">k2</span><span class="p">)</span> <span class="k">for</span> <span class="n">j</span><span class="p">,</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">JK</span> 
-				  <span class="k">for</span> <span class="n">k2</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">k</span><span class="p">,</span> <span class="n">k</span> <span class="o">+</span> <span class="n">duration</span><span class="p">[</span><span class="n">j</span><span class="p">]))</span>
-
-<span class="c1"># given a period k2, what starts affect make it unavailable:</span>
-<span class="n">JK_k2</span> <span class="o">=</span> <span class="n">jkk2</span><span class="o">.</span><span class="n">to_dict</span><span class="p">(</span><span class="n">result_col</span><span class="o">=</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">])</span>
-
-<span class="c1"># given a start (j, k), what periods k2 are made unavailable:</span>
-<span class="n">K2_jk</span> <span class="o">=</span> <span class="n">jkk2</span><span class="o">.</span><span class="n">to_dict</span><span class="p">(</span><span class="n">result_col</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
-
-<span class="c1"># for each possible start: how late will the task be</span>
-<span class="n">t_jk</span> <span class="o">=</span> <span class="p">{(</span><span class="n">j</span><span class="p">,</span> <span class="n">k</span><span class="p">):</span> <span class="nb">max</span><span class="p">(</span><span class="n">duration</span><span class="p">[</span><span class="n">j</span><span class="p">]</span> <span class="o">+</span> <span class="n">k</span> <span class="o">-</span><span class="mi">1</span> <span class="o">-</span> <span class="n">duedate</span><span class="p">[</span><span class="n">j</span><span class="p">],</span> <span class="mi">0</span><span class="p">)</span> <span class="o">*</span> 
-				<span class="n">priority</span><span class="p">[</span><span class="n">j</span><span class="p">]</span> <span class="k">for</span> <span class="n">j</span><span class="p">,</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">JK</span><span class="p">}</span>
-
-</pre></div>
-</div>
-<p>We now create the PuLP model and solve it.</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># model construction with PuLP</span>
-<span class="n">model</span> <span class="o">=</span> <span class="n">pl</span><span class="o">.</span><span class="n">LpProblem</span><span class="p">(</span><span class="s2">&quot;Scheduling&quot;</span><span class="p">,</span> <span class="n">pl</span><span class="o">.</span><span class="n">LpMinimize</span><span class="p">)</span>
-<span class="n">X</span> <span class="o">=</span> <span class="n">pl</span><span class="o">.</span><span class="n">LpVariable</span><span class="o">.</span><span class="n">dicts</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s1">&#39;start&#39;</span><span class="p">,</span> <span class="n">indexs</span><span class="o">=</span><span class="n">JK</span><span class="p">,</span>
-                            <span class="n">lowBound</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">upBound</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">cat</span><span class="o">=</span><span class="n">pl</span><span class="o">.</span><span class="n">LpInteger</span><span class="p">)</span>
-
-<span class="c1"># objective function:</span>
-<span class="n">model</span> <span class="o">+=</span> <span class="n">pl</span><span class="o">.</span><span class="n">lpSum</span><span class="p">(</span><span class="n">X</span><span class="p">[</span><span class="n">j</span><span class="p">,</span> <span class="n">k</span><span class="p">]</span> <span class="o">*</span> <span class="n">t_jk</span><span class="p">[</span><span class="n">j</span><span class="p">,</span> <span class="n">k</span><span class="p">]</span> <span class="k">for</span> <span class="n">j</span><span class="p">,</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">JK</span><span class="p">)</span>
-
-<span class="c1"># one and only one start per task</span>
-<span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="n">tasks</span><span class="p">:</span>
-    <span class="n">model</span> <span class="o">+=</span> <span class="n">pl</span><span class="o">.</span><span class="n">lpSum</span><span class="p">(</span><span class="n">X</span><span class="p">[</span><span class="n">j</span><span class="p">,</span> <span class="n">k</span><span class="p">]</span> <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">K_j</span><span class="p">[</span><span class="n">j</span><span class="p">])</span> <span class="o">==</span> <span class="mi">1</span>
-
-<span class="c1"># only one task is active at any moment:</span>
-<span class="k">for</span> <span class="n">k2</span> <span class="ow">in</span> <span class="n">periods</span><span class="p">:</span>
-    <span class="n">model</span> <span class="o">+=</span> <span class="n">pl</span><span class="o">.</span><span class="n">lpSum</span><span class="p">(</span><span class="n">X</span><span class="p">[</span><span class="n">j</span><span class="p">,</span> <span class="n">k</span><span class="p">]</span> <span class="k">for</span> <span class="n">j</span><span class="p">,</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">JK_k2</span><span class="p">[</span><span class="n">k2</span><span class="p">])</span> <span class="o">==</span> <span class="mi">1</span>
-
-<span class="c1"># solve model:</span>
-<span class="n">solver</span> <span class="o">=</span> <span class="n">pl</span><span class="o">.</span><span class="n">PULP_CBC_CMD</span><span class="p">(</span><span class="n">msg</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
-<span class="c1"># solver = pl.CPLEX_CMD(msg=True)</span>
-<span class="n">model</span><span class="o">.</span><span class="n">solve</span><span class="p">(</span><span class="n">solver</span><span class="p">)</span>
-
-</pre></div>
-</div>
-<p>We get the solution from the variable contents. Not how we also use <cite>pytups</cite> to extract the content from the variable.</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># get tasks starts</span>
-<span class="n">starts_out</span> <span class="o">=</span> <span class="n">pt</span><span class="o">.</span><span class="n">SuperDict</span><span class="p">(</span><span class="n">X</span><span class="p">)</span><span class="o">.</span><span class="n">vapply</span><span class="p">(</span><span class="n">pl</span><span class="o">.</span><span class="n">value</span><span class="p">)</span><span class="o">.</span><span class="n">clean</span><span class="p">()</span><span class="o">.</span><span class="n">keys_l</span><span class="p">()</span>
-
-<span class="n">solution</span> <span class="o">=</span> <span class="p">[</span><span class="o">-</span><span class="mi">1</span> <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">periods</span><span class="p">]</span>
-<span class="k">for</span> <span class="n">j</span><span class="p">,</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">starts_out</span><span class="p">:</span>
-    <span class="k">for</span> <span class="n">p2</span> <span class="ow">in</span> <span class="n">K2_jk</span><span class="p">[</span><span class="n">j</span><span class="p">,</span> <span class="n">k</span><span class="p">]:</span>
-        <span class="n">solution</span><span class="p">[</span><span class="n">p2</span><span class="p">]</span> <span class="o">=</span> <span class="n">j</span>
-
-<span class="k">print</span><span class="p">(</span><span class="s1">&#39;solution is </span><span class="se">\n</span><span class="s1">{}&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">solution</span><span class="p">))</span>
-</pre></div>
-</div>
-<p>Finally, we do some tests on the solution using <cite>pytups</cite> to guarantee the solution is feasible:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># verify that all periods are filled:</span>
-<span class="c1"># counting if there is any with a minus -1</span>
-<span class="n">pt</span><span class="o">.</span><span class="n">TupList</span><span class="p">(</span><span class="n">solution</span><span class="p">)</span><span class="o">.</span><span class="n">filter_list_f</span><span class="p">(</span><span class="k">lambda</span> <span class="n">v</span><span class="p">:</span> <span class="n">v</span> <span class="o">==</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span>
-
-<span class="c1"># verify that each task t appears exactly duration[t] times</span>
-<span class="n">task_count</span> <span class="o">=</span> <span class="n">pt</span><span class="o">.</span><span class="n">SuperDict</span><span class="p">()</span><span class="o">.</span><span class="n">fill_with_default</span><span class="p">(</span><span class="n">keys</span><span class="o">=</span><span class="n">duration</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
-<span class="k">for</span> <span class="n">period</span><span class="p">,</span> <span class="n">task</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">solution</span><span class="p">):</span>
-    <span class="n">task_count</span><span class="p">[</span><span class="n">task</span><span class="p">]</span> <span class="o">+=</span> <span class="mi">1</span>
-<span class="n">task_count</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="k">lambda</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span><span class="p">:</span> <span class="n">duration</span><span class="p">[</span><span class="n">k</span><span class="p">]</span> <span class="o">-</span> <span class="n">v</span><span class="p">)</span><span class="o">.</span><span class="n">clean</span><span class="p">()</span>
 </pre></div>
 </div>
 <p>The whole code is shown below:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">pulp</span> <span class="kn">as</span> <span class="nn">pl</span>
-<span class="kn">import</span> <span class="nn">pytups</span> <span class="kn">as</span> <span class="nn">pt</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="sd">&quot;&quot;&quot;</span>
+
+<span class="sd">Example taken from the NPS course Mathematical Programming from Matt Carlyle in 2019.</span>
+
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">import</span> <span class="nn">pulp</span> <span class="k">as</span> <span class="nn">pl</span>
+<span class="kn">import</span> <span class="nn">pytups</span> <span class="k">as</span> <span class="nn">pt</span>
 
 <span class="c1"># Get input data</span>
-<span class="n">duration</span> <span class="o">=</span> <span class="p">{</span><span class="mi">1</span><span class="p">:</span> <span class="mi">8</span><span class="p">,</span> <span class="mi">2</span><span class="p">:</span> <span class="mi">12</span><span class="p">,</span> <span class="mi">3</span><span class="p">:</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">4</span><span class="p">:</span> <span class="mi">13</span><span class="p">,</span> <span class="mi">5</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">6</span><span class="p">:</span> <span class="mi">12</span><span class="p">,</span> <span class="mi">7</span><span class="p">:</span> <span class="mi">15</span><span class="p">,</span> <span class="mi">8</span><span class="p">:</span> <span class="mi">20</span><span class="p">,</span> <span class="mi">9</span><span class="p">:</span> <span class="mi">16</span><span class="p">,</span> <span class="mi">10</span><span class="p">:</span> <span class="mi">16</span><span class="p">,</span> <span class="mi">11</span><span class="p">:</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">12</span><span class="p">:</span> <span class="mi">14</span><span class="p">,</span> <span class="mi">13</span><span class="p">:</span> <span class="mi">17</span><span class="p">,</span> <span class="mi">14</span><span class="p">:</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">15</span><span class="p">:</span> <span class="mi">20</span><span class="p">,</span> <span class="mi">16</span><span class="p">:</span> <span class="mi">19</span><span class="p">,</span> <span class="mi">17</span><span class="p">:</span> <span class="mi">13</span><span class="p">,</span> <span class="mi">18</span><span class="p">:</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">19</span><span class="p">:</span> <span class="mi">18</span><span class="p">,</span> <span class="mi">20</span><span class="p">:</span> <span class="mi">11</span><span class="p">}</span>
-<span class="n">priority</span> <span class="o">=</span> <span class="p">{</span><span class="mi">1</span><span class="p">:</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">2</span><span class="p">:</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">3</span><span class="p">:</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">4</span><span class="p">:</span> <span class="mi">8</span><span class="p">,</span> <span class="mi">5</span><span class="p">:</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">6</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">7</span><span class="p">:</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">8</span><span class="p">:</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">9</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">10</span><span class="p">:</span> <span class="mi">8</span><span class="p">,</span> <span class="mi">11</span><span class="p">:</span> <span class="mi">8</span><span class="p">,</span> <span class="mi">12</span><span class="p">:</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">13</span><span class="p">:</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">14</span><span class="p">:</span> <span class="mi">8</span><span class="p">,</span> <span class="mi">15</span><span class="p">:</span> <span class="mi">9</span><span class="p">,</span> <span class="mi">16</span><span class="p">:</span> <span class="mi">11</span><span class="p">,</span> <span class="mi">17</span><span class="p">:</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">18</span><span class="p">:</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">19</span><span class="p">:</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">20</span><span class="p">:</span> <span class="mi">9</span><span class="p">}</span>
-<span class="n">duedate</span> <span class="o">=</span> <span class="p">{</span><span class="mi">1</span><span class="p">:</span> <span class="mi">52</span><span class="p">,</span> <span class="mi">2</span><span class="p">:</span> <span class="mi">80</span><span class="p">,</span> <span class="mi">3</span><span class="p">:</span> <span class="mi">133</span><span class="p">,</span> <span class="mi">4</span><span class="p">:</span> <span class="mi">150</span><span class="p">,</span> <span class="mi">5</span><span class="p">:</span> <span class="mi">53</span><span class="p">,</span> <span class="mi">6</span><span class="p">:</span> <span class="mi">133</span><span class="p">,</span> <span class="mi">7</span><span class="p">:</span> <span class="mi">113</span><span class="p">,</span> <span class="mi">8</span><span class="p">:</span> <span class="mi">107</span><span class="p">,</span> <span class="mi">9</span><span class="p">:</span> <span class="mi">75</span><span class="p">,</span> <span class="mi">10</span><span class="p">:</span> <span class="mi">133</span><span class="p">,</span> <span class="mi">11</span><span class="p">:</span> <span class="mi">77</span><span class="p">,</span> <span class="mi">12</span><span class="p">:</span> <span class="mi">126</span><span class="p">,</span> <span class="mi">13</span><span class="p">:</span> <span class="mi">117</span><span class="p">,</span> <span class="mi">14</span><span class="p">:</span> <span class="mi">72</span><span class="p">,</span> <span class="mi">15</span><span class="p">:</span> <span class="mi">111</span><span class="p">,</span> <span class="mi">16</span><span class="p">:</span> <span class="mi">111</span><span class="p">,</span> <span class="mi">17</span><span class="p">:</span> <span class="mi">117</span><span class="p">,</span> <span class="mi">18</span><span class="p">:</span> <span class="mi">69</span><span class="p">,</span> <span class="mi">19</span><span class="p">:</span> <span class="mi">115</span><span class="p">,</span> <span class="mi">20</span><span class="p">:</span> <span class="mi">68</span><span class="p">}</span>
-
+<span class="n">duration</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="mi">1</span><span class="p">:</span> <span class="mi">8</span><span class="p">,</span>
+    <span class="mi">2</span><span class="p">:</span> <span class="mi">12</span><span class="p">,</span>
+    <span class="mi">3</span><span class="p">:</span> <span class="mi">6</span><span class="p">,</span>
+    <span class="mi">4</span><span class="p">:</span> <span class="mi">13</span><span class="p">,</span>
+    <span class="mi">5</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span>
+    <span class="mi">6</span><span class="p">:</span> <span class="mi">12</span><span class="p">,</span>
+    <span class="mi">7</span><span class="p">:</span> <span class="mi">15</span><span class="p">,</span>
+    <span class="mi">8</span><span class="p">:</span> <span class="mi">20</span><span class="p">,</span>
+    <span class="mi">9</span><span class="p">:</span> <span class="mi">16</span><span class="p">,</span>
+    <span class="mi">10</span><span class="p">:</span> <span class="mi">16</span><span class="p">,</span>
+    <span class="mi">11</span><span class="p">:</span> <span class="mi">10</span><span class="p">,</span>
+    <span class="mi">12</span><span class="p">:</span> <span class="mi">14</span><span class="p">,</span>
+    <span class="mi">13</span><span class="p">:</span> <span class="mi">17</span><span class="p">,</span>
+    <span class="mi">14</span><span class="p">:</span> <span class="mi">3</span><span class="p">,</span>
+    <span class="mi">15</span><span class="p">:</span> <span class="mi">20</span><span class="p">,</span>
+    <span class="mi">16</span><span class="p">:</span> <span class="mi">19</span><span class="p">,</span>
+    <span class="mi">17</span><span class="p">:</span> <span class="mi">13</span><span class="p">,</span>
+    <span class="mi">18</span><span class="p">:</span> <span class="mi">6</span><span class="p">,</span>
+    <span class="mi">19</span><span class="p">:</span> <span class="mi">18</span><span class="p">,</span>
+    <span class="mi">20</span><span class="p">:</span> <span class="mi">11</span><span class="p">,</span>
+<span class="p">}</span>
+<span class="n">priority</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="mi">1</span><span class="p">:</span> <span class="mi">4</span><span class="p">,</span>
+    <span class="mi">2</span><span class="p">:</span> <span class="mi">5</span><span class="p">,</span>
+    <span class="mi">3</span><span class="p">:</span> <span class="mi">6</span><span class="p">,</span>
+    <span class="mi">4</span><span class="p">:</span> <span class="mi">8</span><span class="p">,</span>
+    <span class="mi">5</span><span class="p">:</span> <span class="mi">4</span><span class="p">,</span>
+    <span class="mi">6</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span>
+    <span class="mi">7</span><span class="p">:</span> <span class="mi">5</span><span class="p">,</span>
+    <span class="mi">8</span><span class="p">:</span> <span class="mi">6</span><span class="p">,</span>
+    <span class="mi">9</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
+    <span class="mi">10</span><span class="p">:</span> <span class="mi">8</span><span class="p">,</span>
+    <span class="mi">11</span><span class="p">:</span> <span class="mi">8</span><span class="p">,</span>
+    <span class="mi">12</span><span class="p">:</span> <span class="mi">4</span><span class="p">,</span>
+    <span class="mi">13</span><span class="p">:</span> <span class="mi">4</span><span class="p">,</span>
+    <span class="mi">14</span><span class="p">:</span> <span class="mi">8</span><span class="p">,</span>
+    <span class="mi">15</span><span class="p">:</span> <span class="mi">9</span><span class="p">,</span>
+    <span class="mi">16</span><span class="p">:</span> <span class="mi">11</span><span class="p">,</span>
+    <span class="mi">17</span><span class="p">:</span> <span class="mi">6</span><span class="p">,</span>
+    <span class="mi">18</span><span class="p">:</span> <span class="mi">10</span><span class="p">,</span>
+    <span class="mi">19</span><span class="p">:</span> <span class="mi">6</span><span class="p">,</span>
+    <span class="mi">20</span><span class="p">:</span> <span class="mi">9</span><span class="p">,</span>
+<span class="p">}</span>
+<span class="n">duedate</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="mi">1</span><span class="p">:</span> <span class="mi">52</span><span class="p">,</span>
+    <span class="mi">2</span><span class="p">:</span> <span class="mi">80</span><span class="p">,</span>
+    <span class="mi">3</span><span class="p">:</span> <span class="mi">133</span><span class="p">,</span>
+    <span class="mi">4</span><span class="p">:</span> <span class="mi">150</span><span class="p">,</span>
+    <span class="mi">5</span><span class="p">:</span> <span class="mi">53</span><span class="p">,</span>
+    <span class="mi">6</span><span class="p">:</span> <span class="mi">133</span><span class="p">,</span>
+    <span class="mi">7</span><span class="p">:</span> <span class="mi">113</span><span class="p">,</span>
+    <span class="mi">8</span><span class="p">:</span> <span class="mi">107</span><span class="p">,</span>
+    <span class="mi">9</span><span class="p">:</span> <span class="mi">75</span><span class="p">,</span>
+    <span class="mi">10</span><span class="p">:</span> <span class="mi">133</span><span class="p">,</span>
+    <span class="mi">11</span><span class="p">:</span> <span class="mi">77</span><span class="p">,</span>
+    <span class="mi">12</span><span class="p">:</span> <span class="mi">126</span><span class="p">,</span>
+    <span class="mi">13</span><span class="p">:</span> <span class="mi">117</span><span class="p">,</span>
+    <span class="mi">14</span><span class="p">:</span> <span class="mi">72</span><span class="p">,</span>
+    <span class="mi">15</span><span class="p">:</span> <span class="mi">111</span><span class="p">,</span>
+    <span class="mi">16</span><span class="p">:</span> <span class="mi">111</span><span class="p">,</span>
+    <span class="mi">17</span><span class="p">:</span> <span class="mi">117</span><span class="p">,</span>
+    <span class="mi">18</span><span class="p">:</span> <span class="mi">69</span><span class="p">,</span>
+    <span class="mi">19</span><span class="p">:</span> <span class="mi">115</span><span class="p">,</span>
+    <span class="mi">20</span><span class="p">:</span> <span class="mi">68</span><span class="p">,</span>
+<span class="p">}</span>
 
 
 <span class="c1"># Get intermediate paramters, sets.</span>
@@ -328,15 +385,14 @@ The first set of constraints enforces that each job is scheduled only once. The 
 <span class="n">jk_all</span> <span class="o">=</span> <span class="n">pt</span><span class="o">.</span><span class="n">TupList</span><span class="p">((</span><span class="n">t</span><span class="p">,</span> <span class="n">p</span><span class="p">)</span> <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="n">tasks</span> <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">periods</span><span class="p">)</span>
 
 <span class="c1"># we filter the starts that are too late to be possible:</span>
-<span class="n">JK</span> <span class="o">=</span> <span class="n">jk_all</span><span class="o">.</span><span class="n">filter_list_f</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="n">duration</span><span class="p">[</span><span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">]]</span> <span class="o">&lt;=</span> <span class="n">C_max</span><span class="p">)</span>
+<span class="n">JK</span> <span class="o">=</span> <span class="n">jk_all</span><span class="o">.</span><span class="n">vfilter</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="n">duration</span><span class="p">[</span><span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">]]</span> <span class="o">&lt;=</span> <span class="n">C_max</span><span class="p">)</span>
 
 <span class="c1"># we create a set of tasks that can start at time period k</span>
 <span class="n">K_j</span> <span class="o">=</span> <span class="n">JK</span><span class="o">.</span><span class="n">to_dict</span><span class="p">(</span><span class="n">result_col</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
 
-<span class="c1"># all combinations (t, p, p2) such that I start a task j </span>
+<span class="c1"># all combinations (t, p, p2) such that I start a task j</span>
 <span class="c1"># in time period k and is active in period k2</span>
-<span class="n">jkk2</span> <span class="o">=</span> <span class="n">pt</span><span class="o">.</span><span class="n">TupList</span><span class="p">((</span><span class="n">j</span><span class="p">,</span> <span class="n">k</span><span class="p">,</span> <span class="n">k2</span><span class="p">)</span> <span class="k">for</span> <span class="n">j</span><span class="p">,</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">JK</span> 
-				  <span class="k">for</span> <span class="n">k2</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">k</span><span class="p">,</span> <span class="n">k</span> <span class="o">+</span> <span class="n">duration</span><span class="p">[</span><span class="n">j</span><span class="p">]))</span>
+<span class="n">jkk2</span> <span class="o">=</span> <span class="n">pt</span><span class="o">.</span><span class="n">TupList</span><span class="p">((</span><span class="n">j</span><span class="p">,</span> <span class="n">k</span><span class="p">,</span> <span class="n">k2</span><span class="p">)</span> <span class="k">for</span> <span class="n">j</span><span class="p">,</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">JK</span> <span class="k">for</span> <span class="n">k2</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">k</span><span class="p">,</span> <span class="n">k</span> <span class="o">+</span> <span class="n">duration</span><span class="p">[</span><span class="n">j</span><span class="p">]))</span>
 
 <span class="c1"># given a period k2, what starts affect make it unavailable:</span>
 <span class="n">JK_k2</span> <span class="o">=</span> <span class="n">jkk2</span><span class="o">.</span><span class="n">to_dict</span><span class="p">(</span><span class="n">result_col</span><span class="o">=</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">])</span>
@@ -345,15 +401,14 @@ The first set of constraints enforces that each job is scheduled only once. The 
 <span class="n">K2_jk</span> <span class="o">=</span> <span class="n">jkk2</span><span class="o">.</span><span class="n">to_dict</span><span class="p">(</span><span class="n">result_col</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
 
 <span class="c1"># for each possible start: how late will the task be</span>
-<span class="n">t_jk</span> <span class="o">=</span> <span class="p">{(</span><span class="n">j</span><span class="p">,</span> <span class="n">k</span><span class="p">):</span> <span class="nb">max</span><span class="p">(</span><span class="n">duration</span><span class="p">[</span><span class="n">j</span><span class="p">]</span> <span class="o">+</span> <span class="n">k</span> <span class="o">-</span><span class="mi">1</span> <span class="o">-</span> <span class="n">duedate</span><span class="p">[</span><span class="n">j</span><span class="p">],</span> <span class="mi">0</span><span class="p">)</span> <span class="o">*</span> 
-				<span class="n">priority</span><span class="p">[</span><span class="n">j</span><span class="p">]</span> <span class="k">for</span> <span class="n">j</span><span class="p">,</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">JK</span><span class="p">}</span>
-
+<span class="n">t_jk</span> <span class="o">=</span> <span class="p">{(</span><span class="n">j</span><span class="p">,</span> <span class="n">k</span><span class="p">):</span> <span class="nb">max</span><span class="p">(</span><span class="n">duration</span><span class="p">[</span><span class="n">j</span><span class="p">]</span> <span class="o">+</span> <span class="n">k</span> <span class="o">-</span> <span class="mi">1</span> <span class="o">-</span> <span class="n">duedate</span><span class="p">[</span><span class="n">j</span><span class="p">],</span> <span class="mi">0</span><span class="p">)</span> <span class="o">*</span> <span class="n">priority</span><span class="p">[</span><span class="n">j</span><span class="p">]</span> <span class="k">for</span> <span class="n">j</span><span class="p">,</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">JK</span><span class="p">}</span>
 
 
 <span class="c1"># model construction with PuLP</span>
 <span class="n">model</span> <span class="o">=</span> <span class="n">pl</span><span class="o">.</span><span class="n">LpProblem</span><span class="p">(</span><span class="s2">&quot;Scheduling&quot;</span><span class="p">,</span> <span class="n">pl</span><span class="o">.</span><span class="n">LpMinimize</span><span class="p">)</span>
-<span class="n">X</span> <span class="o">=</span> <span class="n">pl</span><span class="o">.</span><span class="n">LpVariable</span><span class="o">.</span><span class="n">dicts</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s1">&#39;start&#39;</span><span class="p">,</span> <span class="n">indexs</span><span class="o">=</span><span class="n">JK</span><span class="p">,</span>
-                            <span class="n">lowBound</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">upBound</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">cat</span><span class="o">=</span><span class="n">pl</span><span class="o">.</span><span class="n">LpInteger</span><span class="p">)</span>
+<span class="n">X</span> <span class="o">=</span> <span class="n">pl</span><span class="o">.</span><span class="n">LpVariable</span><span class="o">.</span><span class="n">dicts</span><span class="p">(</span>
+    <span class="n">name</span><span class="o">=</span><span class="s2">&quot;start&quot;</span><span class="p">,</span> <span class="n">indexs</span><span class="o">=</span><span class="n">JK</span><span class="p">,</span> <span class="n">lowBound</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">upBound</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">cat</span><span class="o">=</span><span class="n">pl</span><span class="o">.</span><span class="n">LpInteger</span>
+<span class="p">)</span>
 
 <span class="c1"># objective function:</span>
 <span class="n">model</span> <span class="o">+=</span> <span class="n">pl</span><span class="o">.</span><span class="n">lpSum</span><span class="p">(</span><span class="n">X</span><span class="p">[</span><span class="n">j</span><span class="p">,</span> <span class="n">k</span><span class="p">]</span> <span class="o">*</span> <span class="n">t_jk</span><span class="p">[</span><span class="n">j</span><span class="p">,</span> <span class="n">k</span><span class="p">]</span> <span class="k">for</span> <span class="n">j</span><span class="p">,</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">JK</span><span class="p">)</span>
@@ -367,10 +422,9 @@ The first set of constraints enforces that each job is scheduled only once. The 
     <span class="n">model</span> <span class="o">+=</span> <span class="n">pl</span><span class="o">.</span><span class="n">lpSum</span><span class="p">(</span><span class="n">X</span><span class="p">[</span><span class="n">j</span><span class="p">,</span> <span class="n">k</span><span class="p">]</span> <span class="k">for</span> <span class="n">j</span><span class="p">,</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">JK_k2</span><span class="p">[</span><span class="n">k2</span><span class="p">])</span> <span class="o">==</span> <span class="mi">1</span>
 
 <span class="c1"># solve model:</span>
-<span class="n">solver</span> <span class="o">=</span> <span class="n">pl</span><span class="o">.</span><span class="n">PULP_CBC_CMD</span><span class="p">(</span><span class="n">msg</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+<span class="n">solver</span> <span class="o">=</span> <span class="n">pl</span><span class="o">.</span><span class="n">PULP_CBC_CMD</span><span class="p">(</span><span class="n">msg</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 <span class="c1"># solver = pl.CPLEX_CMD(msg=True)</span>
 <span class="n">model</span><span class="o">.</span><span class="n">solve</span><span class="p">(</span><span class="n">solver</span><span class="p">)</span>
-
 
 
 <span class="c1"># get tasks starts</span>
@@ -381,25 +435,22 @@ The first set of constraints enforces that each job is scheduled only once. The 
     <span class="k">for</span> <span class="n">p2</span> <span class="ow">in</span> <span class="n">K2_jk</span><span class="p">[</span><span class="n">j</span><span class="p">,</span> <span class="n">k</span><span class="p">]:</span>
         <span class="n">solution</span><span class="p">[</span><span class="n">p2</span><span class="p">]</span> <span class="o">=</span> <span class="n">j</span>
 
-<span class="k">print</span><span class="p">(</span><span class="s1">&#39;solution is </span><span class="se">\n</span><span class="s1">{}&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">solution</span><span class="p">))</span>
-
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;solution is </span><span class="se">\n</span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">solution</span><span class="p">))</span>
 
 
 <span class="c1"># verify that all periods are filled:</span>
 <span class="c1"># counting if there is any with a minus -1</span>
-<span class="n">pt</span><span class="o">.</span><span class="n">TupList</span><span class="p">(</span><span class="n">solution</span><span class="p">)</span><span class="o">.</span><span class="n">filter_list_f</span><span class="p">(</span><span class="k">lambda</span> <span class="n">v</span><span class="p">:</span> <span class="n">v</span> <span class="o">==</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">pt</span><span class="o">.</span><span class="n">TupList</span><span class="p">(</span><span class="n">solution</span><span class="p">)</span><span class="o">.</span><span class="n">vfilter</span><span class="p">(</span><span class="k">lambda</span> <span class="n">v</span><span class="p">:</span> <span class="n">v</span> <span class="o">==</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span>
 
 <span class="c1"># verify that each task t appears exactly duration[t] times</span>
 <span class="n">task_count</span> <span class="o">=</span> <span class="n">pt</span><span class="o">.</span><span class="n">SuperDict</span><span class="p">()</span><span class="o">.</span><span class="n">fill_with_default</span><span class="p">(</span><span class="n">keys</span><span class="o">=</span><span class="n">duration</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
 <span class="k">for</span> <span class="n">period</span><span class="p">,</span> <span class="n">task</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">solution</span><span class="p">):</span>
     <span class="n">task_count</span><span class="p">[</span><span class="n">task</span><span class="p">]</span> <span class="o">+=</span> <span class="mi">1</span>
-<span class="n">task_count</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="k">lambda</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span><span class="p">:</span> <span class="n">duration</span><span class="p">[</span><span class="n">k</span><span class="p">]</span> <span class="o">-</span> <span class="n">v</span><span class="p">)</span><span class="o">.</span><span class="n">clean</span><span class="p">()</span>
-
-
+<span class="n">task_count</span><span class="o">.</span><span class="n">kvapply</span><span class="p">(</span><span class="k">lambda</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span><span class="p">:</span> <span class="n">duration</span><span class="p">[</span><span class="n">k</span><span class="p">]</span> <span class="o">-</span> <span class="n">v</span><span class="p">)</span><span class="o">.</span><span class="n">clean</span><span class="p">()</span>
 </pre></div>
 </div>
-</div>
-</div>
+</section>
+</section>
 
 
           </div>
@@ -409,7 +460,7 @@ The first set of constraints enforces that each job is scheduled only once. The 
     <div class="clearer"></div>
   </div>
     <div class="footer">
-      &copy;2019, Franco Peschiera.
+      &#169;2019, Franco Peschiera.
       
       |
       <a href="_sources/pulp.rst.txt"
@@ -418,7 +469,7 @@ The first set of constraints enforces that each job is scheduled only once. The 
 
     
     <a href="https://github.com/pchtsp/pytups" class="github">
-        <img style="position: absolute; top: 0; right: 0; border: 0;" src="https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png" alt="Fork me on GitHub"  class="github"/>
+        <img style="position: absolute; top: 0; right: 0; border: 0;" src="https://github.blog/wp-content/uploads/2008/12/forkme_right_darkblue_121621.png" alt="Fork me on GitHub"  class="github"/>
     </a>
     
 

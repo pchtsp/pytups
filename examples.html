@@ -1,18 +1,16 @@
-
 <!DOCTYPE html>
 
-<html xmlns="http://www.w3.org/1999/xhtml">
+<html lang="en" data-content_root="./">
   <head>
     <meta charset="utf-8" />
-    <title>Some examples &#8212; pytups 0.3 documentation</title>
-    <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
-    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
-    <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
-    <script type="text/javascript" src="_static/jquery.js"></script>
-    <script type="text/javascript" src="_static/underscore.js"></script>
-    <script type="text/javascript" src="_static/doctools.js"></script>
-    <script type="text/javascript" src="_static/language_data.js"></script>
-    <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Some examples &#8212; pytups 0.87.1 documentation</title>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=d1102ebc" />
+    <link rel="stylesheet" type="text/css" href="_static/alabaster.css?v=a66d8bb5" />
+    <script src="_static/documentation_options.js?v=2cb28c5e"></script>
+    <script src="_static/doctools.js?v=888ff710"></script>
+    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
     <link rel="next" title="Documentation for the Code" href="code.html" />
@@ -20,8 +18,9 @@
    
   <link rel="stylesheet" href="_static/custom.css" type="text/css" />
   
+
   
-  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+  
 
   </head><body>
   <div class="document">
@@ -45,15 +44,15 @@
 
 
 <h3>Navigation</h3>
-<p class="caption"><span class="caption-text">Contents:</span></p>
+<p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="includeme.html">Pytups</a></li>
 <li class="toctree-l1"><a class="reference internal" href="idea.html">Philisophy</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Some examples</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="#coming-from-r">Coming from R</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#superdict">SuperDict</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#tuplists">TupLists</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#ordered-sets">Ordered sets</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#coming-from-r">Coming from R</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="code.html">Documentation for the Code</a></li>
@@ -73,12 +72,12 @@
   <h3 id="searchlabel">Quick search</h3>
     <div class="searchformwrapper">
     <form class="search" action="search.html" method="get">
-      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
       <input type="submit" value="Go" />
     </form>
     </div>
 </div>
-<script type="text/javascript">$('#searchbox').show(0);</script>
+<script>document.getElementById('searchbox').style.display = "block"</script>
 
 
 
@@ -95,12 +94,176 @@
 
           <div class="body" role="main">
             
-  <div class="section" id="some-examples">
-<h1>Some examples<a class="headerlink" href="#some-examples" title="Permalink to this headline">¶</a></h1>
-<div class="section" id="coming-from-r">
-<h2>Coming from R<a class="headerlink" href="#coming-from-r" title="Permalink to this headline">¶</a></h2>
+  <section id="some-examples">
+<h1>Some examples<a class="headerlink" href="#some-examples" title="Link to this heading">¶</a></h1>
+<section id="superdict">
+<h2>SuperDict<a class="headerlink" href="#superdict" title="Link to this heading">¶</a></h2>
+<p>These are dictionaries with additional methods based on the contents.</p>
+<p>Example:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">pytups</span> <span class="k">as</span> <span class="nn">pt</span>
+<span class="n">indent_dict</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;a&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;b&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;c&#39;</span><span class="p">:</span> <span class="s1">&#39;A&#39;</span><span class="p">}},</span> <span class="s1">&#39;b&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;t&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;d&#39;</span> <span class="p">:</span> <span class="s1">&#39;B&#39;</span><span class="p">}}}</span>
+<span class="n">my_superdict</span> <span class="o">=</span> <span class="n">pt</span><span class="o">.</span><span class="n">SuperDict</span><span class="o">.</span><span class="n">from_dict</span><span class="p">(</span><span class="n">indent_dict</span><span class="p">)</span>
+<span class="n">my_superdict_dictup</span> <span class="o">=</span> <span class="n">my_superdict</span><span class="o">.</span><span class="n">to_dictup</span><span class="p">()</span>
+<span class="c1"># {(&#39;a&#39;, &#39;b&#39;, &#39;c&#39;): &#39;A&#39;, (&#39;b&#39;, &#39;t&#39;, &#39;d&#39;): &#39;B&#39;}</span>
+<span class="n">my_superdict_dictup</span><span class="o">.</span><span class="n">to_tuplist</span><span class="p">()</span>
+<span class="c1"># [(&#39;a&#39;, &#39;b&#39;, &#39;c&#39;, &#39;A&#39;), (&#39;b&#39;, &#39;t&#39;, &#39;d&#39;, &#39;B&#39;)]</span>
+<span class="n">my_superdict_dictup</span><span class="o">.</span><span class="n">kvapply</span><span class="p">(</span><span class="k">lambda</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span><span class="p">:</span> <span class="n">v</span><span class="o">+</span><span class="s1">&#39;_1&#39;</span><span class="p">)</span>
+<span class="c1"># {(&#39;a&#39;, &#39;b&#39;, &#39;c&#39;): &#39;A_1&#39;, (&#39;b&#39;, &#39;t&#39;, &#39;d&#39;): &#39;B_1&#39;}</span>
+<span class="n">my_superdict_dictup</span><span class="o">.</span><span class="n">to_dictdict</span><span class="p">()</span>
+<span class="c1"># {&#39;a&#39;: {&#39;b&#39;: {&#39;c&#39;: &#39;A&#39;}}, &#39;b&#39;: {&#39;t&#39;: {&#39;d&#39; : &#39;B&#39;}}}</span>
+</pre></div>
+</div>
+<section id="normal-operations">
+<h3>Normal operations<a class="headerlink" href="#normal-operations" title="Link to this heading">¶</a></h3>
+<p>Some operations have been oveloaded for dictionaries so they can be done between superdicts as if they were numbers:</p>
+<p>Example data:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">pytups</span> <span class="k">as</span> <span class="nn">pt</span>
+<span class="n">have</span> <span class="o">=</span> <span class="n">pt</span><span class="o">.</span><span class="n">SuperDict</span><span class="p">({</span><span class="s1">&#39;apples&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s1">&#39;pears&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s1">&#39;tomatoes&#39;</span><span class="p">:</span> <span class="mi">0</span><span class="p">})</span>
+<span class="n">need</span> <span class="o">=</span> <span class="n">pt</span><span class="o">.</span><span class="n">SuperDict</span><span class="p">({</span><span class="s1">&#39;apples&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s1">&#39;pears&#39;</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span> <span class="s1">&#39;tomatoes&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">})</span>
+<span class="n">left_need</span> <span class="o">=</span> <span class="n">need</span> <span class="o">-</span> <span class="n">have</span>
+<span class="c1"># {&#39;pears&#39;: 1, &#39;tomatoes&#39;: 1}</span>
+</pre></div>
+</div>
+</section>
+<section id="filtering">
+<h3>Filtering<a class="headerlink" href="#filtering" title="Link to this heading">¶</a></h3>
+<p>Example data:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">pytups</span> <span class="k">as</span> <span class="nn">pt</span>
+<span class="n">indent_dict</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;aabb&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s1">&#39;aacc&#39;</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span> <span class="s1">&#39;bbaa&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">}</span>
+<span class="n">my_superdict</span> <span class="o">=</span> <span class="n">pt</span><span class="o">.</span><span class="n">SuperDict</span><span class="o">.</span><span class="n">from_dict</span><span class="p">(</span><span class="n">indent_dict</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>According to the value in the dictionary:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">my_superdict</span><span class="o">.</span><span class="n">vfilter</span><span class="p">(</span><span class="k">lambda</span> <span class="n">v</span><span class="p">:</span> <span class="n">v</span><span class="o">==</span><span class="mi">1</span><span class="p">)</span>
+<span class="c1"># {&#39;aabb&#39;: 1, &#39;bbaa&#39;: 1}</span>
+</pre></div>
+</div>
+<p>According to the key:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">my_superdict</span><span class="o">.</span><span class="n">kfilter</span><span class="p">(</span><span class="k">lambda</span> <span class="n">k</span><span class="p">:</span> <span class="n">k</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">&#39;aa&#39;</span><span class="p">))</span>
+<span class="c1"># {&#39;aabb&#39;: 1, &#39;aacc&#39;: 2}</span>
+</pre></div>
+</div>
+</section>
+<section id="mutations">
+<h3>Mutations<a class="headerlink" href="#mutations" title="Link to this heading">¶</a></h3>
+<p>Example data:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">pytups</span> <span class="k">as</span> <span class="nn">pt</span>
+<span class="n">indent_dict</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;aabb&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s1">&#39;aacc&#39;</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span> <span class="s1">&#39;bbaa&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">}</span>
+<span class="n">my_superdict</span> <span class="o">=</span> <span class="n">pt</span><span class="o">.</span><span class="n">SuperDict</span><span class="o">.</span><span class="n">from_dict</span><span class="p">(</span><span class="n">indent_dict</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Mutate using the value only:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">my_superdict</span><span class="o">.</span><span class="n">vapply</span><span class="p">(</span><span class="k">lambda</span> <span class="n">v</span><span class="p">:</span> <span class="n">v</span> <span class="o">*</span> <span class="mi">2</span><span class="p">)</span>
+<span class="c1"># {&#39;aabb&#39;: 2, &#39;aacc&#39;: 4, &#39;bbaa&#39;: 2}</span>
+</pre></div>
+</div>
+<p>Mutate using the key only:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">my_superdict</span><span class="o">.</span><span class="n">kapply</span><span class="p">(</span><span class="k">lambda</span> <span class="n">k</span><span class="p">:</span> <span class="n">k</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+<span class="c1"># {&#39;aabb&#39;: &#39;a&#39;, &#39;aacc&#39;: &#39;a&#39;, &#39;bbaa&#39;: &#39;b&#39;}</span>
+</pre></div>
+</div>
+<p>A combination of both:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">my_superdict</span><span class="o">.</span><span class="n">kvapply</span><span class="p">(</span><span class="k">lambda</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span><span class="p">:</span> <span class="n">k</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">v</span><span class="p">))</span>
+<span class="c1"># {&#39;aabb&#39;: &#39;a1&#39;, &#39;aacc&#39;: &#39;a2&#39;, &#39;bbaa&#39;: &#39;b1&#39;}</span>
+</pre></div>
+</div>
+</section>
+<section id="setting-and-getting-in-nested-dictionaries">
+<h3>Setting and getting in nested dictionaries<a class="headerlink" href="#setting-and-getting-in-nested-dictionaries" title="Link to this heading">¶</a></h3>
+<p>Example data:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">pytups</span> <span class="k">as</span> <span class="nn">pt</span>
+<span class="n">indent_dict</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;a&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;b&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;c&#39;</span><span class="p">:</span> <span class="s1">&#39;A&#39;</span><span class="p">}},</span> <span class="s1">&#39;b&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;t&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;d&#39;</span> <span class="p">:</span> <span class="s1">&#39;B&#39;</span><span class="p">}}}</span>
+<span class="n">my_superdict</span> <span class="o">=</span> <span class="n">pt</span><span class="o">.</span><span class="n">SuperDict</span><span class="o">.</span><span class="n">from_dict</span><span class="p">(</span><span class="n">indent_dict</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Getting an path of values:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">my_superdict</span><span class="o">.</span><span class="n">get_m</span><span class="p">(</span><span class="s1">&#39;a&#39;</span><span class="p">,</span> <span class="s1">&#39;b&#39;</span><span class="p">,</span> <span class="s1">&#39;c&#39;</span><span class="p">)</span>
+<span class="c1"># &#39;A&#39;</span>
+<span class="n">my_superdict</span><span class="o">.</span><span class="n">get_m</span><span class="p">(</span><span class="s1">&#39;a&#39;</span><span class="p">,</span> <span class="s1">&#39;c&#39;</span><span class="p">)</span>
+<span class="c1"># None</span>
+</pre></div>
+</div>
+<p>Setting a path of values:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">my_superdict</span><span class="o">.</span><span class="n">set_m</span><span class="p">(</span><span class="s1">&#39;a&#39;</span><span class="p">,</span> <span class="s1">&#39;c&#39;</span><span class="p">,</span> <span class="n">value</span><span class="o">=</span><span class="s1">&#39;R&#39;</span><span class="p">)</span>
+<span class="c1"># {&#39;a&#39;: {&#39;b&#39;: {&#39;c&#39;: &#39;A&#39;}, &#39;c&#39;: &#39;R&#39;}, &#39;b&#39;: {&#39;t&#39;: {&#39;d&#39;: &#39;B&#39;}}}</span>
+</pre></div>
+</div>
+</section>
+<section id="aggregating">
+<h3>Aggregating<a class="headerlink" href="#aggregating" title="Link to this heading">¶</a></h3>
+<p>Aggregating a dictionary requires doing: <cite>SuperDict</cite> –&gt; <cite>TupList</cite> –&gt; <cite>SuperDict</cite>:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">pytups</span> <span class="k">as</span> <span class="nn">pt</span>
+<span class="n">my_dict</span> <span class="o">=</span> <span class="n">pt</span><span class="o">.</span><span class="n">SuperDict</span><span class="p">({(</span><span class="s1">&#39;a&#39;</span><span class="p">,</span> <span class="s1">&#39;b&#39;</span><span class="p">):</span> <span class="mi">1</span><span class="p">,</span> <span class="p">(</span><span class="s1">&#39;a&#39;</span><span class="p">,</span> <span class="s1">&#39;c&#39;</span><span class="p">):</span> <span class="mi">2</span><span class="p">,</span> <span class="p">(</span><span class="s1">&#39;f&#39;</span><span class="p">,</span> <span class="s1">&#39;c&#39;</span><span class="p">):</span> <span class="mi">3</span><span class="p">})</span>
+
+<span class="n">my_dict</span><span class="o">.</span><span class="n">to_tuplist</span><span class="p">()</span><span class="o">.</span><span class="n">to_dict</span><span class="p">(</span><span class="n">indices</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">result_col</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span><span class="o">.</span><span class="n">vapply</span><span class="p">(</span><span class="nb">sum</span><span class="p">)</span>
+<span class="n">result</span> <span class="o">=</span> <span class="p">(</span>
+    <span class="n">my_dict</span>
+    <span class="c1"># convert to TupList -&gt; [(&#39;a&#39;, &#39;b&#39;, 1), (&#39;a&#39;, &#39;c&#39;, 2), (&#39;f&#39;, &#39;c&#39;, 3)]</span>
+    <span class="o">.</span><span class="n">to_tuplist</span><span class="p">()</span>
+    <span class="c1"># convert to dict of lists -&gt; {&#39;a&#39;: [1, 2], &#39;f&#39;: [3]}</span>
+    <span class="o">.</span><span class="n">to_dict</span><span class="p">(</span><span class="n">indices</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">result_col</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span><span class="o">.</span>
+    <span class="c1"># sum each list -&gt; {&#39;a&#39;: 3, &#39;f&#39;: 3}</span>
+    <span class="n">vapply</span><span class="p">(</span><span class="nb">sum</span><span class="p">)</span>
+<span class="p">)</span>
+<span class="c1"># {&#39;a&#39;: 3, &#39;f&#39;: 3}</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="tuplists">
+<h2>TupLists<a class="headerlink" href="#tuplists" title="Link to this heading">¶</a></h2>
+<p>Lists of tuples of any size.</p>
+<p>Example:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">pytups</span> <span class="k">as</span> <span class="nn">pt</span>
+<span class="n">_list</span> <span class="o">=</span> <span class="p">[(</span><span class="s1">&#39;a&#39;</span><span class="p">,</span> <span class="s1">&#39;b&#39;</span><span class="p">,</span> <span class="s1">&#39;c&#39;</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;a&#39;</span><span class="p">,</span> <span class="s1">&#39;b&#39;</span><span class="p">,</span> <span class="s1">&#39;c&#39;</span><span class="p">,</span> <span class="mi">2</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;a&#39;</span><span class="p">,</span> <span class="s1">&#39;b&#39;</span><span class="p">,</span> <span class="s1">&#39;c&#39;</span><span class="p">,</span> <span class="mi">3</span><span class="p">),</span>
+        <span class="p">(</span><span class="s1">&#39;r&#39;</span><span class="p">,</span> <span class="s1">&#39;b&#39;</span><span class="p">,</span> <span class="s1">&#39;c&#39;</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;r&#39;</span><span class="p">,</span> <span class="s1">&#39;b&#39;</span><span class="p">,</span> <span class="s1">&#39;c&#39;</span><span class="p">,</span> <span class="mi">2</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;r&#39;</span><span class="p">,</span> <span class="s1">&#39;b&#39;</span><span class="p">,</span> <span class="s1">&#39;c&#39;</span><span class="p">,</span> <span class="mi">3</span><span class="p">)]</span>
+<span class="n">tuplist</span> <span class="o">=</span> <span class="n">pt</span><span class="o">.</span><span class="n">TupList</span><span class="p">(</span><span class="n">_list</span><span class="p">)</span>
+<span class="n">tuplist</span><span class="o">.</span><span class="n">filter</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">])</span><span class="o">.</span><span class="n">unique</span><span class="p">()</span>
+<span class="c1"># [(&#39;a&#39;, &#39;c&#39;), (&#39;r&#39;, &#39;c&#39;)]</span>
+<span class="n">tuplist</span><span class="o">.</span><span class="n">to_dict</span><span class="p">(</span><span class="n">result_col</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">is_list</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="c1"># {(&#39;a&#39;, &#39;b&#39;, &#39;c&#39;): [1, 2, 3], (&#39;r&#39;, &#39;b&#39;, &#39;c&#39;): [1, 2, 3]}</span>
+<span class="n">tuplist</span><span class="o">.</span><span class="n">filter_list_f</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">&lt;=</span> <span class="s1">&#39;a&#39;</span><span class="p">)</span>
+<span class="c1"># [(&#39;a&#39;, &#39;b&#39;, &#39;c&#39;, 1), (&#39;a&#39;, &#39;b&#39;, &#39;c&#39;, 2), (&#39;a&#39;, &#39;b&#39;, &#39;c&#39;, 3)]</span>
+</pre></div>
+</div>
+<section id="compress-using-start-stop">
+<h3>Compress using start-stop<a class="headerlink" href="#compress-using-start-stop" title="Link to this heading">¶</a></h3>
+<p>A specific use case of tuplists is reducing combinations of possibilities to start-stop combinations.</p>
+<p>In the following example we have tuples and we use the first column as index and the second as the position. We get that index <cite>a</cite> has values from <cite>1</cite> to <cite>3</cite>. Index <cite>r</cite>, on the other hand, has consecutive elements <cite>3</cite> to <cite>4</cite>, but has one element without consecutive <cite>1</cite>. So, we pass from having six tuples to only three that retain the same information. In this example <cite>compare_tups</cite> is just a function that asks whether the key is the same or the positions are consecutive:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">pytups</span> <span class="k">as</span> <span class="nn">pt</span>
+<span class="n">_list</span> <span class="o">=</span> <span class="p">[(</span><span class="s1">&#39;a&#39;</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;a&#39;</span><span class="p">,</span> <span class="mi">2</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;a&#39;</span><span class="p">,</span> <span class="mi">3</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;r&#39;</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;r&#39;</span><span class="p">,</span> <span class="mi">3</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;r&#39;</span><span class="p">,</span> <span class="mi">4</span><span class="p">)]</span>
+
+<span class="n">compare_tups</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">p</span><span class="p">:</span> <span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">!=</span> <span class="n">y</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="ow">or</span> <span class="n">x</span><span class="p">[</span><span class="n">p</span><span class="p">]</span> <span class="o">-</span><span class="mi">1</span> <span class="o">!=</span> <span class="n">y</span><span class="p">[</span><span class="n">p</span><span class="p">]</span>
+<span class="n">pt</span><span class="o">.</span><span class="n">TupList</span><span class="p">(</span><span class="n">_list</span><span class="p">)</span><span class="o">.</span><span class="n">to_start_finish</span><span class="p">(</span><span class="n">compare_tups</span><span class="p">,</span> <span class="n">pp</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="c1"># [(&#39;a&#39;, 1, 3), (&#39;r&#39;, 1, 1), (&#39;r&#39;, 3, 4)]</span>
+</pre></div>
+</div>
+<p>A somewhat similar but more complex example follows. Instead of using values to retain the position, we use dates. So, in order to compare dates we have to define some auxiliary function to be able to tell if two dates are consecutive or not. The result is similar.:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">pytups</span> <span class="k">as</span> <span class="nn">pt</span>
+<span class="kn">import</span> <span class="nn">datetime</span> <span class="k">as</span> <span class="nn">dt</span>
+<span class="n">_list</span> <span class="o">=</span> <span class="p">[(</span><span class="s1">&#39;a&#39;</span><span class="p">,</span> <span class="s1">&#39;2019-01-01&#39;</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;a&#39;</span><span class="p">,</span> <span class="s1">&#39;2019-01-02&#39;</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;a&#39;</span><span class="p">,</span> <span class="s1">&#39;2019-01-03&#39;</span><span class="p">),</span>
+            <span class="p">(</span><span class="s1">&#39;r&#39;</span><span class="p">,</span> <span class="s1">&#39;2019-01-01&#39;</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;r&#39;</span><span class="p">,</span> <span class="s1">&#39;2019-01-03&#39;</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;r&#39;</span><span class="p">,</span> <span class="s1">&#39;2019-01-04&#39;</span><span class="p">)]</span>
+
+<span class="k">def</span> <span class="nf">prev_date</span><span class="p">(</span><span class="n">date</span><span class="p">):</span>
+    <span class="k">return</span> <span class="p">(</span><span class="n">dt</span><span class="o">.</span><span class="n">datetime</span><span class="o">.</span><span class="n">strptime</span><span class="p">(</span><span class="n">date</span><span class="p">,</span> <span class="s1">&#39;%Y-%m-</span><span class="si">%d</span><span class="s1">&#39;</span><span class="p">)</span> <span class="o">-</span> <span class="n">dt</span><span class="o">.</span><span class="n">timedelta</span><span class="p">(</span><span class="n">days</span><span class="o">=</span><span class="mi">1</span><span class="p">))</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s1">&#39;%Y-%m-</span><span class="si">%d</span><span class="s1">&#39;</span><span class="p">)</span>
+
+<span class="n">compare_tups</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">p</span><span class="p">:</span> <span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">!=</span> <span class="n">y</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="ow">or</span> <span class="n">prev_date</span><span class="p">(</span><span class="n">x</span><span class="p">[</span><span class="n">p</span><span class="p">])</span> <span class="o">!=</span> <span class="n">y</span><span class="p">[</span><span class="n">p</span><span class="p">]</span>
+<span class="n">pt</span><span class="o">.</span><span class="n">TupList</span><span class="p">(</span><span class="n">_list</span><span class="p">)</span><span class="o">.</span><span class="n">to_start_finish</span><span class="p">(</span><span class="n">compare_tups</span><span class="p">,</span> <span class="n">pp</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="c1"># [(&#39;a&#39;, &#39;2019-01-01&#39;, &#39;2019-01-03&#39;), (&#39;r&#39;, &#39;2019-01-01&#39;, &#39;2019-01-01&#39;), (&#39;r&#39;, &#39;2019-01-03&#39;, &#39;2019-01-04&#39;)]</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="ordered-sets">
+<h2>Ordered sets<a class="headerlink" href="#ordered-sets" title="Link to this heading">¶</a></h2>
+<p>We have implemented the most common list operations to use it as a list. The purpose is mainly to use it as a sequence of things in order to ask for the position, the next element and the previous one and X elements from it.</p>
+<p>Specially useful for a list of dates, months, when you want fast lookup speeds.</p>
+<p>As a set, it can only take as element hashable objects (lists are not ok: tuples are).</p>
+</section>
+<section id="coming-from-r">
+<h2>Coming from R<a class="headerlink" href="#coming-from-r" title="Link to this heading">¶</a></h2>
 <p>In R, you have the <cite>apply</cite> family of function, that apply a function over some list or vector.</p>
-<p>The closest to this function would be the <cite>apply</cite> and <cite>vapply</cite> functions in both dictionaries and tuplists.</p>
+<p>The closest to this function would be the <cite>vapply</cite> functions in both dictionaries and tuplists.</p>
 <p>In R one can do the following:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">sapply</span><span class="p">(</span><span class="n">c</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">7</span><span class="p">,</span> <span class="mi">11</span><span class="p">),</span> <span class="k">as</span><span class="o">.</span><span class="n">character</span><span class="p">)</span>
 <span class="c1"># &quot;1&quot;  &quot;2&quot;  &quot;5&quot;  &quot;7&quot;  &quot;11&quot;</span>
@@ -113,157 +276,25 @@
 </pre></div>
 </div>
 <p>With pytups one would do:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">pytups</span> <span class="kn">as</span> <span class="nn">pt</span>
-<span class="n">pt</span><span class="o">.</span><span class="n">TupList</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">7</span><span class="p">,</span> <span class="mi">11</span><span class="p">])</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="nb">str</span><span class="p">)</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">pytups</span> <span class="k">as</span> <span class="nn">pt</span>
+<span class="n">pt</span><span class="o">.</span><span class="n">TupList</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">7</span><span class="p">,</span> <span class="mi">11</span><span class="p">])</span><span class="o">.</span><span class="n">vapply</span><span class="p">(</span><span class="nb">str</span><span class="p">)</span>
 <span class="c1"># [&#39;1&#39;, &#39;2&#39;, &#39;5&#39;, &#39;7&#39;, &#39;11&#39;]</span>
 </pre></div>
 </div>
-<p>A better example could be replacing <cite>sapply</cite> in the following R situatio:</p>
+<p>A better example could be replacing <cite>sapply</cite> in the following R situation:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">lll</span> <span class="o">&lt;-</span> <span class="nb">list</span><span class="p">(</span><span class="n">c</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">7</span><span class="p">,</span> <span class="mi">5</span><span class="p">),</span> <span class="n">c</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">7</span><span class="p">))</span>
 <span class="n">sapply</span><span class="p">(</span><span class="n">lll</span><span class="p">,</span> <span class="n">length</span><span class="p">)</span>
 <span class="c1"># 5 3</span>
 </pre></div>
 </div>
 <p>We would do the following in pytups:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">pytups</span> <span class="kn">as</span> <span class="nn">pt</span>
-<span class="n">pt</span><span class="o">.</span><span class="n">TupList</span><span class="p">([(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">7</span><span class="p">,</span> <span class="mi">5</span><span class="p">),</span> <span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">7</span><span class="p">)])</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="nb">len</span><span class="p">)</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">pytups</span> <span class="k">as</span> <span class="nn">pt</span>
+<span class="n">pt</span><span class="o">.</span><span class="n">TupList</span><span class="p">([(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">7</span><span class="p">,</span> <span class="mi">5</span><span class="p">),</span> <span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">7</span><span class="p">)])</span><span class="o">.</span><span class="n">vapply</span><span class="p">(</span><span class="nb">len</span><span class="p">)</span>
 <span class="c1"># [5, 3]</span>
 </pre></div>
 </div>
-</div>
-<div class="section" id="superdict">
-<h2>SuperDict<a class="headerlink" href="#superdict" title="Permalink to this headline">¶</a></h2>
-<p>These are dictionaries with additional methods based on the contents.</p>
-<p>Example:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">pytups</span> <span class="kn">as</span> <span class="nn">pt</span>
-<span class="n">indent_dict</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;a&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;b&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;c&#39;</span><span class="p">:</span> <span class="s1">&#39;A&#39;</span><span class="p">}},</span> <span class="s1">&#39;b&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;t&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;d&#39;</span> <span class="p">:</span> <span class="s1">&#39;B&#39;</span><span class="p">}}}</span>
-<span class="n">supdict</span> <span class="o">=</span> <span class="n">pt</span><span class="o">.</span><span class="n">SuperDict</span><span class="o">.</span><span class="n">from_dict</span><span class="p">(</span><span class="n">indent_dict</span><span class="p">)</span>
-<span class="n">supdict_dictup</span> <span class="o">=</span> <span class="n">supdict</span><span class="o">.</span><span class="n">to_dictup</span><span class="p">()</span>
-<span class="c1"># {(&#39;a&#39;, &#39;b&#39;, &#39;c&#39;): &#39;A&#39;, (&#39;b&#39;, &#39;t&#39;, &#39;d&#39;): &#39;B&#39;}</span>
-<span class="n">supdict_dictup</span><span class="o">.</span><span class="n">to_tuplist</span><span class="p">()</span>
-<span class="c1"># [(&#39;a&#39;, &#39;b&#39;, &#39;c&#39;, &#39;A&#39;), (&#39;b&#39;, &#39;t&#39;, &#39;d&#39;, &#39;B&#39;)]</span>
-<span class="n">supdict_dictup</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="k">lambda</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span><span class="p">:</span> <span class="n">v</span><span class="o">+</span><span class="s1">&#39;_1&#39;</span><span class="p">)</span>
-<span class="c1"># {(&#39;a&#39;, &#39;b&#39;, &#39;c&#39;): &#39;A_1&#39;, (&#39;b&#39;, &#39;t&#39;, &#39;d&#39;): &#39;B_1&#39;}</span>
-<span class="n">supdict_dictup</span><span class="o">.</span><span class="n">to_dictdict</span><span class="p">()</span>
-<span class="c1"># {&#39;a&#39;: {&#39;b&#39;: {&#39;c&#39;: &#39;A&#39;}}, &#39;b&#39;: {&#39;t&#39;: {&#39;d&#39; : &#39;B&#39;}}}</span>
-</pre></div>
-</div>
-<div class="section" id="filtering">
-<h3>Filtering<a class="headerlink" href="#filtering" title="Permalink to this headline">¶</a></h3>
-<p>Example data:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">pytups</span> <span class="kn">as</span> <span class="nn">pt</span>
-<span class="n">indent_dict</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;aabb&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s1">&#39;aacc&#39;</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span> <span class="s1">&#39;bbaa&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">}</span>
-<span class="n">supdict</span> <span class="o">=</span> <span class="n">pt</span><span class="o">.</span><span class="n">SuperDict</span><span class="o">.</span><span class="n">from_dict</span><span class="p">(</span><span class="n">indent_dict</span><span class="p">)</span>
-</pre></div>
-</div>
-<p>According to the value in the dictionary:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">supdict</span><span class="o">.</span><span class="n">vfilter</span><span class="p">(</span><span class="k">lambda</span> <span class="n">v</span><span class="p">:</span> <span class="n">v</span><span class="o">==</span><span class="mi">1</span><span class="p">)</span>
-<span class="c1"># {&#39;aabb&#39;: 1, &#39;bbaa&#39;: 1}</span>
-</pre></div>
-</div>
-<p>According to the key:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">supdict</span><span class="o">.</span><span class="n">kfilter</span><span class="p">(</span><span class="k">lambda</span> <span class="n">k</span><span class="p">:</span> <span class="n">k</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">&#39;aa&#39;</span><span class="p">))</span>
-<span class="c1"># {&#39;aabb&#39;: 1, &#39;aacc&#39;: 2}</span>
-</pre></div>
-</div>
-</div>
-<div class="section" id="mutations">
-<h3>Mutations<a class="headerlink" href="#mutations" title="Permalink to this headline">¶</a></h3>
-<p>Example data:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">pytups</span> <span class="kn">as</span> <span class="nn">pt</span>
-<span class="n">indent_dict</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;aabb&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s1">&#39;aacc&#39;</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span> <span class="s1">&#39;bbaa&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">}</span>
-<span class="n">supdict</span> <span class="o">=</span> <span class="n">pt</span><span class="o">.</span><span class="n">SuperDict</span><span class="o">.</span><span class="n">from_dict</span><span class="p">(</span><span class="n">indent_dict</span><span class="p">)</span>
-</pre></div>
-</div>
-<p>Mutate using the value only:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">supdict</span><span class="o">.</span><span class="n">vapply</span><span class="p">(</span><span class="k">lambda</span> <span class="n">v</span><span class="p">:</span> <span class="n">v</span> <span class="o">*</span> <span class="mi">2</span><span class="p">)</span>
-<span class="c1"># {&#39;aabb&#39;: 2, &#39;aacc&#39;: 4, &#39;bbaa&#39;: 2}</span>
-</pre></div>
-</div>
-<p>Mutate using the key only:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">supdict</span><span class="o">.</span><span class="n">kapply</span><span class="p">(</span><span class="k">lambda</span> <span class="n">k</span><span class="p">:</span> <span class="n">k</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
-<span class="c1"># {&#39;aabb&#39;: &#39;a&#39;, &#39;aacc&#39;: &#39;a&#39;, &#39;bbaa&#39;: &#39;b&#39;}</span>
-</pre></div>
-</div>
-<p>A combination of both:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">supdict</span><span class="o">.</span><span class="n">kvapply</span><span class="p">(</span><span class="k">lambda</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span><span class="p">:</span> <span class="n">k</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">v</span><span class="p">))</span>
-<span class="c1"># {&#39;aabb&#39;: &#39;a1&#39;, &#39;aacc&#39;: &#39;a2&#39;, &#39;bbaa&#39;: &#39;b1&#39;}</span>
-</pre></div>
-</div>
-</div>
-<div class="section" id="setting-and-getting-in-nested-dictionaries">
-<h3>Setting and getting in nested dictionaries<a class="headerlink" href="#setting-and-getting-in-nested-dictionaries" title="Permalink to this headline">¶</a></h3>
-<p>Example data:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">pytups</span> <span class="kn">as</span> <span class="nn">pt</span>
-<span class="n">indent_dict</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;a&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;b&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;c&#39;</span><span class="p">:</span> <span class="s1">&#39;A&#39;</span><span class="p">}},</span> <span class="s1">&#39;b&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;t&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;d&#39;</span> <span class="p">:</span> <span class="s1">&#39;B&#39;</span><span class="p">}}}</span>
-<span class="n">supdict</span> <span class="o">=</span> <span class="n">pt</span><span class="o">.</span><span class="n">SuperDict</span><span class="o">.</span><span class="n">from_dict</span><span class="p">(</span><span class="n">indent_dict</span><span class="p">)</span>
-</pre></div>
-</div>
-<p>Getting an path of values:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">supdict</span><span class="o">.</span><span class="n">get_m</span><span class="p">(</span><span class="s1">&#39;a&#39;</span><span class="p">,</span> <span class="s1">&#39;b&#39;</span><span class="p">,</span> <span class="s1">&#39;c&#39;</span><span class="p">)</span>
-<span class="c1"># &#39;A&#39;</span>
-<span class="n">supdict</span><span class="o">.</span><span class="n">get_m</span><span class="p">(</span><span class="s1">&#39;a&#39;</span><span class="p">,</span> <span class="s1">&#39;c&#39;</span><span class="p">)</span>
-<span class="c1"># None</span>
-</pre></div>
-</div>
-<p>Setting a path of values:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">supdict</span><span class="o">.</span><span class="n">set_m</span><span class="p">(</span><span class="s1">&#39;a&#39;</span><span class="p">,</span> <span class="s1">&#39;c&#39;</span><span class="p">,</span> <span class="n">value</span><span class="o">=</span><span class="s1">&#39;R&#39;</span><span class="p">)</span>
-<span class="c1"># {&#39;a&#39;: {&#39;b&#39;: {&#39;c&#39;: &#39;A&#39;}, &#39;c&#39;: &#39;R&#39;}, &#39;b&#39;: {&#39;t&#39;: {&#39;d&#39;: &#39;B&#39;}}}</span>
-</pre></div>
-</div>
-</div>
-</div>
-<div class="section" id="tuplists">
-<h2>TupLists<a class="headerlink" href="#tuplists" title="Permalink to this headline">¶</a></h2>
-<p>Lists of tuples of any size.</p>
-<p>Example:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">pytups</span> <span class="kn">as</span> <span class="nn">pt</span>
-<span class="n">_list</span> <span class="o">=</span> <span class="p">[(</span><span class="s1">&#39;a&#39;</span><span class="p">,</span> <span class="s1">&#39;b&#39;</span><span class="p">,</span> <span class="s1">&#39;c&#39;</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;a&#39;</span><span class="p">,</span> <span class="s1">&#39;b&#39;</span><span class="p">,</span> <span class="s1">&#39;c&#39;</span><span class="p">,</span> <span class="mi">2</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;a&#39;</span><span class="p">,</span> <span class="s1">&#39;b&#39;</span><span class="p">,</span> <span class="s1">&#39;c&#39;</span><span class="p">,</span> <span class="mi">3</span><span class="p">),</span>
-        <span class="p">(</span><span class="s1">&#39;r&#39;</span><span class="p">,</span> <span class="s1">&#39;b&#39;</span><span class="p">,</span> <span class="s1">&#39;c&#39;</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;r&#39;</span><span class="p">,</span> <span class="s1">&#39;b&#39;</span><span class="p">,</span> <span class="s1">&#39;c&#39;</span><span class="p">,</span> <span class="mi">2</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;r&#39;</span><span class="p">,</span> <span class="s1">&#39;b&#39;</span><span class="p">,</span> <span class="s1">&#39;c&#39;</span><span class="p">,</span> <span class="mi">3</span><span class="p">)]</span>
-<span class="n">tuplist</span> <span class="o">=</span> <span class="n">pt</span><span class="o">.</span><span class="n">TupList</span><span class="p">(</span><span class="n">_list</span><span class="p">)</span>
-<span class="n">tuplist</span><span class="o">.</span><span class="n">filter</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">])</span><span class="o">.</span><span class="n">unique</span><span class="p">()</span>
-<span class="c1"># [(&#39;a&#39;, &#39;c&#39;), (&#39;r&#39;, &#39;c&#39;)]</span>
-<span class="n">tuplist</span><span class="o">.</span><span class="n">to_dict</span><span class="p">(</span><span class="n">result_col</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">is_list</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
-<span class="c1"># {(&#39;a&#39;, &#39;b&#39;, &#39;c&#39;): [1, 2, 3], (&#39;r&#39;, &#39;b&#39;, &#39;c&#39;): [1, 2, 3]}</span>
-<span class="n">tuplist</span><span class="o">.</span><span class="n">filter_list_f</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">&lt;=</span> <span class="s1">&#39;a&#39;</span><span class="p">)</span>
-<span class="c1"># [(&#39;a&#39;, &#39;b&#39;, &#39;c&#39;, 1), (&#39;a&#39;, &#39;b&#39;, &#39;c&#39;, 2), (&#39;a&#39;, &#39;b&#39;, &#39;c&#39;, 3)]</span>
-</pre></div>
-</div>
-<div class="section" id="compress-using-start-stop">
-<h3>Compress using start-stop<a class="headerlink" href="#compress-using-start-stop" title="Permalink to this headline">¶</a></h3>
-<p>A specific use case of tuplists is reducing combinations of possibilities to start-stop combinations.</p>
-<p>In the following example we have tuples and we use the first column as index and the second as the position. We get that index <cite>a</cite> has values from <cite>1</cite> to <cite>3</cite>. Index <cite>r</cite>, on the other hand, has consecutive elements <cite>3</cite> to <cite>4</cite>, but has one element without consecutive <cite>1</cite>. So, we pass from having six tuples to only three that retain the same information. In this example <cite>compare_tups</cite> is just a function that asks whether the key is the same or the positions are consecutive:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">pytups</span> <span class="kn">as</span> <span class="nn">pt</span>
-<span class="n">_list</span> <span class="o">=</span> <span class="p">[(</span><span class="s1">&#39;a&#39;</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;a&#39;</span><span class="p">,</span> <span class="mi">2</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;a&#39;</span><span class="p">,</span> <span class="mi">3</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;r&#39;</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;r&#39;</span><span class="p">,</span> <span class="mi">3</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;r&#39;</span><span class="p">,</span> <span class="mi">4</span><span class="p">)]</span>
-
-<span class="n">compare_tups</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">p</span><span class="p">:</span> <span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">!=</span> <span class="n">y</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="ow">or</span> <span class="n">x</span><span class="p">[</span><span class="n">p</span><span class="p">]</span> <span class="o">-</span><span class="mi">1</span> <span class="o">!=</span> <span class="n">y</span><span class="p">[</span><span class="n">p</span><span class="p">]</span>
-<span class="n">pt</span><span class="o">.</span><span class="n">TupList</span><span class="p">(</span><span class="n">_list</span><span class="p">)</span><span class="o">.</span><span class="n">to_start_finish</span><span class="p">(</span><span class="n">compare_tups</span><span class="p">,</span> <span class="n">pp</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
-<span class="c1"># [(&#39;a&#39;, 1, 3), (&#39;r&#39;, 1, 1), (&#39;r&#39;, 3, 4)]</span>
-</pre></div>
-</div>
-<p>A somewhat similar but more complex example follows. Instead of using values to retain the position, we use dates. So, in order to compare dates we have to define some auxiliary function to be able to tell if two dates are consecutive or not. The result is similar.:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">pytups</span> <span class="kn">as</span> <span class="nn">pt</span>
-<span class="kn">import</span> <span class="nn">datetime</span> <span class="kn">as</span> <span class="nn">dt</span>
-<span class="n">_list</span> <span class="o">=</span> <span class="p">[(</span><span class="s1">&#39;a&#39;</span><span class="p">,</span> <span class="s1">&#39;2019-01-01&#39;</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;a&#39;</span><span class="p">,</span> <span class="s1">&#39;2019-01-02&#39;</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;a&#39;</span><span class="p">,</span> <span class="s1">&#39;2019-01-03&#39;</span><span class="p">),</span>
-            <span class="p">(</span><span class="s1">&#39;r&#39;</span><span class="p">,</span> <span class="s1">&#39;2019-01-01&#39;</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;r&#39;</span><span class="p">,</span> <span class="s1">&#39;2019-01-03&#39;</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;r&#39;</span><span class="p">,</span> <span class="s1">&#39;2019-01-04&#39;</span><span class="p">)]</span>
-
-<span class="k">def</span> <span class="nf">prev_date</span><span class="p">(</span><span class="n">date</span><span class="p">):</span>
-    <span class="k">return</span> <span class="p">(</span><span class="n">dt</span><span class="o">.</span><span class="n">datetime</span><span class="o">.</span><span class="n">strptime</span><span class="p">(</span><span class="n">date</span><span class="p">,</span> <span class="s1">&#39;%Y-%m-</span><span class="si">%d</span><span class="s1">&#39;</span><span class="p">)</span> <span class="o">-</span> <span class="n">dt</span><span class="o">.</span><span class="n">timedelta</span><span class="p">(</span><span class="n">days</span><span class="o">=</span><span class="mi">1</span><span class="p">))</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s1">&#39;%Y-%m-</span><span class="si">%d</span><span class="s1">&#39;</span><span class="p">)</span>
-
-<span class="n">compare_tups</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">p</span><span class="p">:</span> <span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">!=</span> <span class="n">y</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="ow">or</span> <span class="n">prev_date</span><span class="p">(</span><span class="n">x</span><span class="p">[</span><span class="n">p</span><span class="p">])</span> <span class="o">!=</span> <span class="n">y</span><span class="p">[</span><span class="n">p</span><span class="p">]</span>
-<span class="n">pt</span><span class="o">.</span><span class="n">TupList</span><span class="p">(</span><span class="n">_list</span><span class="p">)</span><span class="o">.</span><span class="n">to_start_finish</span><span class="p">(</span><span class="n">compare_tups</span><span class="p">,</span> <span class="n">pp</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
-<span class="c1"># [(&#39;a&#39;, &#39;2019-01-01&#39;, &#39;2019-01-03&#39;), (&#39;r&#39;, &#39;2019-01-01&#39;, &#39;2019-01-01&#39;), (&#39;r&#39;, &#39;2019-01-03&#39;, &#39;2019-01-04&#39;)]</span>
-</pre></div>
-</div>
-</div>
-</div>
-<div class="section" id="ordered-sets">
-<h2>Ordered sets<a class="headerlink" href="#ordered-sets" title="Permalink to this headline">¶</a></h2>
-<p>We have implemented the most common list operations to use it as a list. The purpose is mainly to use it as a sequence of things in order to ask for the position, the next element and the previous one and X elements from it.</p>
-<p>Specially useful for a list of dates, months, when you want fast lookup speeds.</p>
-<p>As a set, it can only take as element hashable objects (lists are not ok: tuples are).</p>
-</div>
-</div>
+</section>
+</section>
 
 
           </div>
@@ -273,7 +304,7 @@
     <div class="clearer"></div>
   </div>
     <div class="footer">
-      &copy;2019, Franco Peschiera.
+      &#169;2019, Franco Peschiera.
       
       |
       <a href="_sources/examples.rst.txt"
@@ -282,7 +313,7 @@
 
     
     <a href="https://github.com/pchtsp/pytups" class="github">
-        <img style="position: absolute; top: 0; right: 0; border: 0;" src="https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png" alt="Fork me on GitHub"  class="github"/>
+        <img style="position: absolute; top: 0; right: 0; border: 0;" src="https://github.blog/wp-content/uploads/2008/12/forkme_right_darkblue_121621.png" alt="Fork me on GitHub"  class="github"/>
     </a>
     
 

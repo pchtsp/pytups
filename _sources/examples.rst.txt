@@ -3,42 +3,6 @@ Some examples
 
 .. highlight:: python
 
-Coming from R
-=========================
-
-In R, you have the `apply` family of function, that apply a function over some list or vector.
-
-The closest to this function would be the `apply` and `vapply` functions in both dictionaries and tuplists.
-
-In R one can do the following::
-
-    sapply(c(1, 2, 5, 7, 11), as.character)
-    # "1"  "2"  "5"  "7"  "11"
-
-Or, using the chaining magic and without actually using the `sapply` given that R works vectorized by default::
-
-    library(magrittr)
-    c(1, 2, 5, 7, 11) %>% as.character
-    # "1"  "2"  "5"  "7"  "11"
-
-With pytups one would do::
-
-    import pytups as pt
-    pt.TupList([1, 2, 5, 7, 11]).apply(str)
-    # ['1', '2', '5', '7', '11']
-
-A better example could be replacing `sapply` in the following R situatio::
-    
-    lll <- list(c(1, 2, 5, 7, 5), c(5, 6, 7))
-    sapply(lll, length)
-    # 5 3
-
-We would do the following in pytups::
-    
-    import pytups as pt
-    pt.TupList([(1, 2, 5, 7, 5), (5, 6, 7)]).apply(len)
-    # [5, 3]
-
 SuperDict
 =============================
 
@@ -48,15 +12,29 @@ Example::
 
     import pytups as pt
     indent_dict = {'a': {'b': {'c': 'A'}}, 'b': {'t': {'d' : 'B'}}}
-    supdict = pt.SuperDict.from_dict(indent_dict)
-    supdict_dictup = supdict.to_dictup()
+    my_superdict = pt.SuperDict.from_dict(indent_dict)
+    my_superdict_dictup = my_superdict.to_dictup()
     # {('a', 'b', 'c'): 'A', ('b', 't', 'd'): 'B'}
-    supdict_dictup.to_tuplist()
+    my_superdict_dictup.to_tuplist()
     # [('a', 'b', 'c', 'A'), ('b', 't', 'd', 'B')]
-    supdict_dictup.apply(lambda k, v: v+'_1')
+    my_superdict_dictup.kvapply(lambda k, v: v+'_1')
     # {('a', 'b', 'c'): 'A_1', ('b', 't', 'd'): 'B_1'}
-    supdict_dictup.to_dictdict()
+    my_superdict_dictup.to_dictdict()
     # {'a': {'b': {'c': 'A'}}, 'b': {'t': {'d' : 'B'}}}
+
+
+Normal operations
+-----------------
+
+Some operations have been oveloaded for dictionaries so they can be done between superdicts as if they were numbers:
+
+Example data::
+
+    import pytups as pt
+    have = pt.SuperDict({'apples': 1, 'pears': 1, 'tomatoes': 0})
+    need = pt.SuperDict({'apples': 1, 'pears': 2, 'tomatoes': 1})
+    left_need = need - have
+    # {'pears': 1, 'tomatoes': 1}
 
 
 Filtering
@@ -66,18 +44,17 @@ Example data::
 
     import pytups as pt
     indent_dict = {'aabb': 1, 'aacc': 2, 'bbaa': 1}
-    supdict = pt.SuperDict.from_dict(indent_dict)
+    my_superdict = pt.SuperDict.from_dict(indent_dict)
 
 According to the value in the dictionary::
 
-    supdict.vfilter(lambda v: v==1)
+    my_superdict.vfilter(lambda v: v==1)
     # {'aabb': 1, 'bbaa': 1}
 
 According to the key::
 
-    supdict.kfilter(lambda k: k.startswith('aa'))
+    my_superdict.kfilter(lambda k: k.startswith('aa'))
     # {'aabb': 1, 'aacc': 2}
-
 
 Mutations
 ---------------------
@@ -86,22 +63,22 @@ Example data::
 
     import pytups as pt
     indent_dict = {'aabb': 1, 'aacc': 2, 'bbaa': 1}
-    supdict = pt.SuperDict.from_dict(indent_dict)
+    my_superdict = pt.SuperDict.from_dict(indent_dict)
 
 
 Mutate using the value only::
 
-    supdict.vapply(lambda v: v * 2)
+    my_superdict.vapply(lambda v: v * 2)
     # {'aabb': 2, 'aacc': 4, 'bbaa': 2}
 
 Mutate using the key only::
 
-    supdict.kapply(lambda k: k[0])
+    my_superdict.kapply(lambda k: k[0])
     # {'aabb': 'a', 'aacc': 'a', 'bbaa': 'b'}
 
 A combination of both::
 
-    supdict.kvapply(lambda k, v: k[0] + str(v))
+    my_superdict.kvapply(lambda k, v: k[0] + str(v))
     # {'aabb': 'a1', 'aacc': 'a2', 'bbaa': 'b1'}
 
 
@@ -112,19 +89,40 @@ Example data::
 
     import pytups as pt
     indent_dict = {'a': {'b': {'c': 'A'}}, 'b': {'t': {'d' : 'B'}}}
-    supdict = pt.SuperDict.from_dict(indent_dict)
+    my_superdict = pt.SuperDict.from_dict(indent_dict)
 
 Getting an path of values::
 
-    supdict.get_m('a', 'b', 'c')
+    my_superdict.get_m('a', 'b', 'c')
     # 'A'
-    supdict.get_m('a', 'c')
+    my_superdict.get_m('a', 'c')
     # None
 
 Setting a path of values::
 
-    supdict.set_m('a', 'c', value='R')
+    my_superdict.set_m('a', 'c', value='R')
     # {'a': {'b': {'c': 'A'}, 'c': 'R'}, 'b': {'t': {'d': 'B'}}}
+
+
+Aggregating
+------------------------------------------
+
+Aggregating a dictionary requires doing: `SuperDict` --> `TupList` --> `SuperDict`::
+
+    import pytups as pt
+    my_dict = pt.SuperDict({('a', 'b'): 1, ('a', 'c'): 2, ('f', 'c'): 3})
+
+    my_dict.to_tuplist().to_dict(indices=0, result_col=2).vapply(sum)
+    result = (
+        my_dict
+        # convert to TupList -> [('a', 'b', 1), ('a', 'c', 2), ('f', 'c', 3)]
+        .to_tuplist()
+        # convert to dict of lists -> {'a': [1, 2], 'f': [3]}
+        .to_dict(indices=0, result_col=2).
+        # sum each list -> {'a': 3, 'f': 3}
+        vapply(sum)
+    )
+    # {'a': 3, 'f': 3}
 
 
 TupLists
@@ -182,3 +180,39 @@ We have implemented the most common list operations to use it as a list. The pur
 Specially useful for a list of dates, months, when you want fast lookup speeds.
 
 As a set, it can only take as element hashable objects (lists are not ok: tuples are).
+
+Coming from R
+=========================
+
+In R, you have the `apply` family of function, that apply a function over some list or vector.
+
+The closest to this function would be the `vapply` functions in both dictionaries and tuplists.
+
+In R one can do the following::
+
+    sapply(c(1, 2, 5, 7, 11), as.character)
+    # "1"  "2"  "5"  "7"  "11"
+
+Or, using the chaining magic and without actually using the `sapply` given that R works vectorized by default::
+
+    library(magrittr)
+    c(1, 2, 5, 7, 11) %>% as.character
+    # "1"  "2"  "5"  "7"  "11"
+
+With pytups one would do::
+
+    import pytups as pt
+    pt.TupList([1, 2, 5, 7, 11]).vapply(str)
+    # ['1', '2', '5', '7', '11']
+
+A better example could be replacing `sapply` in the following R situation::
+    
+    lll <- list(c(1, 2, 5, 7, 5), c(5, 6, 7))
+    sapply(lll, length)
+    # 5 3
+
+We would do the following in pytups::
+    
+    import pytups as pt
+    pt.TupList([(1, 2, 5, 7, 5), (5, 6, 7)]).vapply(len)
+    # [5, 3]
