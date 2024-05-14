@@ -56,6 +56,12 @@ class SuperDict(dict, Generic[K, V], Mapping[K, V]):
     # def __rmul__(self, other):
     #     return self.sapply(op.__mul__, other)
 
+    def __truediv__(self, other):
+        return self.sapply(op.__truediv__, other)
+
+    def __floordiv__(self, other):
+        return self.sapply(op.__floordiv__, other)
+
     def head(self):
         if len(self) <= 2:
             return dict.__repr__(self)
@@ -454,16 +460,21 @@ class SuperDict(dict, Generic[K, V], Mapping[K, V]):
         """
         return SuperDict({k: func(k, *args, **kwargs) for k in self})
 
-    def sapply(self, func: Callable, other: dict, *args, **kwargs) -> "SuperDict":
+    def sapply(
+        self, func: Callable, other: Union[dict, int, float], *args, **kwargs
+    ) -> "SuperDict":
         """
         Applies function to both dictionaries.
         Using keys of the self.
         It's like applying a function over the left join.
 
         :param callable func: function to apply.
-        :param dict other: dictionary to apply function to
+        :param Union[dict, int, float] other: either ar int or float to perform the operation over or another dictionary
         :return: new :py:class:`SuperDict`
         """
+        if isinstance(other, (int, float)):
+            other = {k: other for k in self}
+
         return SuperDict(
             {k: func(v, other[k], *args, **kwargs) for k, v in self.items()}
         )

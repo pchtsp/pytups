@@ -462,6 +462,86 @@ class DictTest(unittest.TestCase):
             self.fail(e)
         self.assertEqual(a, {"y": {"x": 1}})
 
+    def test_add_dicts(self):
+        a = self.dict_class({"a": 1})
+        b = self.dict_class({"a": 2, "b": 1})
+        c = a + b
+        self.assertEqual(c, {"a": 3})
+
+    def test_add_int(self):
+        a = self.dict_class({"a": 1, "b": 5})
+        c = a + 2
+        self.assertEqual(c, {"a": 3, "b": 7})
+
+    def test_add_flaot(self):
+        a = self.dict_class({"a": 1, "b": 5})
+        c = a + 2.5
+        self.assertEqual(c, {"a": 3.5, "b": 7.5})
+
+    def test_subtract_dict(self):
+        a = self.dict_class({"a": 1})
+        b = self.dict_class({"a": 2})
+        c = a - b
+        self.assertEqual(c, {"a": -1})
+
+    def test_subtract_int(self):
+        a = self.dict_class({"a": 1, "b": 1})
+        c = a - 1
+        self.assertEqual(c, {"a": 0, "b": 0})
+
+    def test_subtract_float(self):
+        a = self.dict_class({"a": 1, "b": 1})
+        c = a - 1.5
+        self.assertEqual(c, {"a": -0.5, "b": -0.5})
+
+    def test_multiply_dicts(self):
+        a = self.dict_class({"a": 1})
+        b = self.dict_class({"a": 2})
+        c = a * b
+        self.assertEqual(c, {"a": 2})
+
+    def test_multiply_int(self):
+        a = self.dict_class({"a": 1, "b": -1})
+        c = a * 2
+        self.assertEqual(c, {"a": 2, "b": -2})
+
+    def test_multiply_float(self):
+        a = self.dict_class({"a": 1, "b": 5})
+        c = a * 2.5
+        self.assertEqual(c, {"a": 2.5, "b": 12.5})
+
+    def test_divide_dicts(self):
+        a = self.dict_class({"a": 4})
+        b = self.dict_class({"a": 2})
+        c = a / b
+        self.assertEqual(c, {"a": 2})
+
+    def test_divide_int(self):
+        a = self.dict_class({"a": 4, "b": 4})
+        c = a / 3
+        self.assertEqual(c, {"a": 4 / 3, "b": 4 / 3})
+
+    def test_divide_float(self):
+        a = self.dict_class({"a": 4, "b": 6})
+        c = a / 3.0
+        self.assertEqual(c, {"a": 4 / 3.0, "b": 6 / 3.0})
+
+    def test_integer_div_dicts(self):
+        a = self.dict_class({"a": 4})
+        b = self.dict_class({"a": 3, "b": 1})
+        c = a // b
+        self.assertEqual(c, {"a": 1})
+
+    def test_integer_div_int(self):
+        a = self.dict_class({"a": 4, "b": 6})
+        c = a // 3
+        self.assertEqual(c, {"a": 1, "b": 2})
+
+    def test_integer_div_float(self):
+        a = self.dict_class({"a": 4, "b": 7})
+        c = a // 3.5
+        self.assertEqual(c, {"a": 1, "b": 2})
+
     def setUp(self):
         pass
 
