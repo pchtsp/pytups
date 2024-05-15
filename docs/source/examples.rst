@@ -26,7 +26,7 @@ Example::
 Normal operations
 -----------------
 
-Some operations have been oveloaded for dictionaries so they can be done between superdicts as if they were numbers:
+Some operations have been overloaded for dictionaries so they can be done between superdicts as if they were numbers:
 
 Example data::
 
@@ -35,6 +35,43 @@ Example data::
     need = pt.SuperDict({'apples': 1, 'pears': 2, 'tomatoes': 1})
     left_need = need - have
     # {'pears': 1, 'tomatoes': 1}
+
+    mult_need_have = need * have
+    # {'apples': 1, 'pears': 2, 'tomatoes': 0}
+
+    add_need_have = need + have
+    # {'apples': 2, 'pears': 3, 'tomatoes': 1}
+
+These basic operations can also be done between superdicts and other values such as integers, floats and strings.
+
+Examples::
+
+    import pytups as pt
+    have = pt.SuperDict({'apples': 1, 'pears': 1, 'tomatoes': 0})
+    add_have = have + 1
+    # {'apples': 2, 'pears': 2, 'tomatoes': 1}
+
+    sub_have = have - 1
+    # {'apples': 0, 'pears': 0, 'tomatoes': -1}
+
+    mult_have = have * 2
+    # {'apples': 2, 'pears': 2, 'tomatoes': 0}
+
+    true_div_have = have / 2
+    # {'apples': 0.5, 'pears': 0.5, 'tomatoes': 0.0}
+
+    int_div_have = have // 2
+    # {'apples': 0, 'pears': 0, 'tomatoes': 0}
+
+And finally, if the value of the superdict os a list, the adding operator works as well.
+
+Example::
+
+    import pytups as pt
+    my_need = pt.SuperDict({'apples': [1, 2], 'pears': [1, 2], 'tomatoes': [0, 1]})
+    other_need = pt.SuperDict({'apples': [1, 1], 'pears': [1, 1], 'tomatoes': [1, 1]})
+    total_need = my_need + other_need
+    # {'apples': [1, 2, 1, 1], 'pears': [1, 2, 1, 1], 'tomatoes': [0, 1, 1, 1]}
 
 
 Filtering
