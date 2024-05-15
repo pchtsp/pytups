@@ -473,7 +473,7 @@ class DictTest(unittest.TestCase):
         c = a + 2
         self.assertEqual(c, {"a": 3, "b": 7})
 
-    def test_add_flaot(self):
+    def test_add_float(self):
         a = self.dict_class({"a": 1, "b": 5})
         c = a + 2.5
         self.assertEqual(c, {"a": 3.5, "b": 7.5})
@@ -541,6 +541,43 @@ class DictTest(unittest.TestCase):
         a = self.dict_class({"a": 4, "b": 7})
         c = a // 3.5
         self.assertEqual(c, {"a": 1, "b": 2})
+
+    def test_add_strings(self):
+        a = self.dict_class({"a": "a"})
+        b = self.dict_class({"a": "b"})
+        c = a + b
+        self.assertEqual(c, {"a": "ab"})
+
+    def test_add_lists(self):
+        a = self.dict_class({"a": [1]})
+        b = self.dict_class({"a": [2]})
+        c = a + b
+        self.assertEqual(c, {"a": [1, 2]})
+
+    def test_add_int_to_list(self):
+        a = self.dict_class({"a": [1]})
+        lambda_add = lambda a: a + 2
+        self.assertRaises(TypeError, lambda_add, a)
+
+    def test_add_int_to_string(self):
+        a = self.dict_class({"a": "a"})
+        lambda_add = lambda a: a + 2
+        self.assertRaises(TypeError, lambda_add, a)
+
+    def test_add_str_to_int(self):
+        a = self.dict_class({"a": 2})
+        lambda_add = lambda a: a + "2"
+        self.assertRaises(TypeError, lambda_add, a)
+
+    def test_multiply_string_into_int(self):
+        a = self.dict_class({"a": "a"})
+        c = a * 2
+        self.assertEqual(c, {"a": "aa"})
+
+    def test_multiply_int_to_string(self):
+        a = self.dict_class({"a": 2})
+        c = a * "2"
+        self.assertEqual(c, {"a": "22"})
 
     def setUp(self):
         pass

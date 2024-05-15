@@ -38,31 +38,58 @@ class SuperDict(dict, Generic[K, V], Mapping[K, V]):
     def __iter__(self) -> Iterator[K]:
         return dict.__iter__(self)
 
-    def __add__(self, other):
+    def __add__(self, other: Union[dict, int, float, str]) -> "SuperDict":
+        """
+        Applies the adding operator to the values in the SuperDict and another object.
+        This operation might raise a TypeError based on the types of the values of the SuperDict and the other object.
+        """
         return self.sapply(op.__add__, other)
 
     # def __radd__(self, other):
     #     return self.sapply(op.__add__, other)
 
-    def __sub__(self, other):
+    def __sub__(self, other: Union[dict, int, float, str]) -> "SuperDict":
+        """
+        Applies the substract operator to the values in the SuperDict and another object.
+        This operation might raise a TypeError based on the types of the values of the SuperDict and the other object.
+        """
         return self.sapply(op.__sub__, other)
 
     # def __rsub__(self, other):
     #     return other.sapply(op.__sub__, self)
 
-    def __mul__(self, other):
+    def __mul__(self, other: Union[dict, int, float, str]) -> "SuperDict":
+        """
+        Applies the multiply operator to the values in the SuperDict and another object.
+        This operation might raise a TypeError based on the types of the values of the SuperDict and the other object.
+        """
         return self.sapply(op.__mul__, other)
 
     # def __rmul__(self, other):
     #     return self.sapply(op.__mul__, other)
 
-    def __truediv__(self, other):
+    def __truediv__(self, other: Union[dict, int, float, str]) -> "SuperDict":
+        """
+        Applies the true division (float division) operator to the values in the SuperDict and another object.
+        This operation might raise a TypeError based on the types of the values of the SuperDict and the other object.
+        """
         return self.sapply(op.__truediv__, other)
 
-    def __floordiv__(self, other):
+    def __floordiv__(self, other: Union[dict, int, float, str]) -> "SuperDict":
+        """
+        Applies the floor division (integer division) operator to the values in the SuperDict and another object.
+        This operation might raise a TypeError based on the types of the values of the SuperDict and the other object.
+        """
         return self.sapply(op.__floordiv__, other)
 
-    def head(self):
+    def head(self) -> str:
+        """
+        Returns a string representation with the first pair of key values in the SuperDict, the last pair of key value
+        and the number of elements on the SuperDict.
+
+        :return: the head string representation of the SuperDict
+        :rtype: str
+        """
         if len(self) <= 2:
             return dict.__repr__(self)
         _keys = self.keys_l()
@@ -461,7 +488,7 @@ class SuperDict(dict, Generic[K, V], Mapping[K, V]):
         return SuperDict({k: func(k, *args, **kwargs) for k in self})
 
     def sapply(
-        self, func: Callable, other: Union[dict, int, float], *args, **kwargs
+        self, func: Callable, other: Union[dict, int, float, str], *args, **kwargs
     ) -> "SuperDict":
         """
         Applies function to both dictionaries.
@@ -469,15 +496,14 @@ class SuperDict(dict, Generic[K, V], Mapping[K, V]):
         It's like applying a function over the left join.
 
         :param callable func: function to apply.
-        :param Union[dict, int, float] other: either ar int or float to perform the operation over or another dictionary
+        :param Union[dict, int, float,s tr] other: either an int, a float, a string or another dictionary to
+          perform the operation over
         :return: new :py:class:`SuperDict`
         """
-        if isinstance(other, (int, float)):
-            other = {k: other for k in self}
+        if isinstance(other, (int, float, str)):
+            return self.vapply(lambda v: func(v, other, *args, **kwargs))
 
-        return SuperDict(
-            {k: func(v, other[k], *args, **kwargs) for k, v in self.items()}
-        )
+        return self.kvapply(lambda k, v: func(v, other[k], *args, **kwargs))
 
     def get_m(self, *args, default=None) -> Any:
         """
