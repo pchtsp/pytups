@@ -1,0 +1,26 @@
+[project]
+name = "pytups"
+version = "0.9.0"
+description = "data wrangling for lists of tuples and dictionaries"
+requires-python = ">=3.8"
+dependencies = []
+readme='README.rst'
+authors=[{"name"= "Franco Peschiera", "email"="pchtsp@gmail.com"}]
+maintainers=[{"name"= "Franco Peschiera", "email"="pchtsp@gmail.com"}]
+keywords= ["super dict","dictionary","tuple list", "math", "pulp"]
+classifiers= [
+        "Programming Language :: Python :: 3",
+        "Operating System :: OS Independent",
+    ]
+urls= {source= "https://github.com/pchtsp/pytups", download="https://github.com/pchtsp/pytups/archive/master.zip"}
+
+
+[build-system]
+requires = ["setuptools"]
+build-backend = "setuptools.build_meta"
+# This is a workaround for https://github.com/astral-sh/uv/issues/9513
+license-files = []
+
+
+[dependency-groups]
+dev = ["black", "sphinx"]
