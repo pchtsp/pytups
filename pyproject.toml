@@ -6,7 +6,6 @@ requires-python = ">=3.8"
 dependencies = []
 readme='README.rst'
 authors=[{"name"= "Franco Peschiera", "email"="pchtsp@gmail.com"}]
-license='MIT'
 maintainers=[{"name"= "Franco Peschiera", "email"="pchtsp@gmail.com"}]
 keywords= ["super dict","dictionary","tuple list", "math", "pulp"]
 classifiers= [
