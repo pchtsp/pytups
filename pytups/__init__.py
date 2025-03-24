@@ -1,5 +1,3 @@
 from pytups.orderedSet import OrderSet, MissingValue
 from pytups.superdict import SuperDict
 from pytups.tuplist import TupList
-
-from pytups.constants import VERSION

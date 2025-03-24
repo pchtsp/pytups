@@ -27,11 +27,16 @@ class TupTest(unittest.TestCase):
     def setUp(self):
         self.prop1 = self.tuplist_class(TEST_TUP)
         self.prop2 = self.tuplist_class(TEST_DICT)
+        self.tmpcsv = "tmp.csv"
+        try:
+            os.remove(self.tmpcsv)
+        except FileNotFoundError:
+            pass
 
     def tearDown(self):
         try:
-            os.remove("tmp.csv")
-        except:
+            os.remove(self.tmpcsv)
+        except FileNotFoundError:
             pass
 
     def test_filter(self):
@@ -177,23 +182,46 @@ class TupTest(unittest.TestCase):
         self.assertSetEqual(prop.intersect(other).to_set(), result)
 
     def test_write(self):
-        _filename = "tmp.csv"
-        self.prop1.to_csv(_filename)
-        with open(_filename, "r") as file:
-            content = file.read()
+        self.prop1.to_csv(self.tmpcsv)
+        content = read_and_delete(self.tmpcsv)
         result = "a,b,c,1\na,b,c,2\na,b,c,3\nr,b,c,1\nr,b,c,2\nr,b,c,3\n"
-        self.assertIn(result, content)
+        self.assertEqual(result, content)
+
+    def test_write_dict(self):
+        self.prop2.to_csv(self.tmpcsv)
+        content = read_and_delete(self.tmpcsv)
+        result = "1,2,3,4\na,b,c,1\na,b,c,2\na,b,c,3\nr,b,c,1\nr,b,c,2\nr,b,c,3\n"
+        self.assertEqual(result, content)
+
+    def test_write_dict_header(self):
+        self.prop2.to_csv(self.tmpcsv, [a for a in range(1, 5)])
+        content = read_and_delete(self.tmpcsv)
+        result = "1,2,3,4\na,b,c,1\na,b,c,2\na,b,c,3\nr,b,c,1\nr,b,c,2\nr,b,c,3\n"
+        self.assertEqual(result, content)
+
+    def test_write_header(self):
+        self.prop1.to_csv(self.tmpcsv, header=["A", "B", "C", "D"])
+        content = read_and_delete(self.tmpcsv)
+        result = "A,B,C,D\na,b,c,1\na,b,c,2\na,b,c,3\nr,b,c,1\nr,b,c,2\nr,b,c,3\n"
+        self.assertEqual(result, content)
+
+    def test_write_bad_header(self):
+        to_error = lambda: self.prop1.to_csv(self.tmpcsv, header=["A", "B", "D"])
+        self.assertRaises(ValueError, to_error)
+
+    def test_write_bad_header_dict(self):
+        to_error = lambda: self.prop2.to_csv(self.tmpcsv, header=["A", "B", "C", "D"])
+        self.assertRaises(KeyError, to_error)
 
     def test_read(self):
-        _filename = "tmp.csv"
-        with open(_filename, "w") as file:
+        with open(self.tmpcsv, "w") as file:
             file.write("a,b,c,1\na,b,c,2\na,b,c,3\nr,b,c,1\nr,b,c,2\nr,b,c,3\n")
 
         def fmt(_tup):
             _tup[3] = int(_tup[3])
             return tuple(_tup)
 
-        a = self.tuplist_class.from_csv(_filename, func=fmt)
+        a = self.tuplist_class.from_csv(self.tmpcsv, func=fmt)
         self.assertEqual(a, self.prop1)
 
     def test_to_dictlist(self):
@@ -384,7 +412,8 @@ class TupTest(unittest.TestCase):
         self.assertEqual(result, result_good)
 
     def test_vapply_col_dict(self):
-        result = self.prop2.vapply_col(5, lambda v: v[1] + v[2] + str(v[4]))
+        a = self.prop2.copy_deep()
+        result = a.vapply_col(5, lambda v: v[1] + v[2] + str(v[4]))
         result_good = [
             {1: "a", 2: "b", 3: "c", 4: 1, 5: "ab1"},
             {1: "a", 2: "b", 3: "c", 4: 2, 5: "ab2"},
@@ -394,6 +423,16 @@ class TupTest(unittest.TestCase):
             {1: "r", 2: "b", 3: "c", 4: 3, 5: "rb3"},
         ]
         self.assertEqual(result, result_good)
+
+
+def read_and_delete(_filename):
+    with open(_filename, "r") as file:
+        content = file.read()
+    try:
+        os.remove(_filename)
+    except FileNotFoundError:
+        pass
+    return content
 
 
 if __name__ == "__main__":

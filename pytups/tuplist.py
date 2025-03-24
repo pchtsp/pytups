@@ -12,7 +12,6 @@ T = TypeVar("T")
 
 
 class TupList(list, Generic[T]):
-
     """
     A list of tuples or dictionaries
     """
@@ -379,23 +378,29 @@ class TupList(list, Generic[T]):
         """
         return TupList(chain(*self))
 
-    def to_csv(self, path: str) -> "TupList":
+    def to_csv(self, path: str, header: list = None) -> "TupList":
         """
         Exports the list to a csv file
         :param path: filename
+        :param header: list of strings to use as header/column names for dict
         :return: the same :py:class:`TupList`
         """
         if len(self) == 0:
-            return None
+            return self
         first = self[0]
+        if header is not None and len(first) != len(header):
+            raise ValueError("Header length does not match data length")
         # Handle case of list of dict
         if isinstance(first, dict):
-            cols = first.keys()
-            thing_to_write = [tuple(cols)] + self.take(list(cols))
+            if header is None:
+                header = first.keys()
+            thing_to_write = self.take(list(header))
         else:
             thing_to_write = self
         with open(path, "w", newline="\n", encoding="utf-8") as out:
             csv_out = csv.writer(out)
+            if header is not None:
+                csv_out.writerow(header)
             csv_out.writerows(thing_to_write)
         return self
 
