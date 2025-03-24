@@ -21,7 +21,7 @@ jobs:
     - name: Install dependencies
       run: uv sync --dev
     - name: Building docs
-      run: cd docs && make html && cd ..
+      run: cd docs && uv run make html && cd ..
     # Great extra actions to compose with:
     # Publish built docs to gh-pages branch.
     # ===============================
