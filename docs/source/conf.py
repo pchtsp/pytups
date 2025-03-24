@@ -12,21 +12,19 @@
 #
 import os
 import sys
+import importlib.metadata
 
-# print(os.path.abspath('./../../'))
 sys.path.insert(0, os.path.abspath("./../../"))
 
 
 # -- Project information -----------------------------------------------------
 
 project = "pytups"
-copyright = "2019, Franco Peschiera"
+copyright = "2025, Franco Peschiera"
 author = "Franco Peschiera"
 
 # The full version, including alpha/beta/rc tags
-import pytups
-
-release = pytups.VERSION
+release = importlib.metadata.version("pytups")
 # The short X.Y version.
 version = ".".join(release.split(".")[:2])
 
