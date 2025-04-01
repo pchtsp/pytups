@@ -2,7 +2,7 @@
 name = "pytups"
 version = "1.0.2"
 description = "data wrangling for lists of tuples and dictionaries"
-requires-python = ">=3.8"
+requires-python = ">=3.9"
 dependencies = []
 readme='README.rst'
 authors=[{"name"= "Franco Peschiera", "email"="pchtsp@gmail.com"}]
