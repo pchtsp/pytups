@@ -1,6 +1,6 @@
 [project]
 name = "pytups"
-version = "1.0.0"
+version = "1.0.2"
 description = "data wrangling for lists of tuples and dictionaries"
 requires-python = ">=3.8"
 dependencies = []
