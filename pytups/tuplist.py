@@ -1,5 +1,5 @@
 import csv
-from typing import Callable, Iterable, Union, TypeVar, Generic, TYPE_CHECKING
+from typing import Callable, Iterable, Union, TypeVar, Generic, TYPE_CHECKING, List, Set
 import pickle
 from itertools import chain
 
@@ -9,6 +9,7 @@ if TYPE_CHECKING:
 from .tools import is_really_iterable
 
 T = TypeVar("T")
+R = TypeVar("R")
 
 
 class TupList(list, Generic[T]):
@@ -88,7 +89,7 @@ class TupList(list, Generic[T]):
             return TupList(x[0] for x in arr_filt)
         return TupList(tuple(x) for x in arr_filt)
 
-    def vfilter(self, function: Callable) -> "TupList":
+    def vfilter(self, function: Callable) -> "TupList[T]":
         """
         returns new list with only tuples for which `function` returns True
 
@@ -198,7 +199,7 @@ class TupList(list, Generic[T]):
         """
         return self.append(tuple(args))
 
-    def unique(self, **kwargs) -> "TupList":
+    def unique(self, **kwargs) -> "TupList[T]":
         """
         Applies :py:func:`numpy.unique`.
 
@@ -213,7 +214,7 @@ class TupList(list, Generic[T]):
         except ImportError:
             return self.unique2()
 
-    def unique2(self) -> "TupList":
+    def unique2(self) -> "TupList[T]":
         """
         Converts to set and then back to TupList.
 
@@ -221,7 +222,7 @@ class TupList(list, Generic[T]):
         """
         return TupList(set(self))
 
-    def intersect(self, input_list: Iterable) -> "TupList":
+    def intersect(self, input_list: Iterable) -> "TupList[T]":
         """
         Converts list and argument into sets and then intersects them.
 
@@ -230,7 +231,7 @@ class TupList(list, Generic[T]):
         """
         return TupList(set(self) & set(input_list))
 
-    def set_diff(self, input_list: Iterable) -> "TupList":
+    def set_diff(self, input_list: Iterable) -> "TupList[T]":
         """
         Converts list and argument into sets and then subtracts one from the other.
 
@@ -283,14 +284,14 @@ class TupList(list, Generic[T]):
         res_start_finish = [join_func(list_tup) for list_tup in all_periods]
         return TupList(res_start_finish)
 
-    def to_list(self) -> list:
+    def to_list(self) -> List[T]:
         """
 
         :return: list
         """
         return list(self)
 
-    def to_set(self) -> set:
+    def to_set(self) -> Set[T]:
         """
 
         :return: set
@@ -311,7 +312,9 @@ class TupList(list, Generic[T]):
         """
         return len(self)
 
-    def kvapply(self, func: Callable, *args, **kwargs) -> "TupList":
+    def kvapply(
+        self, func: Callable[[int, T, ...], R], *args, **kwargs
+    ) -> "TupList[R]":
         """
         maps function into each element of TupList with indexes
 
@@ -320,7 +323,7 @@ class TupList(list, Generic[T]):
         """
         return TupList(func(k, v, *args, **kwargs) for k, v in enumerate(self))
 
-    def kapply(self, func: Callable, *args, **kwargs) -> "TupList":
+    def kapply(self, func: Callable[[int, ...], R], *args, **kwargs) -> "TupList[R]":
         """
         maps function into each key of TupList
 
@@ -329,7 +332,7 @@ class TupList(list, Generic[T]):
         """
         return TupList(func(k, *args, **kwargs) for k, _ in enumerate(self))
 
-    def vapply(self, func: Callable, *args, **kwargs) -> "TupList":
+    def vapply(self, func: Callable[[T, ...], R], *args, **kwargs) -> "TupList[R]":
         """
         maps function into each element of TupList
 
@@ -360,7 +363,7 @@ class TupList(list, Generic[T]):
                 "Pandas is not present in your system. Try: pip install pandas"
             )
 
-    def sorted(self, **kwargs) -> "TupList":
+    def sorted(self, **kwargs) -> "TupList[T]":
         """
         Applies sorted function to elements and returns a TupList
 

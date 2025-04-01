@@ -4,8 +4,6 @@ except:
     from collections.abc import MutableSequence
 from typing import Iterable, TypeVar, Generic, List, Dict
 
-K = TypeVar("K")
-V = TypeVar("V")
 T = TypeVar("T")
 
 

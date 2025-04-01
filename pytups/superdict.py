@@ -12,6 +12,7 @@ from typing import (
     Iterator,
     List,
     TYPE_CHECKING,
+    Tuple,
 )
 
 if TYPE_CHECKING:
@@ -25,6 +26,7 @@ except:
 K = TypeVar("K")
 V = TypeVar("V")
 T = TypeVar("T")
+R = TypeVar("R")
 
 
 class SuperDict(dict, Generic[K, V], Mapping[K, V]):
@@ -109,7 +111,7 @@ class SuperDict(dict, Generic[K, V], Mapping[K, V]):
             return val_list
         return val_list[pos]
 
-    def keys_l(self, pos: int = None) -> list:
+    def keys_l(self, pos: int = None) -> List[K]:
         """
         Shortcut to:
 
@@ -122,7 +124,7 @@ class SuperDict(dict, Generic[K, V], Mapping[K, V]):
         result = list(self.keys())
         return self._list_or_value(result, pos)
 
-    def values_l(self, pos: int = None) -> list:
+    def values_l(self, pos: int = None) -> List[V]:
         """
         Shortcut to:
 
@@ -135,7 +137,7 @@ class SuperDict(dict, Generic[K, V], Mapping[K, V]):
         result = list(self.values())
         return self._list_or_value(result, pos)
 
-    def values_tl(self, pos: int = None) -> "TupList":
+    def values_tl(self, pos: int = None) -> "TupList[V]":
         """
         Shortcut to:
 
@@ -150,7 +152,7 @@ class SuperDict(dict, Generic[K, V], Mapping[K, V]):
         result = tl.TupList(self.values())
         return self._list_or_value(result, pos)
 
-    def keys_tl(self, pos: int = None) -> "TupList":
+    def keys_tl(self, pos: int = None) -> "TupList[K]":
         """
         Shortcut to:
 
@@ -165,7 +167,7 @@ class SuperDict(dict, Generic[K, V], Mapping[K, V]):
         result = tl.TupList(self.keys())
         return self._list_or_value(result, pos)
 
-    def items_tl(self, pos: int = None) -> "TupList":
+    def items_tl(self, pos: int = None) -> "TupList[Tuple[K, V]]":
         """
         Shortcut to:
 
@@ -197,7 +199,7 @@ class SuperDict(dict, Generic[K, V], Mapping[K, V]):
             func = lambda x: x != default_value
         return self.vfilter(func=func, **kwargs)
 
-    def vfilter(self, func: Callable, **kwargs) -> "SuperDict":
+    def vfilter(self, func: Callable, **kwargs) -> "SuperDict[K, V]":
         """
         apply a filter over the dictionary values
         :param function func: True for values we want to filter
@@ -212,7 +214,7 @@ class SuperDict(dict, Generic[K, V], Mapping[K, V]):
             {key: value for key, value in self.items() if func(value, **kwargs)}
         )
 
-    def kfilter(self, func: Callable, **kwargs) -> "SuperDict":
+    def kfilter(self, func: Callable, **kwargs) -> "SuperDict[K, V]":
         """
         apply a filter over the dictionary keys
         :param function func: True for keys we want to filter
@@ -227,7 +229,7 @@ class SuperDict(dict, Generic[K, V], Mapping[K, V]):
             {key: value for key, value in self.items() if func(key, **kwargs)}
         )
 
-    def kvfilter(self, func: Callable, **kwargs) -> "SuperDict":
+    def kvfilter(self, func: Callable, **kwargs) -> "SuperDict[K, V]":
         """
         apply a filter over the dictionary values
         :param callable func: True for values we want to filter
@@ -253,7 +255,7 @@ class SuperDict(dict, Generic[K, V], Mapping[K, V]):
         """
         return len(self)
 
-    def filter(self, indices: Iterable, check: bool = True) -> "SuperDict":
+    def filter(self, indices: Iterable, check: bool = True) -> "SuperDict[K, V]":
         """
         takes out elements that are not in `indices`
 
@@ -354,7 +356,7 @@ class SuperDict(dict, Generic[K, V], Mapping[K, V]):
         """
         return SuperDict().dicts_to_tup([], self)
 
-    def list_reverse(self) -> "SuperDict":
+    def list_reverse(self) -> "SuperDict[V, TupList[K]]":
         """
         transforms dictionary of lists to another dictionary of lists only indexed by the values.
 
@@ -415,7 +417,7 @@ class SuperDict(dict, Generic[K, V], Mapping[K, V]):
             {key: value[property] for key, value in self.items() if property in value}
         )
 
-    def to_lendict(self) -> "SuperDict":
+    def to_lendict(self) -> "SuperDict[K, int]":
         """
         get length of values in dictionary
 
@@ -461,7 +463,9 @@ class SuperDict(dict, Generic[K, V], Mapping[K, V]):
             return result.values_l()
         return result
 
-    def kvapply(self, func: Callable, *args, **kwargs) -> "SuperDict":
+    def kvapply(
+        self, func: Callable[[K, V, ...], R], *args, **kwargs
+    ) -> "SuperDict[K, R]":
         """Applies a function to the dictionary and returns the result
 
         :param callable func: function with two arguments: one for the key, another for the value
@@ -469,7 +473,7 @@ class SuperDict(dict, Generic[K, V], Mapping[K, V]):
         """
         return SuperDict({k: func(k, v, *args, **kwargs) for k, v in self.items()})
 
-    def vapply(self, func: Callable, *args, **kwargs) -> "SuperDict":
+    def vapply(self, func: Callable[[V, ...], R], *args, **kwargs) -> "SuperDict[K, R]":
         """
         Same as apply but only on values
 
@@ -478,7 +482,7 @@ class SuperDict(dict, Generic[K, V], Mapping[K, V]):
         """
         return SuperDict({k: func(v, *args, **kwargs) for k, v in self.items()})
 
-    def kapply(self, func: Callable, *args, **kwargs) -> "SuperDict":
+    def kapply(self, func: Callable[[K, ...], R], *args, **kwargs) -> "SuperDict[K, R]":
         """
         Same as apply but only on keys
 
@@ -488,8 +492,12 @@ class SuperDict(dict, Generic[K, V], Mapping[K, V]):
         return SuperDict({k: func(k, *args, **kwargs) for k in self})
 
     def sapply(
-        self, func: Callable, other: Union[dict, int, float, str], *args, **kwargs
-    ) -> "SuperDict":
+        self,
+        func: Callable[[V, ...], R],
+        other: Union[dict, int, float, str],
+        *args,
+        **kwargs,
+    ) -> "SuperDict[K, R]":
         """
         Applies function to both dictionaries.
         Using keys of the self.
@@ -585,7 +593,7 @@ class SuperDict(dict, Generic[K, V], Mapping[K, V]):
                 "Pandas is not present in your system.\nTry: pip install pandas"
             )
 
-    def reverse(self):
+    def reverse(self) -> "SuperDict[V, K]":
         return SuperDict({v: k for k, v in self.items()})
 
     @classmethod
@@ -603,7 +611,7 @@ class SuperDict(dict, Generic[K, V], Mapping[K, V]):
             data[key] = cls.from_dict(value)
         return data
 
-    def copy_shallow(self) -> "SuperDict":
+    def copy_shallow(self) -> "SuperDict[K, V]":
         """
         Copies the immediate keys only.
 
@@ -611,13 +619,13 @@ class SuperDict(dict, Generic[K, V], Mapping[K, V]):
         """
         return SuperDict(self)
 
-    def copy_deep(self) -> "SuperDict":
+    def copy_deep(self) -> "SuperDict[K, V]":
         """
         Copies the complete object using python's pickle
         """
         return pickle.loads(pickle.dumps(self, -1))
 
-    def copy_deep2(self) -> "SuperDict":
+    def copy_deep2(self) -> "SuperDict[K, V]":
         """
         Copies the complete object using json (or ujson if available)
         """

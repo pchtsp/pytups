@@ -6,8 +6,6 @@ Pytups
     :target: https://pypi.org/project/pytups/
 .. image:: https://img.shields.io/pypi/pyversions/pytups.svg
     :target: https://pypi.org/project/pytups/
-.. image:: https://travis-ci.org/pchtsp/pytups.svg?branch=master
-    :target: https://travis-ci.org/pchtsp/pytups
 
 What and why
 ================
