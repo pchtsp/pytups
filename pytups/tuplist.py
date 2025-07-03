@@ -312,9 +312,7 @@ class TupList(list, Generic[T]):
         """
         return len(self)
 
-    def kvapply(
-        self, func: Callable[[int, T, ...], R], *args, **kwargs
-    ) -> "TupList[R]":
+    def kvapply(self, func: Callable[[int, T], R], *args, **kwargs) -> "TupList[R]":
         """
         maps function into each element of TupList with indexes
 
@@ -323,7 +321,7 @@ class TupList(list, Generic[T]):
         """
         return TupList(func(k, v, *args, **kwargs) for k, v in enumerate(self))
 
-    def kapply(self, func: Callable[[int, ...], R], *args, **kwargs) -> "TupList[R]":
+    def kapply(self, func: Callable[[int], R], *args, **kwargs) -> "TupList[R]":
         """
         maps function into each key of TupList
 
@@ -332,7 +330,7 @@ class TupList(list, Generic[T]):
         """
         return TupList(func(k, *args, **kwargs) for k, _ in enumerate(self))
 
-    def vapply(self, func: Callable[[T, ...], R], *args, **kwargs) -> "TupList[R]":
+    def vapply(self, func: Callable[[T], R], *args, **kwargs) -> "TupList[R]":
         """
         maps function into each element of TupList
 

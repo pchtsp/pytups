@@ -463,9 +463,7 @@ class SuperDict(dict, Generic[K, V], Mapping[K, V]):
             return result.values_l()
         return result
 
-    def kvapply(
-        self, func: Callable[[K, V, ...], R], *args, **kwargs
-    ) -> "SuperDict[K, R]":
+    def kvapply(self, func: Callable[[K, V], R], *args, **kwargs) -> "SuperDict[K, R]":
         """Applies a function to the dictionary and returns the result
 
         :param callable func: function with two arguments: one for the key, another for the value
@@ -473,7 +471,7 @@ class SuperDict(dict, Generic[K, V], Mapping[K, V]):
         """
         return SuperDict({k: func(k, v, *args, **kwargs) for k, v in self.items()})
 
-    def vapply(self, func: Callable[[V, ...], R], *args, **kwargs) -> "SuperDict[K, R]":
+    def vapply(self, func: Callable[[V], R], *args, **kwargs) -> "SuperDict[K, R]":
         """
         Same as apply but only on values
 
@@ -482,7 +480,7 @@ class SuperDict(dict, Generic[K, V], Mapping[K, V]):
         """
         return SuperDict({k: func(v, *args, **kwargs) for k, v in self.items()})
 
-    def kapply(self, func: Callable[[K, ...], R], *args, **kwargs) -> "SuperDict[K, R]":
+    def kapply(self, func: Callable[[K], R], *args, **kwargs) -> "SuperDict[K, R]":
         """
         Same as apply but only on keys
 
@@ -493,7 +491,7 @@ class SuperDict(dict, Generic[K, V], Mapping[K, V]):
 
     def sapply(
         self,
-        func: Callable[[V, ...], R],
+        func: Callable[[V], R],
         other: Union[dict, int, float, str],
         *args,
         **kwargs,
