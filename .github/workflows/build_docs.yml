@@ -24,15 +24,16 @@ jobs:
       run: uv sync --dev
     - name: Building docs
       run: cd docs && uv run make html && cd ..
-    # Great extra actions to compose with:
-    # Publish built docs to gh-pages branch.
-    # ===============================
+    - name: Prepare built docs for gh-pages
+      run: |
+        rm -rf /tmp/docs-html
+        cp -r docs/build/html /tmp/docs-html
     - name: Commit documentation changes
       run: |
         git fetch origin gh-pages:gh-pages
         git switch gh-pages || git checkout --orphan gh-pages
         rm -rf *
-        cp -r ../docs/build/html/* .
+        cp -r /tmp/docs-html/* .
         touch .nojekyll
         git config user.name github-actions
         git config user.email github-actions@github.com
