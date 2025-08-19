@@ -774,10 +774,18 @@ main arguments for sorted are:
 <dl class="py method">
 <dt class="sig sig-object py" id="pytups.tuplist.TupList.to_csv">
 <span class="sig-name descname"><span class="pre">to_csv</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.13)"><span class="pre">str</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">header</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.13)"><span class="pre">list</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#pytups.tuplist.TupList" title="pytups.tuplist.TupList"><span class="pre">TupList</span></a></span></span><a class="headerlink" href="#pytups.tuplist.TupList.to_csv" title="Link to this definition">¶</a></dt>
-<dd><p>Exports the list to a csv file
-:param path: filename
-:param header: list of strings to use as header/column names for dict
-:return: the same <a class="reference internal" href="#pytups.tuplist.TupList" title="pytups.tuplist.TupList"><code class="xref py py-class docutils literal notranslate"><span class="pre">TupList</span></code></a></p>
+<dd><p>Exports the list to a csv file</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>path</strong> – filename</p></li>
+<li><p><strong>header</strong> – list of strings to use as header/column names for dict</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>the same <a class="reference internal" href="#pytups.tuplist.TupList" title="pytups.tuplist.TupList"><code class="xref py py-class docutils literal notranslate"><span class="pre">TupList</span></code></a></p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py method">
@@ -898,9 +906,15 @@ it works with a bigger tuple too.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="pytups.tuplist.TupList.vapply_col">
 <span class="sig-name descname"><span class="pre">vapply_col</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">pos</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.13)"><span class="pre">int</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.13)"><span class="pre">str</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.13)"><span class="pre">None</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">func</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Callable" title="(in Python v3.13)"><span class="pre">Callable</span></a></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pytups.tuplist.TupList.vapply_col" title="Link to this definition">¶</a></dt>
-<dd><p>Like vapply, but it stores the result in one of the positions of the tuple (or dictionary)
-:param pos: int or str
-:param callable func: function to apply to create col</p>
+<dd><p>Like vapply, but it stores the result in one of the positions of the tuple (or dictionary)</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>pos</strong> – int or str</p></li>
+<li><p><strong>func</strong> (<em>callable</em>) – function to apply to create col</p></li>
+</ul>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py method">
