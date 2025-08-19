@@ -61,7 +61,7 @@ In some, cases this function takes some liberties to interpret the content so as
     pt.SuperDict({'a': [1, 2, 5], 'b': 2, 'f': 3}).to_tuplist()
     # [('a', 1), ('a', 2), ('a', 5), ('b', 2), ('f', 3)]
     pt.SuperDict({'a': [1, 2, 5], 'b': 2, 'f': 3}).items()
-    dict_items([('a', [1, 2, 5]), ('b', 2), ('f', 3)])
+    # dict_items([('a', [1, 2, 5]), ('b', 2), ('f', 3)])
 
 So, if it finds some list, it iterates over it. Using the regular `items` function would not do that.
 

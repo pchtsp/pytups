@@ -143,7 +143,10 @@ class TupList(list, Generic[T]):
         elif not is_really_iterable(indices):
             indices = [indices]
 
-        one_or_tup = lambda _list: _list[0] if len(_list) == 1 else _list
+        def one_or_tup(_list):
+            if len(_list) == 1:
+                return _list[0]
+            return _list
 
         def get_index(el):
             index = tuple(el[i] for i in indices)
@@ -151,7 +154,9 @@ class TupList(list, Generic[T]):
 
         if result_col is None:
             # the content matches the input, no need to do anything
-            get_content = lambda x: x
+            def get_content(x):
+                return x
+
         else:
 
             def get_content(el):
@@ -382,6 +387,7 @@ class TupList(list, Generic[T]):
     def to_csv(self, path: str, header: list = None) -> "TupList":
         """
         Exports the list to a csv file
+
         :param path: filename
         :param header: list of strings to use as header/column names for dict
         :return: the same :py:class:`TupList`
@@ -424,6 +430,7 @@ class TupList(list, Generic[T]):
     def vapply_col(self, pos: Union[int, str, None], func: Callable):
         """
         Like vapply, but it stores the result in one of the positions of the tuple (or dictionary)
+
         :param pos: int or str
         :param callable func: function to apply to create col
         """

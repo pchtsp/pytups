@@ -86,21 +86,25 @@ DERIVED DATA
 :math:`JK`           Al possible starting combinations (j, k) such that job :math:`j \in J` can start in period :math:`k \in K`.
 :math:`K_j`          Al possible starting periods for job :math:`j \in J`.
 :math:`t_{jk}`       Penalty for starting job :math:`j \in J` in period :math:`k \in K`.
-:math:`K2_{jk}`      Periods that become unavailable by starting job :math:`j` in period :math:`k \in K`.
-:math:`JK_{k2}`      All possible starts of jobs :math:`(j, k) \in JK` that make period :math:`k2 \in K` unavailable.
+:math:`K'_{jk}`      Periods that become unavailable by starting job :math:`j` in period :math:`k \in K`.
+:math:`JK_{k'}`      All possible starts of jobs :math:`(j, k) \in JK` that make period :math:`k' \in K` unavailable.
 =================    =======================================================================================================
 
 .. math::
    :nowrap:
 
-   \begin{eqnarray}
-      &C_{max} 	&= &\sum_{j \in J} p_j \\
-      &JK 		   &= &\{(j \in J, k \in K) \mid k + p_j \leq C_{max} \} \\
-      &K_j 		   &= &\{k \in K \mid (j, k) \in JK \} & j \in J \\
-      &K2_{jk} 	&= &\{k \in K \mid k \leq k2 \leq k + p_j \} & (j, k) \in JK \\
-      &JK_{k2} 	&= &\{(j, k) \in JK \mid k_2 \in K2_{jk} \} & k_2 \in K \\
-      &t_{jk} 	   &= &\max\{k + p_j -1 - d_j, 0\} \times w_j & (j, k) \in JK \\
-   \end{eqnarray}
+   \begin{array}{lll}
+    \hline
+    \text{Parameter} & \text{Definition} \\
+    \hline
+    C_{max} 	   & \sum_{j \in J} p_j \\
+    JK 		   & \{(j \in J, k \in K) \mid k + p_j \leq C_{max} \} \\
+    K_j \ \forall j \in J 		   & \{k \in K \mid (j, k) \in JK \} \\
+    K'_{jk} \ \forall (j, k) \in JK & \{k \in K \mid k \leq k' \leq k + p_j \} \\
+    JK_{k'} \ \forall k' \in K	   & \{(j, k) \in JK \mid k' \in K'_{jk} \} \\
+    t_{jk} \ \forall (j, k) \in JK 	   & \max\{k + p_j -1 - d_j, 0\} \times w_j \\
+   \hline
+    \end{array}
 
 DECISION VARIABLES
 
@@ -124,7 +128,7 @@ Subject to:
 
    \begin{eqnarray}
       & \sum_{k \in K_j} X_{jk} = 1 & j \in J \\
-      & \sum_{(j, k) \in JK_{k2}} X_{jk} = 1 & k2 \in K \\
+      & \sum_{(j, k) \in JK_{k'}} X_{jk} = 1 & k' \in K \\
    \end{eqnarray}
 
 
@@ -134,27 +138,27 @@ Implementation using pulp and pytups
 We import libraries and get input data.
 
 .. literalinclude:: ./../../examples/machine_scheduling.py
-   :lines: 1-8
+   :lines: 1-16
 
 We then calculate intermediate sets and parameters. Note the use of `pytups` functions to filter and convert from tuple lists to dictionaries.
 
 .. literalinclude:: ./../../examples/machine_scheduling.py
-   :lines: 11-39
+   :lines: 17-44
 
 We now create the PuLP model and solve it.
 
 .. literalinclude:: ./../../examples/machine_scheduling.py
-   :lines: 42-62
+   :lines: 45-66
 
 We get the solution from the variable contents. Not how we also use `pytups` to extract the content from the variable.
 
 .. literalinclude:: ./../../examples/machine_scheduling.py
-   :lines: 65-73
+   :lines: 67-77
 
 Finally, we do some tests on the solution using `pytups` to guarantee the solution is feasible:
 
 .. literalinclude:: ./../../examples/machine_scheduling.py
-   :lines: 77-85
+   :lines: 77-86
 
 The whole code is shown below:
 
