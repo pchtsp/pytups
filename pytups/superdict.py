@@ -502,7 +502,7 @@ class SuperDict(dict, Generic[K, V], Mapping[K, V]):
         It's like applying a function over the left join.
 
         :param callable func: function to apply.
-        :param Union[dict, int, float,s tr] other: either an int, a float, a string or another dictionary to
+        :param Union[dict, int, float, str] other: either an int, a float, a string or another dictionary to
           perform the operation over
         :return: new :py:class:`SuperDict`
         """
