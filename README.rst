@@ -76,3 +76,13 @@ Run the command::
     python -m unittest discover -s tests
 
 if the output says OK, all tests were passed.
+
+Type checking
+================
+
+Install the development dependencies (including `ty`) with `uv`, then run the type checker from the project root::
+
+    uv sync --group dev
+    uv run ty check
+
+If `ty check` finishes without reporting errors, the type check passed.

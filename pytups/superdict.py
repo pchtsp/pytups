@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 from . import tools
 import operator as op
 import pickle
@@ -13,15 +15,13 @@ from typing import (
     List,
     TYPE_CHECKING,
     Tuple,
+    overload,
+    cast
 )
+import json
 
 if TYPE_CHECKING:
     from .tuplist import TupList
-
-try:
-    import ujson as json
-except:
-    import json
 
 K = TypeVar("K")
 V = TypeVar("V")
@@ -106,12 +106,36 @@ class SuperDict(dict, Generic[K, V], Mapping[K, V]):
         )
 
     @staticmethod
-    def _list_or_value(val_list: List[T], pos: int) -> Union[List[T], T]:
+    @overload
+    def _list_or_value(val_list: List[T], pos: None = None) -> List[T]: ...
+
+    @staticmethod
+    @overload
+    def _list_or_value(val_list: List[T], pos: int) -> T: ...
+
+    @staticmethod
+    @overload
+    def _list_or_value(val_list: TupList[T], pos: None = None) -> TupList[T]: ...
+
+    @staticmethod
+    @overload
+    def _list_or_value(val_list: TupList[T], pos: int) -> T: ...
+
+    @staticmethod
+    def _list_or_value(
+        val_list: List[T] | TupList[T], pos: int | None = None
+    ) -> List[T] | TupList[T] | T:
         if pos is None:
             return val_list
         return val_list[pos]
 
-    def keys_l(self, pos: int = None) -> List[K]:
+    @overload
+    def keys_l(self, pos: None = None) -> List[K]: ...
+
+    @overload
+    def keys_l(self, pos: int) -> K: ...
+
+    def keys_l(self, pos: int | None = None) -> List[K] | K:
         """
         Shortcut to:
 
@@ -124,7 +148,13 @@ class SuperDict(dict, Generic[K, V], Mapping[K, V]):
         result = list(self.keys())
         return self._list_or_value(result, pos)
 
-    def values_l(self, pos: int = None) -> List[V]:
+    @overload
+    def values_l(self, pos: None = None) -> List[V]: ...
+
+    @overload
+    def values_l(self, pos: int) -> V: ...
+
+    def values_l(self, pos: int | None = None) -> List[V] | V:
         """
         Shortcut to:
 
@@ -137,7 +167,13 @@ class SuperDict(dict, Generic[K, V], Mapping[K, V]):
         result = list(self.values())
         return self._list_or_value(result, pos)
 
-    def values_tl(self, pos: int = None) -> "TupList[V]":
+    @overload
+    def values_tl(self, pos: None = None) -> TupList[V]: ...
+
+    @overload
+    def values_tl(self, pos: int) -> V: ...
+
+    def values_tl(self, pos: int | None = None) -> TupList[V] | V:
         """
         Shortcut to:
 
@@ -150,9 +186,17 @@ class SuperDict(dict, Generic[K, V], Mapping[K, V]):
         from . import tuplist as tl
 
         result = tl.TupList(self.values())
-        return self._list_or_value(result, pos)
+        if pos is None:
+            return result
+        return result[pos]
 
-    def keys_tl(self, pos: int = None) -> "TupList[K]":
+    @overload
+    def keys_tl(self, pos: None = None) -> TupList[K]: ...
+
+    @overload
+    def keys_tl(self, pos: int) -> K: ...
+
+    def keys_tl(self, pos: int | None = None) -> TupList[K] | K:
         """
         Shortcut to:
 
@@ -165,9 +209,17 @@ class SuperDict(dict, Generic[K, V], Mapping[K, V]):
         from . import tuplist as tl
 
         result = tl.TupList(self.keys())
-        return self._list_or_value(result, pos)
+        if pos is None:
+            return result
+        return result[pos]
 
-    def items_tl(self, pos: int = None) -> "TupList[Tuple[K, V]]":
+    @overload
+    def items_tl(self, pos: None = None) -> TupList[Tuple[K, V]]: ...
+
+    @overload
+    def items_tl(self, pos: int) -> Tuple[K, V]: ...
+
+    def items_tl(self, pos: int | None = None) -> TupList[Tuple[K, V]] | Tuple[K, V]:
         """
         Shortcut to:
 
@@ -180,9 +232,11 @@ class SuperDict(dict, Generic[K, V], Mapping[K, V]):
         from . import tuplist as tl
 
         result = tl.TupList(self.items())
-        return self._list_or_value(result, pos)
+        if pos is None:
+            return result
+        return result[pos]
 
-    def clean(self, default_value=0, func: Callable = None, **kwargs) -> "SuperDict":
+    def clean(self, default_value=0, func: Callable | None = None, **kwargs) -> "SuperDict":
         """
         Filters elements by value
 
@@ -196,7 +250,8 @@ class SuperDict(dict, Generic[K, V], Mapping[K, V]):
         {'a': 1, 'c': 1}
         """
         if func is None:
-            func = lambda x: x != default_value
+            def func(x: V) -> bool:
+                return x != default_value
         return self.vfilter(func=func, **kwargs)
 
     def vfilter(self, func: Callable, **kwargs) -> "SuperDict[K, V]":
@@ -255,7 +310,7 @@ class SuperDict(dict, Generic[K, V], Mapping[K, V]):
         """
         return len(self)
 
-    def filter(self, indices: Iterable, check: bool = True) -> "SuperDict[K, V]":
+    def filter(self, indices: Iterable[K] | K	, check: bool = True) -> "SuperDict[K, V]":
         """
         takes out elements that are not in `indices`
 
@@ -269,9 +324,9 @@ class SuperDict(dict, Generic[K, V], Mapping[K, V]):
 
         """
         if not tools.is_really_iterable(indices):
-            indices = {indices}
+            indices = {cast(K, indices)}
         else:
-            indices = set(indices)
+            indices = set(cast(Iterable[K], indices))
         if not check:
             intersection = indices & self.keys()
             return SuperDict({k: self[k] for k in intersection})
@@ -491,8 +546,8 @@ class SuperDict(dict, Generic[K, V], Mapping[K, V]):
 
     def sapply(
         self,
-        func: Callable[[V], R],
-        other: Union[dict, int, float, str],
+        func: Callable[[V, Any], R],
+        other: dict | int | float | str,
         *args,
         **kwargs,
     ) -> "SuperDict[K, R]":

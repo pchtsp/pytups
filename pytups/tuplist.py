@@ -1,5 +1,19 @@
+from __future__ import annotations
+
 import csv
-from typing import Callable, Iterable, Union, TypeVar, Generic, TYPE_CHECKING, List, Set
+from typing import (
+    Callable,
+    Iterable,
+    Union,
+    TypeVar,
+    Generic,
+    TYPE_CHECKING,
+    List,
+    Set,
+    SupportsIndex,
+    cast,
+    overload,
+)
 import pickle
 from itertools import chain
 
@@ -17,18 +31,19 @@ class TupList(list, Generic[T]):
     A list of tuples or dictionaries
     """
 
-    def __getitem__(self, key: int) -> Union[T, "TupList[T]"]:
-        if not isinstance(key, slice):
-            return list.__getitem__(self, key)
-        if key.start is not None:
-            start = (len(self) + key.start) if key.start < 0 else key.start
-        else:
-            start = 0
-        if key.stop is not None:
-            stop = (len(self) + key.stop) if key.stop < 0 else key.stop
-        else:
-            stop = len(self)
-        return TupList(self[i] for i in range(start, stop, key.step or 1))
+    @overload
+    def __getitem__(self, key: SupportsIndex, /) -> T: ...
+
+    @overload
+    def __getitem__(self, key: slice[SupportsIndex | None], /) -> "TupList[T]": ...
+
+    def __getitem__(
+        self, key: SupportsIndex | slice[SupportsIndex | None], /
+    ) -> T | "TupList[T]":
+        result = list.__getitem__(self, key)
+        if isinstance(key, slice):
+            return TupList(cast(List[T], result))
+        return cast(T, result)
 
     def __add__(self, *args, **kwargs) -> "TupList":
         return TupList(super().__add__(*args, **kwargs))
@@ -49,9 +64,10 @@ class TupList(list, Generic[T]):
                 return self.take_np(indices)
             except ImportError:
                 pass
-        if not isinstance(indices, list):
+        if not is_really_iterable(indices):
             return self.vapply(lambda tup: tup[indices])
-        return self.vapply(lambda tup: tuple(tup[a] for a in indices))
+        casted_indices = cast(Iterable, indices)
+        return self.vapply(lambda tup: tuple(tup[a] for a in casted_indices))
 
     def copy_shallow(self) -> "TupList":
         """
@@ -250,7 +266,7 @@ class TupList(list, Generic[T]):
         compare_tups: Callable,
         pp: int = 1,
         sort: bool = True,
-        join_func: Callable = None,
+        join_func: Callable | None = None,
     ) -> "TupList":
         """
         Takes a calendar tuple list of the form: (id, month) and
@@ -384,7 +400,7 @@ class TupList(list, Generic[T]):
         """
         return TupList(chain(*self))
 
-    def to_csv(self, path: str, header: list = None) -> "TupList":
+    def to_csv(self, path: str, header: list | None = None) -> "TupList":
         """
         Exports the list to a csv file
 
@@ -401,7 +417,8 @@ class TupList(list, Generic[T]):
         if isinstance(first, dict):
             if header is None:
                 header = first.keys()
-            thing_to_write = self.take(list(header))
+            header = list(cast(list, header))
+            thing_to_write = self.take(header)
         else:
             thing_to_write = self
         with open(path, "w", newline="\n", encoding="utf-8") as out:
@@ -412,7 +429,7 @@ class TupList(list, Generic[T]):
         return self
 
     @classmethod
-    def from_csv(cls, path: str, func: Callable = None, **kwargs) -> "TupList":
+    def from_csv(cls, path: str, func: Callable | None = None, **kwargs) -> "TupList":
         """
         Generates a new TupList by reading a csv file
 
