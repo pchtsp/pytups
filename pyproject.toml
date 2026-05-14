@@ -1,6 +1,6 @@
 [project]
 name = "pytups"
-version = "1.0.4"
+version = "1.0.5"
 description = "data wrangling for lists of tuples and dictionaries"
 requires-python = ">=3.9"
 dependencies = []
@@ -23,4 +23,4 @@ license-files = []
 
 
 [dependency-groups]
-dev = ["black", "sphinx"]
+dev = ["black", "sphinx", "ty"]
